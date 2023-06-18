@@ -10,7 +10,7 @@ import preprocess
 import vis
 import template
 
-app = dash.Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+app = dash.Dash(name=__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = 'Project | INF8808'
 
 df_timeline = pd.read_csv('./assets/data/timeline_dataset.csv')
