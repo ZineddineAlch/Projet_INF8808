@@ -110,14 +110,7 @@ app.layout = html.Div(
                         ),
                     ],
                     className="four columns",
-                ),
-                html.Div(
-                    [
-                        # Adding the progress component
-                        dbc.Progress(value=50),
-                    ],
-                    className="eight columns",
-                ),
+                )
             ],
             className="row",
         ),
