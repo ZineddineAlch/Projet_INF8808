@@ -1,0 +1,132 @@
+,PATIENT_ID,DAY,NOTE_TYPE,NOTE
+0,Pierre Lapointe,2023-01-05,Progress Notes,Flu shots only work about 70% of the time
+1,Pierre Lapointe,2023-01-09,Progress Notes,"Beetles taste like apples, wasps like pine nuts, and worms like fried bacon."
+2,Pierre Lapointe,2023-01-09,Progress Notes,"Apparently, the world's fastest ant runs faster than Usain Bolt!"
+3,Pierre Lapointe,2023-01-09,Overview Notes,"Paraguay boasts the world's third-biggest fleet of tug-propelled barges, behind the U.S. and China."
+4,Pierre Lapointe,2023-01-11,Progress Notes,One million cloud droplets are needed to make enough water to produce one raindrop.
+5,Pierre Lapointe,2023-01-11,Overview Notes,"Apples come from the same plant family as roses. So do plums, raspberries, and many other delicious fruits."
+6,Pierre Lapointe,2023-01-15,Progress Notes,"The famous Christmas song ""Jingle Bells"" was written for a Thanksgiving program in 1857 by James Pierpont. At the time, the song was called ""The One-Horse Open Sleigh."""
+7,Pierre Lapointe,2023-01-15,Progress Notes,"Bats give birth while hanging upside down, and they catch their newborn with their wings as it drops."
+8,Pierre Lapointe,2023-01-15,Overview Notes,"The world's smallest winged insect, the Tanzanian parasitic wasp, is smaller than the eye of a housefly."
+9,Pierre Lapointe,2023-01-15,Overview Notes,The largest diamond that was ever found was 3106 carats.
+10,Lisa LeBlanc,2022-12-22,Progress Notes,George Washington owned a whiskey distillery.
+11,Lisa LeBlanc,2022-12-22,Progress Notes,"During Islam's Golden Age, scientists were paid the equivalent of what pro athletes are paid today."
+12,Lisa LeBlanc,2022-12-22,Overview Notes,Your teeth are unique.
+13,Lisa LeBlanc,2022-12-26,Progress Notes,The actors who voiced Mickey and Minnie mouse from the 1980s to the 2010s were married!
+14,Lisa LeBlanc,2022-12-26,Progress Notes,"The average person has over 1,460 dreams a year."
+15,Lisa LeBlanc,2022-12-26,Overview Notes,Baby octopuses are the size of a flea.
+16,Lisa LeBlanc,2022-12-28,Progress Notes,"To make one pound of whole milk cheese, 10 pounds of whole milk is needed"
+17,Lisa LeBlanc,2022-12-30,Progress Notes,NASA scientists have concluded that the state of California is moving north and will collide with the state of Alaska in roughly 150 million years
+18,Lisa LeBlanc,2022-12-30,Overview Notes,The slowest growing finger nail is on the thumb nail and the fastest growing is the finger nail on the middle finger
+19,Lisa LeBlanc,2022-12-30,Overview Notes,Manitoulin Island is the largest island in a fresh water lake. It is located in Canadian Lake Superior
+20,Lisa LeBlanc,2023-01-10,Progress Notes,"According to Scandinavian traditions, if a boy and girl eat from the same loaf of bread, they are bound to fall in love"
+21,Lisa LeBlanc,2023-01-10,Progress Notes,Fear of clowns is called coulrophobia
+22,Lisa LeBlanc,2023-01-10,Overview Notes,"Following directions off the Internet and chemicals obtained from a mail order company, a team of U.S. scientists created an identical copy of the polio virus."
+23,Lisa LeBlanc,2023-01-10,Overview Notes,"Beatrix Potter created the first of her legendary ""Peter Rabbit"" children's stories in 1902."
+24,Lisa LeBlanc,2023-01-15,Progress Notes,"A person from Las Vegas is called a ""Las Vegan""."
+25,Lisa LeBlanc,2023-01-15,Progress Notes,"Actress Michelle Pfeiffer was the first choice to play Clarice Starling in the movie ""Silence of the Lambs."" She turned down the role because she found it too scary"
+26,Lisa LeBlanc,2023-01-15,Overview Notes,"In 1801, the Kingdom of Ireland and the Kingdom of Great Britain merged to create a United Kingdom of Great Britain and Ireland."
+27,Félix Leclerc,2022-12-25,Progress Notes,"The first fossilized specimen of Australopithecus afarenisis was named Lucy after the paleontologists' favorite song ""Lucy in the Sky with Diamonds,"" by the Beatles."
+28,Félix Leclerc,2022-12-25,Progress Notes,"In 1783, the hot air balloon was invented in France."
+29,Félix Leclerc,2022-12-31,Progress Notes,Abe Lincoln was a champion wrestler. He was also a licensed bartender.
+30,Félix Leclerc,2022-12-31,Progress Notes,The Olympic torch weighs about 3 pounds
+31,Félix Leclerc,2023-01-03,Progress Notes,Both of Nelson Mandela's parents were illiterate.
+32,Félix Leclerc,2023-01-03,Progress Notes,"A person can live without food for about a month, but only about a week without water."
+33,Félix Leclerc,2023-01-10,Progress Notes,"Anne Frank, Martin Luther King Jr. and Barbara Walters were all born in the same year."
+34,Félix Leclerc,2023-01-10,Progress Notes,"There are over 87,000 Americans on waiting lists for organ transplants."
+35,Félix Leclerc,2023-01-11,Progress Notes,Lake Ontario was originally named Lake St. Louis
+36,Félix Leclerc,2023-01-14,Progress Notes,The first lighthouse was in Alexandria in 290 B.C
+37,Félix Leclerc,2023-01-14,Overview Notes,"No matter where you stand in Michigan, you are never more than 85 miles from a Great Lake."
+38,Félix Leclerc,2023-01-14,Overview Notes,The Chinese politician Mao Zedong refused to ever brush his teeth and instead just washed his mouth with tea
+39,Félix Leclerc,2023-01-15,Progress Notes,The only species of turtle that lives in the open ocean is the sea turtle
+40,Félix Leclerc,2023-01-15,Overview Notes,"In North Korea, the year is counted after the birth of its founder, Kim II-Sung. In 2013, it was the year 202."
+41,Jean-Pierre Ferland,2022-12-23,Progress Notes,"When Heinz ketchup leaves the bottle, it travels at a rate of 25 miles per year."
+42,Jean-Pierre Ferland,2022-12-23,Progress Notes,Stephen King Bought-and Smashed-the Automobile That Nearly Killed Him
+43,Jean-Pierre Ferland,2022-12-23,Overview Notes,"Montreal was named after a local mountain ""Mont Royal."""
+44,Jean-Pierre Ferland,2022-12-29,Progress Notes,Jerry Springer Was Born in a London Subway Station During World War II
+45,Jean-Pierre Ferland,2022-12-29,Progress Notes,"Abe Lincoln was a champion wrestler. He was also a licensed bartender. Maybe they should call him an ""Abe of all trades."""
+46,Jean-Pierre Ferland,2023-01-01,Progress Notes,"Disney sold the streaming right for the original Star Wars films in 2016 to Turner until 2024. Disney has since decided to start a streaming service and has tried asking for the rights back, but Turner refuses every time."
+47,Jean-Pierre Ferland,2023-01-03,Progress Notes,The platypus uses its bill to find animals that it feeds on. Its bill can sense the tiny electric fields that their preys emit
+48,Jean-Pierre Ferland,2023-01-12,Progress Notes,The blue whale is the loudest animal on the earth. Its whistle can reach up to 188 decibels
+49,Jean-Pierre Ferland,2023-01-12,Progress Notes,Thomas Edison was afraid of the dark
+50,Jean-Pierre Ferland,2023-01-12,Overview Notes,"Proportional to their size, cats have the largest eyes of all mammals."
+51,Jean-Pierre Ferland,2023-01-12,Overview Notes,Spain was the third most visited country in the world in 2013
+52,Daniel Boucher,2022-12-22,Progress Notes,Fleas Are Among the World's Best Jumpers
+53,Daniel Boucher,2022-12-22,Overview Notes,Alexander the Great was buried alive.
+54,Daniel Boucher,2022-12-22,Overview Notes,The electric chair was invented by a dentist.
+55,Daniel Boucher,2022-12-24,Progress Notes,Botanically a rhubarb is a vegetable. It was changed to a fruit in 1947 by a U.S. Custom Court
+56,Daniel Boucher,2022-12-26,Progress Notes,The White House has 35 bathrooms. So every bathroom break can be different for POTUS!
+57,Daniel Boucher,2022-12-26,Progress Notes,"The largest hotel in the world is the MGM Grand, which has 5,034 rooms and is located in Las Vegas, Nevada"
+58,Daniel Boucher,2022-12-26,Overview Notes,Watermelons are a popular gift to bring to a host in China or Japan
+59,Daniel Boucher,2022-12-26,Overview Notes,The temperature of lightning bolts is sometimes hotter than the surface of the sun.
+60,Daniel Boucher,2022-12-31,Progress Notes,"The concept behind the word ""cool"" might come from the African word ""itutu"", brought to America by slavery"
+61,Daniel Boucher,2022-12-31,Progress Notes,The word racecar and kayak are the same whether they are read left to right or right to left
+62,Daniel Boucher,2022-12-31,Overview Notes,Honey is the only natural food that is made without destroying any kind of life.
+63,Daniel Boucher,2023-01-02,Progress Notes,A shark is the only fish that can blink with both eyes.
+64,Daniel Boucher,2023-01-02,Overview Notes,"Bird droppings are the chief export of Nauru, an island nation in the Western Pacific."
+65,Daniel Boucher,2023-01-02,Overview Notes,"The hydra, which is related to the jellyfish, can grow its body back in a couple of days if it is cut in half"
+66,Daniel Boucher,2023-01-03,Progress Notes,"The game Monopoly was once very popular in Cuba; however, Fidel Castro ordered that all games be destroyed"
+67,Daniel Boucher,2023-01-03,Progress Notes,4%of women in the U.S. are pregnant right now
+68,Daniel Boucher,2023-01-05,Progress Notes,Riding a roller coaster could help you pass a kidney stone.
+69,Daniel Boucher,2023-01-05,Progress Notes,"A cow gives nearly 200,000 glasses of milk in her lifetime."
+70,Daniel Boucher,2023-01-05,Overview Notes,The saturn V rocket which carried man to the Moon develops power equivalent to fifty 747 jumbo jets.
+71,Daniel Boucher,2023-01-09,Progress Notes,A pistol can only be used by one hand.
+72,Daniel Boucher,2023-01-09,Progress Notes,Reports from owners of cats and dogs indicate that 21% of dogs and 7% of cats snore
+73,Daniel Boucher,2023-01-09,Overview Notes,Newborns don't have kneecaps.
+74,Daniel Boucher,2023-01-09,Overview Notes,The Beatles have sold more records than anyone else with over a billion worldwide
+75,Daniel Boucher,2023-01-16,Progress Notes,Multiplying 1089 by 9 will give you the same numbers in reverse.
+76,Isabelle Boulay,2022-12-28,Progress Notes,Women smile more than men do
+77,Isabelle Boulay,2023-01-14,Progress Notes,Christians believe that Jesus is the Son of God and the savior of humanity whose coming as the Messiah was prophesied in the Old Testament.
+78,Isabelle Boulay,2023-01-14,Progress Notes,Teenage cosmetic surgeries nearly doubled in the USA between 1996 and 1998
+79,Isabelle Boulay,2023-01-14,Overview Notes,"Recycling one glass jar, saves enough energy to watch T.V for 3 hours!"
+80,Isabelle Boulay,2023-01-14,Overview Notes,There are over 600 different pasta shapes
+81,Céline Dion,2022-12-22,Progress Notes,A chicken named Mike lived for 18 months after its head was chopped off.
+82,Céline Dion,2022-12-22,Overview Notes,Pitbulls are ranked as the most affectionate breed of dogs.
+83,Céline Dion,2022-12-29,Progress Notes,The youngest Pope in history was Pope Benedict IX who was 11 years old at the time of the election. He is also the only person to have been the Pope more than once.
+84,Céline Dion,2022-12-29,Progress Notes,The calling shotgun for the front passenger seat comes from a messenger.
+85,Céline Dion,2022-12-31,Progress Notes,"Yuma, Arizona gets over 4000 hours of sunshine a year, making it the sunniest place on earth. The least sunny place is the South Pole, where the sun only shines on 182 days a year. (Which would you rather live in?)"
+86,Céline Dion,2022-12-31,Overview Notes,There are 691 drinking fountains in the Pentagon
+87,Céline Dion,2022-12-31,Overview Notes,"Google receives more than 200 million search queries a day, more than half of which come from outside the United States. Peak traffic hours to google.com are between 6 a.m. and noon PST, when more than 2,000 search queries are answered a second"
+88,Céline Dion,2023-01-01,Progress Notes,Majority of brides plan their wedding for approximately 7 to 12 months
+89,Céline Dion,2023-01-01,Progress Notes,"When George Washington passed away in 1799,  Britain's entire Royal Navy lowered its flags at half mast."
+90,Céline Dion,2023-01-08,Progress Notes,"Michael Phelps, the most decorated Olympian of all time, was bullied as a kid for his gangly form and big ears."
+91,Céline Dion,2023-01-08,Progress Notes,"Karate actually originated in India, but was developed further in China"
+92,Céline Dion,2023-01-17,Progress Notes,"Every year, surgical tools are left in approximately 1,500 patients in the USA. Fatter patients are more prone to having a surgical tool left inside of them due to the additional amount of space in their bodies"
+93,Céline Dion,2023-01-17,Progress Notes,"Lee Harvey Oswald's cadaver tag was sold at an auction for $6,600 in 1992."
+94,Céline Dion,2023-01-17,Overview Notes,Forget bald eagles. The turkey was once almost named the national bird.
+95,Céline Dion,2023-01-18,Progress Notes,Melting glaciers make fizzy noises.
+96,Céline Dion,2023-01-18,Overview Notes,Lack of sleep can affect your immune system and reduce your ability to fight infections
+97,Céline Dion,2023-01-18,Overview Notes,If you sneeze too hard you can fracture a rib. If you try to suppress a sneeze you can rupture a blood vessel in your head or neck and die. If you keep your eyes open by force they can pop out.
+98,Diane Dufresne,2022-12-26,Progress Notes,The nose can detect a trillion smells!
+99,Diane Dufresne,2022-12-26,Progress Notes,"The average person has over 1,460 dreams a year."
+100,Diane Dufresne,2023-01-08,Progress Notes,"In the original movie ""101 Dalmatians,"" there are exactly 6,469,952 spots on all 101 Dalmatians as they are shown in 113,760 frames of the film combined"
+101,Diane Dufresne,2023-01-08,Progress Notes,La Tomatina is an annual festival held in Spain where people throw thousands of tomatoes at each other.
+102,Diane Dufresne,2023-01-11,Progress Notes,"At birth, a baby panda is smaller than a mouse."
+103,Diane Dufresne,2023-01-11,Overview Notes,"In 1911, the Mona Lisa was stolen from the Louvre."
+104,Diane Dufresne,2023-01-16,Progress Notes,"Rapper Tupac Shakur was a voracious reader, and particularly enjoyed Shakespeare"
+105,Diane Dufresne,2023-01-16,Overview Notes,The trunk of an elephant can hold up to two gallons of water
+106,Diane Dufresne,2023-01-16,Overview Notes,The fastest a dolphin can swim near the surface is 33.5 mph (54 km/h).
+107,Robert Charlebois,2022-12-22,Progress Notes,A man married a dog in India as atonement.
+108,Robert Charlebois,2022-12-22,Overview Notes,The man with the world's deepest voice can make sounds humans can't hear
+109,Robert Charlebois,2023-01-01,Progress Notes,"Alexander Graham Bell, the inventor of the telephone, never telephoned his wife or mother because they were both deaf"
+110,Robert Charlebois,2023-01-01,Progress Notes,Traffic in central London moves at the same speed as horse-drawn carriages a century ago
+111,Robert Charlebois,2023-01-01,Overview Notes,Small traces of gold have been found in the leaves of Eucalyptus trees.
+112,Robert Charlebois,2023-01-13,Progress Notes,Telly Savalas and Louis Armstrong died on their birthdays.
+113,Robert Charlebois,2023-01-13,Progress Notes,"Colonel Sanders original white suit was auctioned off for $80,000 in February 2002"
+114,Robert Charlebois,2023-01-13,Overview Notes,The largest Japanese population outside of Japan stands at 1.6 million people who live in Brazil.
+115,Robert Charlebois,2023-01-13,Overview Notes,In 1946 Danon Yogurt were the first to add fruit to commercially produced yogurt in U.S
+116,Robert Charlebois,2023-01-15,Progress Notes,The cheetah is the only cat that can't retract its claws.
+117,Robert Charlebois,2023-01-15,Progress Notes,"African Baobab tree's circumference can reach 180 feet. If the trunk is hollow, 20 people would be able to fit inside of it."
+118,Robert Charlebois,2023-01-15,Overview Notes,The Iowa State Fair holds quirky competitions like a beard-growing contest and a husband-calling contest.
+119,Robert Charlebois,2023-01-15,Overview Notes,"Since 1870, global sea levels have risen by about 8 inches (20 cm)."
+120,Robert Charlebois,2023-01-18,Progress Notes,"In 1942 the Jello company introduced Cola flavored jello, which only lasted a year"
+121,André Fortin,2022-12-28,Progress Notes,There's Only One Flying Mammal in the World
+122,André Fortin,2022-12-28,Overview Notes,"In total, Americans eat more than 45 billion sandwiches each year, while sales of custom-made sandwiches are rising 15 percent per year"
+123,André Fortin,2022-12-30,Progress Notes,"Publisher Bloomsbury offered just 2,500 in advance for Harry Potter and the Philosopher's Stone, the first book of the series."
+124,André Fortin,2022-12-31,Progress Notes,"JFK bought 1,200 cuban cigars just hours before signing the embargo against Cuba."
+125,André Fortin,2022-12-31,Overview Notes,Christianity is severely persecuted in at least 27 countries.
+126,André Fortin,2023-01-06,Progress Notes,Each Jelly Belly jelly belly bean has 4 calories
+127,André Fortin,2023-01-06,Progress Notes,"Millionaires who have earned their wealth are moderately happier than those who inherited it, a 2018 psychology study found."
+128,André Fortin,2023-01-06,Overview Notes,Peanuts are one of the ingredients of dynamite.
+129,André Fortin,2023-01-18,Progress Notes,A family of 26 could go to the movies in Mexico city for the price of one in Tokyo.
+130,André Fortin,2023-01-18,Overview Notes,"North Korea is officially not Communist. Since 2009 its ideology is called ""Juche""."
