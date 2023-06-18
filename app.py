@@ -9,6 +9,7 @@ import dash_bootstrap_components as dbc
 import preprocess
 import vis
 import template
+import cal
 
 app = dash.Dash(name=__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = 'Project | INF8808'
@@ -78,15 +79,7 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-                        # Adding the second table using DataTable
-                        dash_table.DataTable(
-                            id='table2',
-                            columns=columns_table2,
-                            data=[],
-                            style_table={'overflowX': 'auto'},
-                            style_data={'textAlign': 'center'},
-                            style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold', 'textAlign': 'center'},
-                        ),
+                       cal.get_cal()
                     ],
                     className="six columns",
                 ),
