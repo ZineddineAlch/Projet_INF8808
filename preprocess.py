@@ -58,5 +58,5 @@ def get_global_data(df):
 
     # Adding 'ADL_COMPLETION_PERCENTAGE' column
     aggregated['ADL_COMPLETION_PERCENTAGE'] = (aggregated['TOTAL_COMPLETED_ADLS'] / aggregated['TOTAL_ADLS']) * 100
-    aggregated['UNCOMPLETED_ADLS'] = 100 - aggregated['ADL_COMPLETION_PERCENTAGE']
+    aggregated['UNCOMPLETED_ADLS_PERCENTAGE'] = 100 - aggregated['ADL_COMPLETION_PERCENTAGE']
     return aggregated
