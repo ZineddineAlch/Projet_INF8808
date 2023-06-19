@@ -43,3 +43,20 @@ def id_extract(df):
     
     print(df_names)
     return df_names
+
+def get_global_data(df):
+    # Group by 'PATIENT_ID' and sum the numeric columns
+    aggregated = df.groupby('PATIENT_ID').agg({
+        'VISIT_COUNTS': 'sum',
+        'TOTAL_COMPLETED_ADLS': 'sum',
+        'TOTAL_ADLS': 'sum',
+        'CANCELLATION_COUNTS': 'sum',
+        'FALL_COUNT': 'sum',
+        'HOSPITALIZATION_COUNT': 'sum',
+        'HAS_PAIN_MENTION': 'sum'
+    })
+
+    # Adding 'ADL_COMPLETION_PERCENTAGE' column
+    aggregated['ADL_COMPLETION_PERCENTAGE'] = (aggregated['TOTAL_COMPLETED_ADLS'] / aggregated['TOTAL_ADLS']) * 100
+    aggregated['UNCOMPLETED_ADLS'] = 100 - aggregated['ADL_COMPLETION_PERCENTAGE']
+    return aggregated
