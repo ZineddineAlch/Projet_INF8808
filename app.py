@@ -118,8 +118,8 @@ app.layout = html.Div(
 
     ], style={"padding": "20px"})
 
-# ------------------------ Callback -----------------------#
 
+# ------------------------ Callback -----------------------#
 
 @app.callback(
     Output('calendar-container', 'children'),
@@ -138,18 +138,18 @@ def update_calendar(active_cell, table1_data):
     return None
 
 
-# @app.callback(
-#     Output('table1', 'data'),
-#     [Input('first-name-input', 'value'),
-#      Input('last-name-input', 'value')]
-# )
-# def update_table1_data(first_name, last_name):
-#     # Perform search logic here and return the filtered data for Table 1
-#     if first_name and last_name:
-#         filtered_data = data[
-#             (data['First Name'].str.contains(first_name, case=False)) &
-#             (data['Last Name'].str.contains(last_name, case=False))
-#         ]
-#         return filtered_data.to_dict('records')
-#     else:
-#         return data.to_dict('records')
+@app.callback(
+    Output('table1', 'data'),
+    [Input('first-name-input', 'value'),
+     Input('last-name-input', 'value')]
+)
+def update_table1_data(first_name, last_name):
+    # Perform search logic here and return the filtered data for Table 1
+    if first_name and last_name:
+        filtered_data = data[
+            (data['First Name'].str.contains(first_name, case=False)) &
+            (data['Last Name'].str.contains(last_name, case=False))
+        ]
+        return filtered_data.to_dict('records')
+    else:
+        return data.to_dict('records')
