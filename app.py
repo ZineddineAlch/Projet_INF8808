@@ -20,10 +20,16 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 # -------------   Preprocess results ------------------#
 
 data = preprocess.id_extract(df_timeline)
+print(type(preprocess.completed_adls_visit(df_timeline)))
+data[['Completed ADLS', 'Completed visits']] = preprocess.completed_adls_visit(df_timeline).values
+
+
+print(data)
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
 schedule_data = preprocess.get_schedule_for_patient(df_timeline, "Félix Leclerc")
+
 
 # ------------- Layout -------------#
 

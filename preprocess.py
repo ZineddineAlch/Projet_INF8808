@@ -7,8 +7,8 @@ def table1_header():
     columns=[
         {"name": "First Name", "id": "First Name"},
         {"name": "Last Name", "id": "Last Name"},
-        {"name": "Completed ADLS", "id": "Completed ADLS"},
-        {"name": "Completed visits", "id": "Completed visits"},
+        {"name": "Completed ADLS (%)", "id": "Completed ADLS"},
+        {"name": "Completed visits (%)", "id": "Completed visits"},
         {"name": "Stats", "id": "Stats", "presentation": "markdown"}
     ]
     
@@ -42,6 +42,31 @@ def id_extract(df):
     df_names = df_unique[['First Name', 'Last Name']]
     
     return df_names
+
+def completed_adls_visit(df):
+    # Create an empty DataFrame with the desired columns
+    empty_df = pd.DataFrame(columns=['Completed ADLS', 'Completed visits'])
+
+    grouped_df1 = df.groupby('PATIENT_ID', sort=False).agg({
+        'TOTAL_COMPLETED_ADLS': 'sum',
+        'TOTAL_ADLS': 'sum'
+    })
+    
+    # Calculate the ratio
+    grouped_df1['Ratio'] = grouped_df1['TOTAL_COMPLETED_ADLS'] / grouped_df1['TOTAL_ADLS']
+    
+    grouped_df2 = df.groupby('PATIENT_ID', sort=False).agg({
+        'VISIT_COUNTS': 'sum',
+        'CANCELLATION_COUNTS': 'sum'
+    })
+    
+    # Calculate the ratio
+    grouped_df2['Ratio1'] = grouped_df2['VISIT_COUNTS'] / (grouped_df2['VISIT_COUNTS']+grouped_df2['CANCELLATION_COUNTS'])
+    
+    empty_df['Completed ADLS'] = grouped_df1['Ratio'].round(2)*100
+    empty_df['Completed visits'] = grouped_df2['Ratio1'].round(2)*100
+    
+    return empty_df
 
 def get_global_data(df):
     # Group by 'PATIENT_ID' and sum the numeric columns
