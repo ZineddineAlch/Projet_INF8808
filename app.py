@@ -37,20 +37,10 @@ schedule_data = preprocess.get_schedule_for_patient(
 
 app.layout = html.Div(
     children=[
-        html.H1(className="text-center", children=[
+        html.H1(className="text-center", style={"margin": "0px"}, children=[
             html.Img(src="./assets/image_alaya.png",
-                     style={"width": "300px", "height": "auto", "margin-top": "20px"})
+                     style={"width": "300px", "height": "auto", "margin-top": "20px", "margin-bottom": "20px"})
         ]),
-
-        html.P(
-            "Enter patient name:",
-            style={
-                'fontFamily': 'Arial',
-                'fontSize': '16px',
-                'fontWeight': 'bold',
-                'color': 'blue',
-            }
-        ),
         html.Div(
             [
                 html.Div(
@@ -58,10 +48,10 @@ app.layout = html.Div(
                         dcc.Input(
                             id='first-name-input',
                             type='text',
-                            placeholder='Enter first name...',
+                            placeholder='Search for a patient...',
                             debounce=True,
                             style={
-                                'width': '300px',
+                                'width': '100%',
                                 'padding': '10px',
                                 'border': '1px solid #ccc',
                                 'borderRadius': '5px',
@@ -69,30 +59,19 @@ app.layout = html.Div(
                                 'fontSize': '14px',
                             }
                         ),
-                    ],
-                    style={"display": "inline-block", "marginRight": "10px"},
+                    ], style={"flex": "1", "margin-right": "5px"}
                 ),
                 html.Div(
                     [
-                        dcc.Input(
-                            id='last-name-input',
-                            type='text',
-                            placeholder='Enter last name...',
-                            debounce=True,
-                            style={
-                                'width': '300px',
-                                'padding': '10px',
-                                'border': '1px solid #ccc',
-                                'borderRadius': '5px',
-                                'fontFamily': 'Arial',
-                                'fontSize': '14px',
-                            }
-                        ),
+                        dbc.Button("Search", color="primary",
+                                   className="me-1", style={"margin": "0px", "height": "100%"})
                     ],
-                    style={"display": "inline-block", "marginRight": "10px"},
+                    style={"height": "100%"}
                 ),
                 html.Div(id="output-div"),
             ],
+            style={"width": "50%", "display": "flex",
+                   "align-items": "center", "margin-bottom": "20px"}
         ),
         html.Div(
             [
@@ -135,8 +114,7 @@ app.layout = html.Div(
             ]
         ),
 
-    ]
-)
+    ], style={"padding": "20px"})
 
 # ------------------------ Callback -----------------------#
 
