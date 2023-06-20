@@ -39,7 +39,16 @@ app.layout = html.Div(
             html.Img(src="./assets/image_alaya.png", style={"width": "300px", "height": "180px"})
         ]),
 
-        html.P("Enter patient name:"),
+        html.P(
+        "Enter patient name:",
+        style={
+            'fontFamily': 'Arial',
+            'fontSize': '16px',
+            'fontWeight': 'bold',
+            'color': 'blue',
+        }
+    ),
+
         html.Div(
     [
         html.Div(
@@ -49,6 +58,14 @@ app.layout = html.Div(
                     type='text',
                     placeholder='Enter first name...',
                     debounce=True,
+                    style={
+                    'width': '300px',
+                    'padding': '10px',
+                    'border': '1px solid #ccc',
+                    'borderRadius': '5px',
+                    'fontFamily': 'Arial',
+                    'fontSize': '14px',
+                }
                 ),
             ],
             style={"display": "inline-block", "marginRight": "10px"},
@@ -60,6 +77,14 @@ app.layout = html.Div(
                     type='text',
                     placeholder='Enter last name...',
                     debounce=True,
+                     style={
+                    'width': '300px',
+                    'padding': '10px',
+                    'border': '1px solid #ccc',
+                    'borderRadius': '5px',
+                    'fontFamily': 'Arial',
+                    'fontSize': '14px',
+                }
                 ),
             ],
             style={"display": "inline-block", "marginRight": "10px"},
@@ -81,13 +106,13 @@ app.layout = html.Div(
                                 style_table={'overflowX': 'auto'},
                                 style_as_list_view=True,
                                 style_data={'whiteSpace': 'normal','height': 'auto',},
-                                style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold', 'textAlign': 'center'},
+                                style_header={'backgroundColor': 'Orange', 'fontWeight': 'bold', 'textAlign': 'center'},
                                 selected_rows=[],
                                 markdown_options = {'html': True},
                                 row_selectable=False,
                                 style_cell={
                                     'minWidth': '50px',
-                                    'maxWidth': '300px',
+                                    'maxWidth': '200px',
                                     'whiteSpace': 'normal',
                                     'textAlign': 'center',
                                 },
@@ -104,7 +129,7 @@ app.layout = html.Div(
                 ),
             ]
         ),
-        html.Div(style={"margin-bottom": "20px"}),
+        
     ]
 )
 
