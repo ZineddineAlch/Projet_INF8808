@@ -17,7 +17,7 @@ app.title = 'Project | INF8808'
 df_timeline = pd.read_csv('./assets/data/timeline_dataset.csv')
 df_notes = pd.read_csv('./assets/data/notes.csv')
 
-#-------------   Preprocess results ------------------#
+# -------------   Preprocess results ------------------#
 
 data = preprocess.id_extract(df_timeline)
 columns_table1 = preprocess.table1_header()
@@ -25,7 +25,7 @@ columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
 schedule_data = preprocess.get_schedule_for_patient(df_timeline, "Félix Leclerc")
 
-#------------- Layout -------------#
+# ------------- Layout -------------#
 
 app.layout = html.Div(
     children=[
@@ -79,12 +79,7 @@ app.layout = html.Div(
                     ],
                     className="six columns",
                 ),
-                html.Div(
-                    [
-                       cal.get_cal(schedule_data)
-                    ],
-                    className="six columns",
-                ),
+                html.Div(id="calendar-container", className="six columns"),
             ],
             className="row",
         ),
@@ -119,15 +114,22 @@ app.layout = html.Div(
     ]
 )
 
-#------------------------ Callback -----------------------#
+# ------------------------ Callback -----------------------#
 
 @app.callback(
-    Output('table2', 'data'),
+    Output('calendar-container', 'children'),
     [Input('table1', 'active_cell')],
     [State('table1', 'data')]
 )
-def update_table2_data(active_cell, table1_data):
+def update_calendar(active_cell, table1_data):
+    if active_cell:
+        row = active_cell['row']
+        selected_patient = table1_data[row]['First Name'] + " " + table1_data[row]['Last Name']
+        schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
+        return cal.get_cal(schedule_data)
+
     return None
+
 
 @app.callback(
     Output('table1', 'data'),
@@ -144,4 +146,3 @@ def update_table1_data(first_name, last_name):
         return filtered_data.to_dict('records')
     else:
         return data.to_dict('records')
-
