@@ -37,12 +37,15 @@ schedule_data = preprocess.get_schedule_for_patient(
 
 app.layout = html.Div(
     children=[
+        # Logo AlayaCare
         html.H1(className="text-center", style={"margin": "0px"}, children=[
             html.Img(src="./assets/image_alaya.png",
                      style={"width": "300px", "height": "auto", "margin-top": "20px", "margin-bottom": "20px"})
         ]),
+        # Search bar
         html.Div(
             [
+                # search bar input
                 html.Div(
                     [
                         dcc.Input(
@@ -61,6 +64,7 @@ app.layout = html.Div(
                         ),
                     ], style={"flex": "1", "margin-right": "5px"}
                 ),
+                # search bar button
                 html.Div(
                     [
                         dbc.Button("Search", color="primary",
@@ -73,6 +77,7 @@ app.layout = html.Div(
             style={"width": "50%", "display": "flex",
                    "align-items": "center", "margin-bottom": "20px"}
         ),
+        # Table 1
         html.Div(
             [
                 dbc.Row(
