@@ -20,11 +20,11 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 # -------------   Preprocess results ------------------#
 
 data = preprocess.id_extract(df_timeline)
-print(type(preprocess.completed_adls_visit(df_timeline)))
 data[['Completed ADLS', 'Completed visits']] = preprocess.completed_adls_visit(df_timeline).values
+data['Stats'] = [
+    '<img src="./assets/radar_chart.png" style="width:100px;height:100px;">'
+] * len(data)
 
-
-print(data)
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
@@ -68,38 +68,39 @@ app.layout = html.Div(
             ],
             className="row",
         ),
-    html.Div(
-        [
-            dbc.Row(
-                [
-                    dbc.Col(
-                        dash_table.DataTable(
-                            id='table1',
-                            columns=columns_table1,
-                            data=data.to_dict('records'),
-                            style_table={'overflowX': 'auto'},
-                            style_data={'textAlign': 'center'},
-                            style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold', 'textAlign': 'center'},
-                            selected_rows=[],
-                            row_selectable=False,
-                            style_cell={
-                                'minWidth': '50px',  # Ajustez la taille minimale de la colonne selon vos besoins
-                                'maxWidth': '100px',  # Ajustez la taille maximale de la colonne selon vos besoins
-                                'whiteSpace': 'normal',
-                                'textAlign': 'center'
-                            }
+        html.Div(
+            [
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            dash_table.DataTable(
+                                id='table1',
+                                columns=columns_table1,
+                                data=data.to_dict('records'),
+                                style_table={'overflowX': 'auto'},
+                                style_data={'whiteSpace': 'normal','height': 'auto',},
+                                style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold', 'textAlign': 'center'},
+                                selected_rows=[],
+                                row_selectable=False,
+                                style_cell={
+                                    'minWidth': '50px',
+                                    'maxWidth': '300px',
+                                    'whiteSpace': 'normal',
+                                    'textAlign': 'center',
+                                },
+                                style_data_conditional=[{"if": {"column_id": "Stats"}, "background-image": "var(--image-url)"}],
+                            ),
+                            width=6,
                         ),
-                        width=6
-                    ),
-                    dbc.Col(
-                        html.Div(id="calendar-container"),
-                        width=6
-                    ),
-                ],
-                className="mb-3",
-            ),
-        ]
-    ),
+                        dbc.Col(
+                            html.Div(id="calendar-container"),
+                            width=6,
+                        ),
+                    ],
+                    className="mb-3",
+                ),
+            ]
+        ),
         html.Div(style={"margin-bottom": "20px"}),
     ]
 )
@@ -136,3 +137,5 @@ def update_table1_data(first_name, last_name):
         return filtered_data.to_dict('records')
     else:
         return data.to_dict('records')
+
+
