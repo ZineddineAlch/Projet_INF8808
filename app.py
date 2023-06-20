@@ -116,8 +116,8 @@ app.layout = html.Div(
 
     ], style={"padding": "20px"})
 
-# ------------------------ Callback -----------------------#
 
+# ------------------------ Callback -----------------------#
 
 @app.callback(
     Output('calendar-container', 'children'),
