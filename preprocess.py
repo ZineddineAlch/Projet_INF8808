@@ -97,3 +97,23 @@ def get_schedule_for_patient(df, patient_id):
     schedule = schedule.sort_values("DAY")
 
     return schedule
+
+def get_notes(notes, PATIENT_ID):
+
+    filtered_df = notes[notes['PATIENT_ID'] == PATIENT_ID]
+    filtered_df = filtered_df.drop(columns='PATIENT_ID')
+    
+    return filtered_df  # columns DAY NOTE_TYPE NOTE
+
+def get_note_counts(notes, PATIENT_ID):
+
+    patient_notes = notes[notes['PATIENT_ID'] == PATIENT_ID] 
+    note_counts = patient_notes.groupby('DAY').agg({
+        'NOTE': 'count',
+        'NOTE_TYPE': [lambda x: (x == 'Progress Notes').sum(),
+                      lambda x: (x == 'Overview Notes').sum()]
+    })
+    
+    note_counts.columns = ['NOTES_COUNT', 'PROGRESS_NOTES_COUNT', 'OVERVIEW_NOTES_COUNT']
+    
+    return note_counts.reset_index() # columns 	NOTES_COUNT PROGRESS_NOTES_COUNT OVERVIEW_NOTES_COUNT
