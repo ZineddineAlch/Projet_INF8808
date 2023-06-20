@@ -5,7 +5,7 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 import dash_table
 import dash_bootstrap_components as dbc
-
+import dash_ag_grid as dag
 import preprocess
 import vis
 import template
@@ -22,7 +22,7 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 data = preprocess.id_extract(df_timeline)
 data[['Completed ADLS', 'Completed visits']] = preprocess.completed_adls_visit(df_timeline).values
 data['Stats'] = [
-    '<img src="./assets/radar_chart.png" style="width:100px;height:100px;">'
+    '<img src="./assets/radar_chart.png" style="width:50px;height:50px;">'
 ] * len(data)
 
 columns_table1 = preprocess.table1_header()
@@ -76,10 +76,14 @@ app.layout = html.Div(
                                 id='table1',
                                 columns=columns_table1,
                                 data=data.to_dict('records'),
+                                filter_action='custom',
+                                page_size=5,
                                 style_table={'overflowX': 'auto'},
+                                style_as_list_view=True,
                                 style_data={'whiteSpace': 'normal','height': 'auto',},
                                 style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold', 'textAlign': 'center'},
                                 selected_rows=[],
+                                markdown_options = {'html': True},
                                 row_selectable=False,
                                 style_cell={
                                     'minWidth': '50px',
