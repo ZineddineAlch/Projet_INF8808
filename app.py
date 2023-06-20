@@ -35,9 +35,10 @@ schedule_data = preprocess.get_schedule_for_patient(df_timeline, "Félix Leclerc
 
 app.layout = html.Div(
     children=[
-        html.H1("AlayaCare", className="title is-1", style={"textAlign": "center"}),
-        html.Img(src="image_alaya.png"),
-        html.Hr(),
+        html.H1(className="text-center", children=[
+            html.Img(src="./assets/image_alaya.png", style={"width": "300px", "height": "180px"})
+        ]),
+
         html.P("Enter patient name:"),
         html.Div(
             [
@@ -67,11 +68,11 @@ app.layout = html.Div(
             ],
             className="row",
         ),
-        html.Div(
-            [
-                html.Div(
-                    [
-                        # Adding the table using DataTable
+    html.Div(
+        [
+            dbc.Row(
+                [
+                    dbc.Col(
                         dash_table.DataTable(
                             id='table1',
                             columns=columns_table1,
@@ -80,43 +81,26 @@ app.layout = html.Div(
                             style_data={'textAlign': 'center'},
                             style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold', 'textAlign': 'center'},
                             selected_rows=[],
-                            row_selectable=False
-                        ),
-                    ],
-                    className="six columns",
-                ),
-                html.Div(id="calendar-container", className="six columns"),
-            ],
-            className="row",
-        ),
-        html.Div(style={"margin-bottom": "20px"}),
-        html.Div(
-            [
-                html.Div(
-                    [
-                        # Adding the table using DataTable
-                        dash_table.DataTable(
-                            id='table3',
-                            columns=[
-                                {"name": "AlyaCare in the past 28 days", "id": "Rien"},
-                                {"name": "Patients", "id": "Patients"},
-                                {"name": "Falls", "id": "Falls"},
-                                {"name": "Hospitalizations", "id": "Hospitalizations"},
-                                {"name": "Cancelations", "id": "Cancelations"},
-                            ],
-                            data=[],
-                            style_table={'overflowX': 'auto'},
-                            style_data={'textAlign': 'center'},
-                            style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold', 'textAlign': 'center'},
-                            selected_rows=[],
                             row_selectable=False,
+                            style_cell={
+                                'minWidth': '50px',  # Ajustez la taille minimale de la colonne selon vos besoins
+                                'maxWidth': '100px',  # Ajustez la taille maximale de la colonne selon vos besoins
+                                'whiteSpace': 'normal',
+                                'textAlign': 'center'
+                            }
                         ),
-                    ],
-                    className="four columns",
-                )
-            ],
-            className="row",
-        ),
+                        width=6
+                    ),
+                    dbc.Col(
+                        html.Div(id="calendar-container"),
+                        width=6
+                    ),
+                ],
+                className="mb-3",
+            ),
+        ]
+    ),
+        html.Div(style={"margin-bottom": "20px"}),
     ]
 )
 
