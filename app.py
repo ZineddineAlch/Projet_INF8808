@@ -92,16 +92,14 @@ app.layout = html.Div(
                                 id='table1',
                                 columns=columns_table1,
                                 data=data.to_dict('records'),
-                                page_size=5,
+                                page_size=8,
                                 style_table={'overflowX': 'auto'},
                                 style_as_list_view=True,
                                 style_data={'whiteSpace': 'normal',
                                             'height': 'auto', },
                                 style_header={
                                     'backgroundColor': '#ffaa05', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '15px', "color": "white"},
-                                selected_rows=[],
                                 markdown_options={'html': True},
-                                row_selectable=False,
                                 style_cell={
                                     'textAlign': 'center',
                                 },
