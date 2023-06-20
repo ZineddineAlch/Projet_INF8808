@@ -5,8 +5,7 @@ SCHEDULE_COLS = ["DAY", "VISIT_COUNTS", "TOTAL_COMPLETED_ADLS","TOTAL_ADLS","ADL
 def table1_header():
     
     columns=[
-        {"name": "First Name", "id": "First Name"},
-        {"name": "Last Name", "id": "Last Name"},
+        {"name": "Name", "id": "Name"},
         {"name": "Completed ADLS (%)", "id": "Completed ADLS"},
         {"name": "Completed visits (%)", "id": "Completed visits"},
         {"name": "Stats", "id": "Stats", "presentation": "markdown"}

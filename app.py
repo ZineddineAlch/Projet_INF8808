@@ -26,9 +26,12 @@ data['Stats'] = [
     '<img src="./assets/radar_chart.png" style="width:50px;height:50px;">'
 ] * len(data)
 
+data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
+
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
+
 schedule_data = preprocess.get_schedule_for_patient(
     df_timeline, "Félix Leclerc")
 
@@ -43,15 +46,17 @@ app.layout = html.Div(
                      style={"width": "300px", "height": "auto", "margin-top": "20px", "margin-bottom": "20px"})
         ]),
         # Search bar
+        html.H4("Summary of the past 28 days", style={"margin-bottom": "20px"}),
         html.Div(
             [
                 # search bar input
                 html.Div(
                     [
                         dcc.Input(
-                            id='first-name-input',
+                            id='name-input',
                             type='text',
                             placeholder='Search for a patient...',
+                            value="",
                             debounce=True,
                             style={
                                 'width': '100%',
@@ -75,7 +80,7 @@ app.layout = html.Div(
                 html.Div(id="output-div"),
             ],
             style={"width": "50%", "display": "flex",
-                   "align-items": "center", "margin-bottom": "20px"}
+                   "align-items": "center", "margin-bottom": "10px"}
         ),
         # Table 1
         html.Div(
@@ -139,17 +144,12 @@ def update_calendar(active_cell, table1_data):
 
 
 @app.callback(
-    Output('table1', 'data'),
-    [Input('first-name-input', 'value'),
-     Input('last-name-input', 'value')]
+    Output(component_id='table1', component_property='data'),
+    Input(component_id='name-input', component_property='value')
 )
-def update_table1_data(first_name, last_name):
+def update_table1_data(name):
     # Perform search logic here and return the filtered data for Table 1
-    if first_name and last_name:
-        filtered_data = data[
-            (data['First Name'].str.contains(first_name, case=False)) &
-            (data['Last Name'].str.contains(last_name, case=False))
-        ]
-        return filtered_data.to_dict('records')
-    else:
+    if name == "":
         return data.to_dict('records')
+    else:
+        return data[data["Name"].str.contains(name)].to_dict('records')
