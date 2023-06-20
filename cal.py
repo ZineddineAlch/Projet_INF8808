@@ -5,10 +5,17 @@ import pandas as pd
 DAYS = ["Monday", "Tuesday", "Wednesday",
         "Thursday", "Friday", "Saturday", "Sunday"]
 
-
+def get_image(image_path, tooltip_text):
+    get_image.counter = getattr(get_image, 'counter', 0) + 1
+    tooltip_id = f"tooltip_{get_image.counter}"
+    image_id = f"image_{get_image.counter}"
+    image = html.Img(src=image_path, style={"width": "35px"}, id=image_id)
+    tooltip = dbc.Tooltip(tooltip_text, target=image_id, id=tooltip_id, placement="top")
+    return html.Div([image, tooltip], style={"position": "relative"})
 def get_day(row):
-    children = [html.Div(row["DAY"].strftime(
-        "%d/%m"), style={"font-size": "0.7em"})]
+    children = [
+        html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.7em"})
+    ]
 
     adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
     children.append(
@@ -18,24 +25,33 @@ def get_day(row):
             color="success",
             striped=True,
             animated=True,
-            style={"height": "15px", "width": "100%",
-                   "position": "absolute", "bottom": "0", "border-radius": "0px"}
+            style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px"},
         )
     )
+
     # Placeholder for image/icon based on different types of data
+    images = []
+
     if row["FALL_COUNT"] > 0:
-        children.append(html.Img(src="assets/fall.png", style={"width": "50px"}))
+        image = get_image("assets/fall.png", f"Falls: {row['FALL_COUNT']}")
+        images.append(image)
+
     if row["HAS_PAIN_MENTION"] == True:
-        children.append(html.Img(src="assets/pain.png", style={"width": "50px"}))
+        image = get_image("assets/pain.png", "Pain Mentioned")
+        images.append(image)
+
     if row["HOSPITALIZATION_COUNT"] > 0:
-        children.append(html.Img(src="assets/hospital.png", style={"width": "50px"}))
+        image = get_image("assets/hospital.png", f"Hospitalizations: {row['HOSPITALIZATION_COUNT']}")
+        images.append(image)
+
     if row["CANCELLATION_COUNTS"] > 0:
-        children.append(html.Img(src="assets/cancelled.png", style={"width": "50px"}))
+        image = get_image("assets/cancelled.png", f"Cancellations: {row['CANCELLATION_COUNTS']}")
+        images.append(image)
 
-    children = html.Div(children, style=dict(
-        width="7em", height="7em", position="relative"))
+    children.append(html.Div(images, style={"display": "flex"}))
+
+    children = html.Div(children, style={"width": "7em", "height": "7em", "position": "relative"})
     return dbc.Col(html.Div(children=children, style={"border": "1px black solid"}), width="auto")
-
 
 def get_gray_day():
     child = html.Div(
