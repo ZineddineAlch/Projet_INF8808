@@ -41,33 +41,32 @@ app.layout = html.Div(
 
         html.P("Enter patient name:"),
         html.Div(
+    [
+        html.Div(
             [
-                html.Div(
-                    [
-                        dcc.Input(
-                            id='first-name-input',
-                            type='text',
-                            placeholder='Enter first name...',
-                            debounce=True,
-                        ),
-                    ],
-                    style={"display": "inline-block", "marginRight": "10px"},
+                dcc.Input(
+                    id='first-name-input',
+                    type='text',
+                    placeholder='Enter first name...',
+                    debounce=True,
                 ),
-                html.Div(
-                    [
-                        dcc.Input(
-                            id='last-name-input',
-                            type='text',
-                            placeholder='Enter last name...',
-                            debounce=True,
-                        ),
-                    ],
-                    style={"display": "inline-block", "marginRight": "10px"},
-                ),
-                html.Div(id="output-div"),
             ],
-            className="row",
+            style={"display": "inline-block", "marginRight": "10px"},
         ),
+        html.Div(
+            [
+                dcc.Input(
+                    id='last-name-input',
+                    type='text',
+                    placeholder='Enter last name...',
+                    debounce=True,
+                ),
+            ],
+            style={"display": "inline-block", "marginRight": "10px"},
+        ),
+        html.Div(id="output-div"),
+    ]
+),
         html.Div(
             [
                 dbc.Row(

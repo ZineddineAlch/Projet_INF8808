@@ -7,8 +7,18 @@ DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sun
 def get_day(row):
     children = [html.Div(row["DAY"].strftime("%d/%m"))]
 
-    adl_completion = float(row["ADL_COMPLETION_PERCENTAGE"])
-    children.append(dbc.Progress(label=f"ADLS: {adl_completion}%", value=adl_completion))
+    adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
+    children.append(
+    dbc.Progress(
+        label=f"ADLS: {adl_completion}%",
+        value=adl_completion,
+        color="success",
+        striped=True,
+        animated=True,
+        style={"height": "20px", "margin-bottom": "0px"}
+    )
+    )
+    
 
     children = html.Div(children, style=dict(width="7em", height="7em"))
     return dbc.Col(html.Div(children=children, style={"border":"2px black solid"}), width=1)
