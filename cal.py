@@ -11,14 +11,14 @@ def get_day(row):
     children.append(dbc.Progress(label=f"ADLS: {adl_completion}%", value=adl_completion))
 
     children = html.Div(children, style=dict(width="7em", height="7em"))
-    return dbc.Col(html.Div(children=children, style={"border":"2px black solid"}), width=1)
+    return dbc.Col(html.Div(children=children, style={"border":"2px black solid"}), width="auto")
 
 def get_gray_day():
     child = html.Div(style={"width":"7em", "height":"7em"})
-    return dbc.Col(html.Div(child,style={"border":"2px black solid"}), width=1)
+    return dbc.Col(html.Div(child,style={"border":"2px black solid"}), width="auto")
 
 def get_cal(schedule_df: pd.DataFrame):
-    week_days = [dbc.Row([dbc.Col(html.Div(day, ), width=1) for day in DAYS], className="g-0")]
+    week_days = [dbc.Row([dbc.Col(html.Div(html.Div(day, style={"width":"116px"})), width="auto") for day in DAYS], className="g-0")]
     
     all_days = []
     first_day = schedule_df.iloc[0]["DAY"].weekday()
