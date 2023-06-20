@@ -20,7 +20,8 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 # -------------   Preprocess results ------------------#
 
 data = preprocess.id_extract(df_timeline)
-data[['Completed ADLS', 'Completed visits']] = preprocess.completed_adls_visit(df_timeline).values
+data[['Completed ADLS', 'Completed visits']
+     ] = preprocess.completed_adls_visit(df_timeline).values
 data['Stats'] = [
     '<img src="./assets/radar_chart.png" style="width:50px;height:50px;">'
 ] * len(data)
@@ -28,7 +29,8 @@ data['Stats'] = [
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
-schedule_data = preprocess.get_schedule_for_patient(df_timeline, "Félix Leclerc")
+schedule_data = preprocess.get_schedule_for_patient(
+    df_timeline, "Félix Leclerc")
 
 
 # ------------- Layout -------------#
@@ -36,62 +38,62 @@ schedule_data = preprocess.get_schedule_for_patient(df_timeline, "Félix Leclerc
 app.layout = html.Div(
     children=[
         html.H1(className="text-center", children=[
-            html.Img(src="./assets/image_alaya.png", style={"width": "300px", "height": "180px"})
+            html.Img(src="./assets/image_alaya.png",
+                     style={"width": "300px", "height": "auto", "margin-top": "20px"})
         ]),
 
         html.P(
-        "Enter patient name:",
-        style={
-            'fontFamily': 'Arial',
-            'fontSize': '16px',
-            'fontWeight': 'bold',
-            'color': 'blue',
-        }
-    ),
-
-        html.Div(
-    [
-        html.Div(
-            [
-                dcc.Input(
-                    id='first-name-input',
-                    type='text',
-                    placeholder='Enter first name...',
-                    debounce=True,
-                    style={
-                    'width': '300px',
-                    'padding': '10px',
-                    'border': '1px solid #ccc',
-                    'borderRadius': '5px',
-                    'fontFamily': 'Arial',
-                    'fontSize': '14px',
-                }
-                ),
-            ],
-            style={"display": "inline-block", "marginRight": "10px"},
+            "Enter patient name:",
+            style={
+                'fontFamily': 'Arial',
+                'fontSize': '16px',
+                'fontWeight': 'bold',
+                'color': 'blue',
+            }
         ),
         html.Div(
             [
-                dcc.Input(
-                    id='last-name-input',
-                    type='text',
-                    placeholder='Enter last name...',
-                    debounce=True,
-                     style={
-                    'width': '300px',
-                    'padding': '10px',
-                    'border': '1px solid #ccc',
-                    'borderRadius': '5px',
-                    'fontFamily': 'Arial',
-                    'fontSize': '14px',
-                }
+                html.Div(
+                    [
+                        dcc.Input(
+                            id='first-name-input',
+                            type='text',
+                            placeholder='Enter first name...',
+                            debounce=True,
+                            style={
+                                'width': '300px',
+                                'padding': '10px',
+                                'border': '1px solid #ccc',
+                                'borderRadius': '5px',
+                                'fontFamily': 'Arial',
+                                'fontSize': '14px',
+                            }
+                        ),
+                    ],
+                    style={"display": "inline-block", "marginRight": "10px"},
                 ),
+                html.Div(
+                    [
+                        dcc.Input(
+                            id='last-name-input',
+                            type='text',
+                            placeholder='Enter last name...',
+                            debounce=True,
+                            style={
+                                'width': '300px',
+                                'padding': '10px',
+                                'border': '1px solid #ccc',
+                                'borderRadius': '5px',
+                                'fontFamily': 'Arial',
+                                'fontSize': '14px',
+                            }
+                        ),
+                    ],
+                    style={"display": "inline-block", "marginRight": "10px"},
+                ),
+                html.Div(id="output-div"),
             ],
-            style={"display": "inline-block", "marginRight": "10px"},
         ),
-        html.Div(id="output-div"),
-    ]
-),
         html.Div(
             [
                 dbc.Row(
@@ -105,10 +107,12 @@ app.layout = html.Div(
                                 page_size=5,
                                 style_table={'overflowX': 'auto'},
                                 style_as_list_view=True,
-                                style_data={'whiteSpace': 'normal','height': 'auto',},
-                                style_header={'backgroundColor': 'Orange', 'fontWeight': 'bold', 'textAlign': 'center'},
+                                style_data={'whiteSpace': 'normal',
+                                            'height': 'auto', },
+                                style_header={
+                                    'backgroundColor': 'Orange', 'fontWeight': 'bold', 'textAlign': 'center'},
                                 selected_rows=[],
-                                markdown_options = {'html': True},
+                                markdown_options={'html': True},
                                 row_selectable=False,
                                 style_cell={
                                     'minWidth': '50px',
@@ -116,7 +120,8 @@ app.layout = html.Div(
                                     'whiteSpace': 'normal',
                                     'textAlign': 'center',
                                 },
-                                style_data_conditional=[{"if": {"column_id": "Stats"}, "background-image": "var(--image-url)"}],
+                                style_data_conditional=[
+                                    {"if": {"column_id": "Stats"}, "background-image": "var(--image-url)"}],
                             ),
                             width=6,
                         ),
@@ -129,11 +134,12 @@ app.layout = html.Div(
                 ),
             ]
         ),
-        
+
     ]
 )
 
 # ------------------------ Callback -----------------------#
+
 
 @app.callback(
     Output('calendar-container', 'children'),
@@ -143,8 +149,10 @@ app.layout = html.Div(
 def update_calendar(active_cell, table1_data):
     if active_cell:
         row = active_cell['row']
-        selected_patient = table1_data[row]['First Name'] + " " + table1_data[row]['Last Name']
-        schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
+        selected_patient = table1_data[row]['First Name'] + \
+            " " + table1_data[row]['Last Name']
+        schedule_data = preprocess.get_schedule_for_patient(
+            df_timeline, selected_patient)
         return cal.get_cal(schedule_data)
 
     return None
@@ -165,5 +173,3 @@ def update_table1_data(first_name, last_name):
         return filtered_data.to_dict('records')
     else:
         return data.to_dict('records')
-
-
