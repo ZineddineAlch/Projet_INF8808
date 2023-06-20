@@ -22,6 +22,8 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 data = preprocess.id_extract(df_timeline)
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
+global_data = preprocess.get_global_data(df_timeline)
+schedule_data = preprocess.get_schedule_for_patient(df_timeline, "Félix Leclerc")
 
 #------------- Layout -------------#
 
@@ -79,7 +81,7 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-                       cal.get_cal()
+                       cal.get_cal(schedule_data)
                     ],
                     className="six columns",
                 ),

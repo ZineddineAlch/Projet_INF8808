@@ -1,6 +1,6 @@
 import pandas as pd
 
-
+SCHEDULE_COLS = ["DAY", "VISIT_COUNTS", "TOTAL_COMPLETED_ADLS","TOTAL_ADLS","ADL_COMPLETION_PERCENTAGE","CANCELLATION_COUNTS","CANCELLATION_REASON_AND_COUNTS","HAS_PAIN_MENTION","PAIN_DETAILS","FALL_COUNT","FALL_DETAILS","HOSPITALIZATION_COUNT","HOSPITALIZATION_DETAILS"]
 
 def table1_header():
     
@@ -36,12 +36,11 @@ def id_extract(df):
 
     # Create a new dataframe with unique values and split them into first name and last name
     df_unique = pd.DataFrame(unique_values, columns=['PATIENT_ID'])
-    df_unique[['First Name', 'Last Name']] = df_unique['PATIENT_ID'].str.split(' ', 1, expand=True)
+    df_unique[['First Name', 'Last Name']] = df_unique['PATIENT_ID'].str.split(' ', expand=True)
 
     # Select only the 'First Name' and 'Last Name' columns
     df_names = df_unique[['First Name', 'Last Name']]
     
-    print(df_names)
     return df_names
 
 def get_global_data(df):
@@ -60,3 +59,17 @@ def get_global_data(df):
     aggregated['ADL_COMPLETION_PERCENTAGE'] = (aggregated['TOTAL_COMPLETED_ADLS'] / aggregated['TOTAL_ADLS']) * 100
     aggregated['UNCOMPLETED_ADLS_PERCENTAGE'] = 100 - aggregated['ADL_COMPLETION_PERCENTAGE']
     return aggregated
+
+
+def get_schedule_for_patient(df, patient_id):
+    schedule = pd.DataFrame()
+    schedule[SCHEDULE_COLS] = df[df["PATIENT_ID"] == patient_id][SCHEDULE_COLS]
+
+    # TODO Parse JSON for hospitalization and fall details
+    for r in schedule["HOSPITALIZATION_DETAILS"]:
+        ...
+    
+    schedule["DAY"] = pd.to_datetime(schedule["DAY"])
+    schedule = schedule.sort_values("DAY")
+
+    return schedule
