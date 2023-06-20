@@ -87,25 +87,21 @@ app.layout = html.Div(
                                 id='table1',
                                 columns=columns_table1,
                                 data=data.to_dict('records'),
-                                filter_action='custom',
                                 page_size=5,
                                 style_table={'overflowX': 'auto'},
                                 style_as_list_view=True,
                                 style_data={'whiteSpace': 'normal',
                                             'height': 'auto', },
                                 style_header={
-                                    'backgroundColor': 'Orange', 'fontWeight': 'bold', 'textAlign': 'center'},
+                                    'backgroundColor': '#ffaa05', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '15px', "color": "white"},
                                 selected_rows=[],
                                 markdown_options={'html': True},
                                 row_selectable=False,
                                 style_cell={
-                                    'minWidth': '50px',
-                                    'maxWidth': '200px',
-                                    'whiteSpace': 'normal',
                                     'textAlign': 'center',
                                 },
                                 style_data_conditional=[
-                                    {"if": {"column_id": "Stats"}, "background-image": "var(--image-url)"}],
+                                    {"if": {"column_id": "Stats"}, "background-image": "var(--image-url)", "width": "200px"}],
                             ),
                             width=6,
                         ),
@@ -116,7 +112,8 @@ app.layout = html.Div(
                     ],
                     className="mb-3",
                 ),
-            ]
+            ],
+            style={"backgroud-color": "red"}
         ),
 
     ], style={"padding": "20px"})
@@ -141,18 +138,18 @@ def update_calendar(active_cell, table1_data):
     return None
 
 
-@app.callback(
-    Output('table1', 'data'),
-    [Input('first-name-input', 'value'),
-     Input('last-name-input', 'value')]
-)
-def update_table1_data(first_name, last_name):
-    # Perform search logic here and return the filtered data for Table 1
-    if first_name and last_name:
-        filtered_data = data[
-            (data['First Name'].str.contains(first_name, case=False)) &
-            (data['Last Name'].str.contains(last_name, case=False))
-        ]
-        return filtered_data.to_dict('records')
-    else:
-        return data.to_dict('records')
+# @app.callback(
+#     Output('table1', 'data'),
+#     [Input('first-name-input', 'value'),
+#      Input('last-name-input', 'value')]
+# )
+# def update_table1_data(first_name, last_name):
+#     # Perform search logic here and return the filtered data for Table 1
+#     if first_name and last_name:
+#         filtered_data = data[
+#             (data['First Name'].str.contains(first_name, case=False)) &
+#             (data['Last Name'].str.contains(last_name, case=False))
+#         ]
+#         return filtered_data.to_dict('records')
+#     else:
+#         return data.to_dict('records')
