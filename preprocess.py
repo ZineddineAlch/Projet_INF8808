@@ -1,5 +1,5 @@
 import pandas as pd
-import json
+import re
 
 SCHEDULE_COLS = ["DAY", "VISIT_COUNTS", "TOTAL_COMPLETED_ADLS","TOTAL_ADLS","ADL_COMPLETION_PERCENTAGE","CANCELLATION_COUNTS","CANCELLATION_REASON_AND_COUNTS","HAS_PAIN_MENTION","PAIN_DETAILS","FALL_COUNT","FALL_DETAILS","HOSPITALIZATION_COUNT","HOSPITALIZATION_DETAILS"]
 
@@ -118,7 +118,7 @@ def get_hospitalization_details(df, PATIENT_ID):
 def get_pain_details(df, PATIENT_ID):
 
     patient_data = df.loc[(df['PATIENT_ID'] == PATIENT_ID) & (df['HAS_PAIN_MENTION'] == True)].copy()
-    patient_data['PAIN_SOURCE'] = patient_data['PAIN_DETAILS'].apply(lambda x: x.split("'source': '")[1].split("'")[0])
+    patient_data['PAIN_SOURCE'] = patient_data['PAIN_DETAILS'].apply(lambda x: x.split("'source': '")[1].split("'")[0] if x else None)
     patient_data = patient_data[['DAY', 'PAIN_SOURCE']]
 
     return patient_data #'DAY' and 'PAIN_SOURCE' columns
@@ -130,3 +130,15 @@ def get_fall_details(df, PATIENT_ID):
     patient_data = patient_data[['DAY', 'FALL_SOURCE']]
 
     return patient_data #'DAY' and 'FALL_SOURCE' columns
+
+def get_schedule_for_patient(df, patient_id):
+    schedule = pd.DataFrame()
+    schedule[SCHEDULE_COLS] = df[df["PATIENT_ID"] == patient_id][SCHEDULE_COLS]
+
+    schedule['HOSPITALIZATION_SOURCE'] = schedule['HOSPITALIZATION_DETAILS'].apply(lambda x: re.search(r"'source': '([^']*)'", x).group(1) if re.search(r"'source': '([^']*)'", x) else None)
+    schedule['PAIN_SOURCE'] = schedule['PAIN_DETAILS'].apply(lambda x: re.search(r"'source': '([^']*)'", x).group(1) if re.search(r"'source': '([^']*)'", x) else None)
+    schedule['FALL_SOURCE'] = schedule['FALL_DETAILS'].apply(lambda x: re.search(r"'source': '([^']*)'", x).group(1) if re.search(r"'source': '([^']*)'", x) else None)
+
+    schedule["DAY"] = pd.to_datetime(schedule["DAY"])
+    schedule = schedule.sort_values("DAY")
+    return schedule
