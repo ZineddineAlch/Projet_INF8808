@@ -55,7 +55,7 @@ def get_day(row):
 
 def get_gray_day():
     child = html.Div(
-        style={"width": "7em", "height": "7em", "background-color": "#E0E0E0"})
+        style={"width": "7em", "height": "7em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#e9ecef 5px,#e9ecef 10px)"})
     return dbc.Col(html.Div(child, style={"border": "1px black solid"}), width="auto")
 
 

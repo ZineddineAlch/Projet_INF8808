@@ -118,6 +118,36 @@ app.layout = html.Div(
             ],
             style={"backgroud-color": "red"}
         ),
+        html.Div(
+            style={"border": "1px solid #ffaa05", "border-radius": "10px", "width": "50%", "padding": "20px", "display": "flex", "align-items": "center"},
+            children = [
+                html.Div(children=[
+                    html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "36px"}),
+                    html.Span("layaCare", style={"color": "#113cca", "font-weight": "bold", "font-size": "36px"}),
+                    html.Br(),
+                    html.H4("In the past 28 days"),
+                ],
+                style={"margin-right": "50px"}),
+                html.Div(children=[
+                    html.Div(children=[
+                        html.P("6", style={"font-weight": "bold"}),
+                        html.P("Patients", style={"font-weight": "bold"}),
+                    ]),
+                    html.Div(children=[
+                        html.P("6", style={"font-weight": "bold"}),
+                        html.P("Falls", style={"font-weight": "bold"}),
+                    ]),
+                    html.Div(children=[
+                        html.P("6", style={"font-weight": "bold"}),
+                        html.P("Hospitalizations", style={"font-weight": "bold"}),
+                    ]),
+                    html.Div(children=[
+                        html.P("6", style={"font-weight": "bold"}),
+                        html.P("Cancelations", style={"font-weight": "bold"}),
+                    ]),
+                ],style={"display": "flex", "align-items": "center", "justify-content": "center", "justify-items": "space-beetween"})
+            ]
+        )
 
     ], style={"padding": "20px"})
 

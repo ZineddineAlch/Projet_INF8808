@@ -24,7 +24,7 @@ def get_radar_chart(patient_names):
         values.values
         # Create a trace for the radar chart
         trace = go.Scatterpolar(
-            r=values,
+            r=[5, 4, 2, 1],
             theta=CATEGORIES,
             fill='toself'
         )
@@ -49,5 +49,5 @@ def get_chart_from_name(name, charts):
         if chart[1] == name:
             return chart[0]
 
-#chart = get_chart_from_name("André Fortin", mycharts)
-#chart.show()
+chart = get_chart_from_name("André Fortin", mycharts)
+chart.show()
