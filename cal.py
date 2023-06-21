@@ -19,17 +19,20 @@ def get_day(row):
         html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.7em"})
     ]
 
-    adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
-    children.append(
-        dbc.Progress(
-            label=f"ADLS: {adl_completion}%",
-            value=adl_completion,
-            color="success",
-            striped=True,
-            animated=True,
-            style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px"},
+    if row["TOTAL_ADLS"] == 0:
+        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "10px", "border": "1px black solid", "line-height": "15px"}))
+    else:
+        adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
+        children.append(
+            dbc.Progress(
+                label=f"ADLS: {adl_completion}%",
+                value=adl_completion,
+                color="success",
+                striped=True,
+                animated=True,
+                style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px"},
+            )
         )
-    )
 
     # Placeholder for image/icon based on different types of data
     images = []
