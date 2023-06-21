@@ -12,6 +12,8 @@ def get_image(image_path, tooltip_text):
     image = html.Img(src=image_path, style={"width": "35px"}, id=image_id)
     tooltip = dbc.Tooltip(tooltip_text, target=image_id, id=tooltip_id, placement="top")
     return html.Div([image, tooltip], style={"position": "relative"})
+
+
 def get_day(row):
     children = [
         html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.7em"})
@@ -33,15 +35,15 @@ def get_day(row):
     images = []
 
     if row["FALL_COUNT"] > 0:
-        image = get_image("assets/fall.png", f"Falls: {row['FALL_COUNT']}")
+        image = get_image("assets/fall.png", f"Falls: {row['FALL_COUNT']}, , {row['FALL_SOURCE']}")
         images.append(image)
 
     if row["HAS_PAIN_MENTION"] == True:
-        image = get_image("assets/pain.png", "Pain Mentioned")
+        image = get_image("assets/pain.png", f"{row['PAIN_SOURCE']}")
         images.append(image)
 
     if row["HOSPITALIZATION_COUNT"] > 0:
-        image = get_image("assets/hospital.png", f"Hospitalizations: {row['HOSPITALIZATION_COUNT']}")
+        image = get_image("assets/hospital.png", f"Hospitalizations: {row['HOSPITALIZATION_COUNT']}, {row['HOSPITALIZATION_SOURCE']}")
         images.append(image)
 
     if row["CANCELLATION_COUNTS"] > 0:
