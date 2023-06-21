@@ -109,15 +109,40 @@ app.layout = html.Div(
                             width=6,
                         ),
                         dbc.Col(
-                            html.Div(id="calendar-container"),
+                            [
+                                dbc.Row(
+                                [
+                                    dbc.Col(
+                                        html.Div(
+                                            id="calendar-container",
+                                            style={"width": "100%", "float": "left", "padding-right": "10px"}
+                                        ),
+                                        width=11,
+                                    ),
+                                    dbc.Col(
+                                        html.Div(
+                                            id="note-section",
+                                            children=[
+                                                html.H3("Note Section"),
+                                                html.P("Click on a note to display its content")
+                                            ],
+                                            style={"border": "2px solid #8B4513", "background-color": "rgba(139, 69, 19, 0.2)", "padding": "10px", "margin-top": "20px"}
+                                        ),
+                                        width=3,
+                                    ),
+                                ],
+                                justify="between",
+                                style={"display": "flex", "flex-wrap": "nowrap"}
+                                ),
+                            ],
                             width=6,
                         ),
                     ],
                     className="mb-3",
                 ),
             ],
-            style={"backgroud-color": "red"}
         ),
+        #Summary section
         html.Div(
             style={"border": "1px solid #ffaa05", "border-radius": "10px", "width": "50%", "padding": "20px", "display": "flex", "align-items": "center"},
             children = [
@@ -147,8 +172,7 @@ app.layout = html.Div(
                     ]),
                 ],style={"display": "flex", "align-items": "center", "justify-content": "center", "justify-items": "space-beetween"})
             ]
-        )
-
+        ),
     ], style={"padding": "20px"})
 
 
@@ -156,6 +180,7 @@ app.layout = html.Div(
 
 @app.callback(
     Output('calendar-container', 'children'),
+    Output('note-section', 'style'),
     [Input('table1', 'active_cell')],
     [State('table1', 'data')]
 )
@@ -166,9 +191,10 @@ def update_calendar(active_cell, table1_data):
             " " + table1_data[row]['Last Name']
         schedule_data = preprocess.get_schedule_for_patient(
             df_timeline, selected_patient)
-        return cal.get_cal(schedule_data)
+        return cal.get_cal(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}  # Show the note section with the desired styling
 
-    return None
+    return None, {"display": "none"}  # Hide the note section when no cell is selected
+
 
 
 @app.callback(

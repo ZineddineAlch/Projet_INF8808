@@ -11,7 +11,39 @@ def get_image(image_path, tooltip_text):
     image_id = f"image_{get_image.counter}"
     image = html.Img(src=image_path, style={"width": "35px"}, id=image_id)
     tooltip = dbc.Tooltip(tooltip_text, target=image_id, id=tooltip_id, placement="top")
+    
     return html.Div([image, tooltip], style={"position": "relative"})
+
+def insert_image(row,children):
+    # Placeholder for image/icon based on different types of data
+    images = []
+
+    if row["FALL_COUNT"] > 0:
+        image = get_image("assets/fall.png", f"Falls: {row['FALL_COUNT']}, , {row['FALL_SOURCE']}")
+        images.append(image)
+
+    if row["HAS_PAIN_MENTION"] == True:
+        image = get_image("assets/pain.png", f"{row['PAIN_SOURCE']}")
+        images.append(image)
+
+    if row["HOSPITALIZATION_COUNT"] > 0:
+        image = get_image("assets/hospital.png", f"Hospitalizations: {row['HOSPITALIZATION_COUNT']}, {row['HOSPITALIZATION_SOURCE']}")
+        images.append(image)
+
+    if row["CANCELLATION_COUNTS"] > 0:
+        image = get_image("assets/cancelled.png", f"Cancellations: {row['CANCELLATION_COUNTS']}")
+        images.append(image)
+    return children.append(html.Div(images, style={"display": "flex"}))
+
+def get_note_section(note_content):
+    note_div = html.Div(
+        note_content,
+        id="note-content",
+        className="note-content",
+        style={"background-color": "brown", "padding": "5px"},
+    )
+    return note_div
+
 
 
 def get_day(row):
@@ -31,27 +63,7 @@ def get_day(row):
         )
     )
 
-    # Placeholder for image/icon based on different types of data
-    images = []
-
-    if row["FALL_COUNT"] > 0:
-        image = get_image("assets/fall.png", f"Falls: {row['FALL_COUNT']}, , {row['FALL_SOURCE']}")
-        images.append(image)
-
-    if row["HAS_PAIN_MENTION"] == True:
-        image = get_image("assets/pain.png", f"{row['PAIN_SOURCE']}")
-        images.append(image)
-
-    if row["HOSPITALIZATION_COUNT"] > 0:
-        image = get_image("assets/hospital.png", f"Hospitalizations: {row['HOSPITALIZATION_COUNT']}, {row['HOSPITALIZATION_SOURCE']}")
-        images.append(image)
-
-    if row["CANCELLATION_COUNTS"] > 0:
-        image = get_image("assets/cancelled.png", f"Cancellations: {row['CANCELLATION_COUNTS']}")
-        images.append(image)
-
-    children.append(html.Div(images, style={"display": "flex"}))
-
+    insert_image(row,children)
     children = html.Div(children, style={"width": "7em", "height": "7em", "position": "relative"})
     return dbc.Col(html.Div(children=children, style={"border": "1px black solid"}), width="auto")
 
