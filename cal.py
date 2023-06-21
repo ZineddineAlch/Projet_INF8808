@@ -67,7 +67,7 @@ def get_gray_day():
 def get_cal(schedule_df: pd.DataFrame):
     # create week days header row, with each day in a column of width 7em + 2px border
     week_days = [dbc.Row([dbc.Col(html.Div(html.Div(
-        day, style={"width": "calc(7em + 2px)"})), width="auto") for day in DAYS], className="g-0")]
+        day, style={"width": "calc(7em + 2px)", "text-align": "center", "margin": "auto"})), width="auto") for day in DAYS], className="g-0")]
 
     all_days = []
     first_day = schedule_df.iloc[0]["DAY"].weekday()
