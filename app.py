@@ -75,7 +75,7 @@ app.layout = html.Div(
                             columns=columns_table1,
                             data=data.to_dict('records'),
                             page_size=8,
-                            style_table={'overflowX': 'auto'},
+                            style_table={'overflowX': 'auto',"border-radius":"10px"},
                             style_as_list_view=True,
                         
                             style_data={'whiteSpace': 'normal',
