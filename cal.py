@@ -50,7 +50,7 @@ def get_day(row):
     children = [
         html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.9em","font-weight":"600"})
     ]
-    print(row["TOTAL_ADLS"])
+
     if row["TOTAL_ADLS"] == 0:
         
         children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "10px", "border": "0.5px black solid", "line-height": "15px"}))
@@ -103,3 +103,27 @@ def get_cal(schedule_df: pd.DataFrame):
         cal.append(dbc.Row(all_days[i: i+7], className="g-0"))
 
     return dbc.Container(week_days + cal,)
+
+def get_summary(schedule_df: pd.DataFrame):
+    pain = schedule_df['HAS_PAIN_MENTION'].values.sum()
+    hospitalization = schedule_df['HOSPITALIZATION_COUNT'].values.sum()
+    fall = schedule_df['FALL_COUNT'].values.sum()
+    completed_visits = schedule_df['VISIT_COUNTS'].values.sum()
+    cancelled_visits = schedule_df['CANCELLATION_COUNTS'].values.sum()
+    visits_ratio = completed_visits / (completed_visits + cancelled_visits) * 100
+
+    completed_adls = schedule_df['TOTAL_COMPLETED_ADLS'].values.sum()
+    total_adls = schedule_df['TOTAL_ADLS'].values.sum()
+
+    adls_ratio = completed_adls/total_adls * 100
+
+    return html.Div(
+        children=[
+            html.H3("Summary of the last 28 days"),
+            html.P(f"{adls_ratio:.1f}% of ADLS were completed"),
+            html.P(f"{visits_ratio:.1f}% of visits were done"),
+            html.P(f"{pain} reported cases of pain"),
+            html.P(f"{fall} reported falls"),
+            html.P(f"{hospitalization} hospitalizations"),
+        ],
+        style={"border": "2px solid #8B4513", "background-color": "rgba(139, 69, 19, 0.2)", "padding": "10px", "margin-top": "20px"})

@@ -109,7 +109,7 @@ app.layout = html.Div(
                                 style_data_conditional=[
                                     {"if": {"column_id": "Stats"}, "width": "45%"}],
                             ),
-                            width=6,
+                            width=4,
                         ),
                         dbc.Col(
                             [
@@ -120,18 +120,23 @@ app.layout = html.Div(
                                             id="calendar-container",
                                             style={"width": "100%", "float": "left", "padding-right": "10px"}
                                         ),
-                                        width=11,
+                                        width=12,
                                     ),
                                     dbc.Col(
-                                        html.Div(
-                                            id="note-section",
-                                            children=[
-                                                html.H3("Note Section"),
-                                                html.P("Click on a note to display its content")
-                                            ],
-                                            style={"border": "2px solid #8B4513", "background-color": "rgba(139, 69, 19, 0.2)", "padding": "10px", "margin-top": "20px"}
-                                        ),
-                                        width=3,
+                                        [
+                                            html.Div(
+                                                id="summary-container",
+                                            ),
+                                            html.Div(
+                                                id="note-section",
+                                                children=[
+                                                    html.H3("Note Section"),
+                                                    html.P("Click on a note to display its content")
+                                                ],
+                                                style={"border": "2px solid #8B4513", "background-color": "rgba(139, 69, 19, 0.2)", "padding": "10px", "margin-top": "20px"}
+                                            ),
+                                        ],
+                                        width=4,
                                     ),
                                 ],
                                 justify="between",
@@ -183,6 +188,7 @@ app.layout = html.Div(
 
 @app.callback(
     Output('calendar-container', 'children'),
+    Output('summary-container', 'children'),
     Output('note-section', 'style'),
     [Input('table1', 'active_cell')],
     [State('table1', 'data')]
@@ -194,9 +200,9 @@ def update_calendar(active_cell, table1_data):
             " " + table1_data[row]['Last Name']
         schedule_data = preprocess.get_schedule_for_patient(
             df_timeline, selected_patient)
-        return cal.get_cal(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}  # Show the note section with the desired styling
+        return cal.get_cal(schedule_data), cal.get_summary(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}  # Show the note section with the desired styling
 
-    return None, {"display": "none"}  # Hide the note section when no cell is selected
+    return None, None, {"display": "none"}  # Hide the note section when no cell is selected
 
 
 
