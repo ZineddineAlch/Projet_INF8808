@@ -46,7 +46,7 @@ app.layout = html.Div(
                      style={"width": "300px", "height": "auto", "margin-top": "20px", "margin-bottom": "20px"})
         ]),
         # Search bar
-        html.H4("Summary of the past 28 days", style={"margin-bottom": "20px"}),
+        html.H4("Summary of the past 28 days", style={"margin-bottom": "20px","padding":"5px","margin-left": "400px","color":"rgb(8, 25, 62)","font-family": "Inter, sans-serif"}),
         html.Div(
             [
                 # search bar input
@@ -57,6 +57,7 @@ app.layout = html.Div(
                             type='text',
                             placeholder='Search for a patient...',
                             value="",
+                            
                             debounce=True,
                             style={
                                 'width': '100%',
@@ -64,7 +65,7 @@ app.layout = html.Div(
                                 'border': '1px solid #ccc',
                                 'borderRadius': '5px',
                                 'fontFamily': 'Arial',
-                                'fontSize': '14px',
+                                'fontSize': '16px',
                             }
                         ),
                     ], style={"flex": "1", "margin-right": "5px"}
@@ -72,8 +73,8 @@ app.layout = html.Div(
                 # search bar button
                 html.Div(
                     [
-                        dbc.Button("Search", color="primary",
-                                   className="me-1", style={"margin": "0px", "height": "100%"})
+                        dbc.Button("Search",
+                                   className="me-1", style={"margin": "0px",'background':'#113cca'})
                     ],
                     style={"height": "100%"}
                 ),
@@ -95,16 +96,18 @@ app.layout = html.Div(
                                 page_size=8,
                                 style_table={'overflowX': 'auto'},
                                 style_as_list_view=True,
+                            
                                 style_data={'whiteSpace': 'normal',
-                                            'height': 'auto', },
+                                            'height': 'auto','color':'#08193e','fontWeight': 'bold',"background":"#F370211A" },
                                 style_header={
-                                    'backgroundColor': '#ffaa05', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '15px', "color": "white"},
+                                    'backgroundColor': '#f58220', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
+                                    "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#08193e"},
                                 markdown_options={'html': True},
                                 style_cell={
-                                    'textAlign': 'center',
+                                    'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px"
                                 },
                                 style_data_conditional=[
-                                    {"if": {"column_id": "Stats"}, "background-image": "var(--image-url)", "width": "200px"}],
+                                    {"if": {"column_id": "Stats"}, "width": "45%"}],
                             ),
                             width=6,
                         ),
@@ -144,7 +147,7 @@ app.layout = html.Div(
         ),
         #Summary section
         html.Div(
-            style={"border": "1px solid #ffaa05", "border-radius": "10px", "width": "50%", "padding": "20px", "display": "flex", "align-items": "center"},
+            style={"border": "2px solid #ffaa05", "border-radius": "20px", "width": "50%", "padding": "20px", "display": "flex", "align-items": "center"},
             children = [
                 html.Div(children=[
                     html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "36px"}),

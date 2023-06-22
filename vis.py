@@ -50,4 +50,4 @@ def get_chart_from_name(name, charts):
             return chart[0]
 
 chart = get_chart_from_name("André Fortin", mycharts)
-chart.show()
+#chart.show()

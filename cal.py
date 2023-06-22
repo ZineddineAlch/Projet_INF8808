@@ -48,11 +48,12 @@ def get_note_section(note_content):
 
 def get_day(row):
     children = [
-        html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.7em"})
+        html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.9em","font-weight":"600"})
     ]
-
+    print(row["TOTAL_ADLS"])
     if row["TOTAL_ADLS"] == 0:
-        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "10px", "border": "1px black solid", "line-height": "15px"}))
+        
+        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "10px", "border": "0.5px black solid", "line-height": "15px"}))
     else:
         adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
         children.append(
@@ -62,7 +63,8 @@ def get_day(row):
                 color="success",
                 striped=True,
                 animated=True,
-                style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px"},
+                style={"height": "15px", "width": "100%", "position": "absolute",
+                       "bottom": "0", "border-radius": "0px","progress-bar-color":"#fff"},
             )
         )
 
@@ -72,14 +74,15 @@ def get_day(row):
 
 def get_gray_day():
     child = html.Div(
-        style={"width": "7em", "height": "7em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#e9ecef 5px,#e9ecef 10px)"})
+        style={"width": "7em", "height": "7em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#F370211A 5px,#F370211A 6px)"})
     return dbc.Col(html.Div(child, style={"border": "1px black solid"}), width="auto")
 
 
 def get_cal(schedule_df: pd.DataFrame):
     # create week days header row, with each day in a column of width 7em + 2px border
     week_days = [dbc.Row([dbc.Col(html.Div(html.Div(
-        day, style={"width": "calc(7em + 2px)", "text-align": "center", "margin": "auto"})), width="auto") for day in DAYS], className="g-0")]
+        day, style={"width": "calc(7em + 2px)", "text-align": "center", "margin": "auto",
+                    "font-weight": "600"})), width="auto") for day in DAYS], className="g-0")]
 
     all_days = []
     first_day = schedule_df.iloc[0]["DAY"].weekday()
