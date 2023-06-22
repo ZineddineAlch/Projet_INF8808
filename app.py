@@ -37,152 +37,123 @@ schedule_data = preprocess.get_schedule_for_patient(
 
 
 # ------------- Layout -------------#
-
 app.layout = html.Div(
+    id="main-div",
     children=[
         # Logo AlayaCare
-        html.H1(className="text-center", style={"margin": "0px"}, children=[
-            html.Img(src="./assets/image_alaya.png",
-                     style={"width": "300px", "height": "auto", "margin-top": "20px", "margin-bottom": "20px"})
-        ]),
-        # Search bar
-        html.H4("Summary of the past 28 days", style={"margin-bottom": "20px","padding":"5px","margin-left": "400px","color":"rgb(8, 25, 62)","font-family": "Inter, sans-serif"}),
-        html.Div(
-            [
-                # search bar input
-                html.Div(
-                    [
-                        dcc.Input(
-                            id='name-input',
-                            type='text',
-                            placeholder='Search for a patient...',
-                            value="",
-                            
-                            debounce=True,
-                            style={
-                                'width': '100%',
-                                'padding': '10px',
-                                'border': '1px solid #ccc',
-                                'borderRadius': '5px',
-                                'fontFamily': 'Arial',
-                                'fontSize': '16px',
-                            }
-                        ),
-                    ], style={"flex": "1", "margin-right": "5px"}
-                ),
-                # search bar button
-                html.Div(
-                    [
-                        dbc.Button("Search",
-                                   className="me-1", style={"margin": "0px",'background':'#113cca'})
-                    ],
-                    style={"height": "100%"}
-                ),
-                html.Div(id="output-div"),
-            ],
-            style={"width": "50%", "display": "flex",
-                   "align-items": "center", "margin-bottom": "10px"}
+        html.Img(
+            id="alayacare-logo",
+            src="./assets/image_alaya.png"
         ),
-        # Table 1
+        # Content container div
         html.Div(
-            [
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            dash_table.DataTable(
-                                id='table1',
-                                columns=columns_table1,
-                                data=data.to_dict('records'),
-                                page_size=8,
-                                style_table={'overflowX': 'auto'},
-                                style_as_list_view=True,
-                            
-                                style_data={'whiteSpace': 'normal',
-                                            'height': 'auto','color':'#08193e','fontWeight': 'bold',"background":"#F370211A" },
-                                style_header={
-                                    'backgroundColor': '#f58220', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
-                                    "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#08193e"},
-                                markdown_options={'html': True},
-                                style_cell={
-                                    'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px"
-                                },
-                                style_data_conditional=[
-                                    {"if": {"column_id": "Stats"}, "width": "45%"}],
-                            ),
-                            width=4,
-                        ),
-                        dbc.Col(
-                            [
-                                dbc.Row(
-                                [
-                                    dbc.Col(
-                                        html.Div(
-                                            id="calendar-container",
-                                            style={"width": "100%", "float": "left", "padding-right": "10px"}
-                                        ),
-                                        width=12,
+            id="container-div",
+            children=[
+                # Global view
+                html.Div(
+                    id="global-view",
+                    children=[
+                        # header
+                        html.H4("Summary of the past 28 days"),
+                        # Search bar
+                        html.Div(
+                            id="search-bar",
+                            children=[
+                                dcc.Input(
+                                    id='name-input',
+                                    type='text',
+                                    placeholder='Search for a patient...',
+                                    value="",
+                                    debounce=True
                                     ),
-                                    dbc.Col(
-                                        [
-                                            html.Div(
-                                                id="summary-container",
-                                            ),
-                                            html.Div(
-                                                id="note-section",
-                                                children=[
-                                                    html.H3("Note Section"),
-                                                    html.P("Click on a note to display its content")
-                                                ],
-                                                style={"border": "2px solid #8B4513", "background-color": "rgba(139, 69, 19, 0.2)", "padding": "10px", "margin-top": "20px"}
-                                            ),
-                                        ],
-                                        width=4,
-                                    ),
-                                ],
-                                justify="between",
-                                style={"display": "flex", "flex-wrap": "nowrap"}
-                                ),
-                            ],
-                            width=6,
+                                dbc.Button("Search")
+                            ]
                         ),
-                    ],
-                    className="mb-3",
+                        # Table
+                        dash_table.DataTable(
+                            id='table1',
+                            columns=columns_table1,
+                            data=data.to_dict('records'),
+                            page_size=8,
+                            style_table={'overflowX': 'auto'},
+                            style_as_list_view=True,
+                        
+                            style_data={'whiteSpace': 'normal',
+                                        'height': 'auto','color':'#08193e','fontWeight': 'bold',"background":"#F370211A" },
+                            style_header={
+                                'backgroundColor': '#f58220', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
+                                "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#08193e"},
+                            markdown_options={'html': True},
+                            style_cell={
+                                'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px"
+                            },
+                            style_data_conditional=[
+                                {"if": {"column_id": "Stats"}, "width": "45%"}],
+                        ),
+                        # Footer
+                        html.Div(
+                            id="footer-section",
+                            children = [
+                                html.Div(
+                                    id="left-footer-section",
+                                    children=[
+                                    html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "36px"}),
+                                    html.Span("layaCare", style={"color": "#113cca", "font-weight": "bold", "font-size": "36px"}),
+                                    html.Br(),
+                                    html.H4("In the past 28 days"),
+                                ]),
+                                html.Div(
+                                    id="right-footer-section",
+                                    children=[
+                                    html.Div(children=[
+                                        html.P("9"),
+                                        html.P("Patients"),
+                                    ]),
+                                    html.Div(children=[
+                                        html.P("8"),
+                                        html.P("Falls"),
+                                    ]),
+                                    html.Div(children=[
+                                        html.P("6"),
+                                        html.P("Hospitalizations"),
+                                    ]),
+                                    html.Div(children=[
+                                        html.P("13"),
+                                        html.P("Cancelations"),
+                                    ]),
+                                ])
+                            ]
+                        ),
+                    ]
                 ),
-            ],
-        ),
-        #Summary section
-        html.Div(
-            style={"border": "2px solid #ffaa05", "border-radius": "20px", "width": "50%", "padding": "20px", "display": "flex", "align-items": "center"},
-            children = [
-                html.Div(children=[
-                    html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "36px"}),
-                    html.Span("layaCare", style={"color": "#113cca", "font-weight": "bold", "font-size": "36px"}),
-                    html.Br(),
-                    html.H4("In the past 28 days"),
-                ],
-                style={"margin-right": "50px"}),
-                html.Div(children=[
-                    html.Div(children=[
-                        html.P("6", style={"font-weight": "bold"}),
-                        html.P("Patients", style={"font-weight": "bold"}),
-                    ]),
-                    html.Div(children=[
-                        html.P("6", style={"font-weight": "bold"}),
-                        html.P("Falls", style={"font-weight": "bold"}),
-                    ]),
-                    html.Div(children=[
-                        html.P("6", style={"font-weight": "bold"}),
-                        html.P("Hospitalizations", style={"font-weight": "bold"}),
-                    ]),
-                    html.Div(children=[
-                        html.P("6", style={"font-weight": "bold"}),
-                        html.P("Cancelations", style={"font-weight": "bold"}),
-                    ]),
-                ],style={"display": "flex", "align-items": "center", "justify-content": "center", "justify-items": "space-beetween"})
+                # Detailed view container
+                html.Div(
+                    id="detailed-view-container",
+                    children=[
+                        # Detailed view
+                        html.Div(id="calendar-container"),
+                        # Summary section and notes
+                        html.Div(
+                            id="summary-section-and-notes",
+                            children=[
+                                # Summary section
+                                html.Div(id="summary-container"),
+                                # Notes
+                                html.Div(
+                                    id="note-section",
+                                    children=[
+                                        html.H3("Note Section"),
+                                        html.P("Click on a note to display its content")
+                                    ]
+                                )
+                            ]
+                        )
+                    ]
+                )
             ]
-        ),
-    ], style={"padding": "20px"})
-
+        )
+    ]
+)
 
 # ------------------------ Callback -----------------------#
 

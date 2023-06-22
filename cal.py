@@ -53,7 +53,7 @@ def get_day(row):
 
     if row["TOTAL_ADLS"] == 0:
         
-        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "10px", "border": "0.5px black solid", "line-height": "15px"}))
+        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "10px", "border-top": "0.5px rgba(239,239,240) solid", "line-height": "15px"}))
     else:
         adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
         children.append(
@@ -118,6 +118,7 @@ def get_summary(schedule_df: pd.DataFrame):
     adls_ratio = completed_adls/total_adls * 100
 
     return html.Div(
+        id="summary-div",
         children=[
             html.H3("Summary of the last 28 days"),
             html.P(f"{adls_ratio:.1f}% of ADLS were completed"),
@@ -125,5 +126,4 @@ def get_summary(schedule_df: pd.DataFrame):
             html.P(f"{pain} reported cases of pain"),
             html.P(f"{fall} reported falls"),
             html.P(f"{hospitalization} hospitalizations"),
-        ],
-        style={"border": "2px solid #8B4513", "background-color": "rgba(139, 69, 19, 0.2)", "padding": "10px", "margin-top": "20px"})
+        ])
