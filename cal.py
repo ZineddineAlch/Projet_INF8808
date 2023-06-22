@@ -52,8 +52,8 @@ def get_day(row):
     ]
 
     if row["TOTAL_ADLS"] == 0:
+        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "9px", "border-top": "0.5px rgba(239,239,240) solid", "line-height": "15px", "text-align": "center"}))
         
-        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "10px", "border-top": "0.5px rgba(239,239,240) solid", "line-height": "15px"}))
     else:
         adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
         children.append(
