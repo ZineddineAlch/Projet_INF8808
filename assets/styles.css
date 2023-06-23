@@ -52,6 +52,12 @@ h4{
     margin-bottom: 50px;
 }
 
+.previous-next-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 #footer-section{
     border: 2px solid #ffaa05;
     border-radius: 20px;
@@ -64,7 +70,6 @@ h4{
 
 #left-footer-section{
     margin-right: 50px;
-    width: 200px;
 }
 
 #right-footer-section{
@@ -75,7 +80,7 @@ h4{
 }
 
 #right-footer-section div{
-    width: 120px;
+    width: 140px;
     text-align: center;
 }
 #right-footer-section div p:first-child{

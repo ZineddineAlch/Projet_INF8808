@@ -53,7 +53,7 @@ def get_day(row):
 
     if row["TOTAL_ADLS"] == 0:
         children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "9px", "border-top": "0.5px rgba(239,239,240) solid", "line-height": "15px", "text-align": "center"}))
-        
+
     else:
         adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
         children.append(
@@ -70,12 +70,12 @@ def get_day(row):
 
     insert_image(row,children)
     children = html.Div(children, style={"width": "7em", "height": "7em", "position": "relative"})
-    return dbc.Col(html.Div(children=children, style={"border": "1px black solid"}), width="auto")
+    return dbc.Col(html.Div(children=children, style={"border": "1px rgb(211, 211, 211) solid"}), width="auto")
 
 def get_gray_day():
     child = html.Div(
         style={"width": "7em", "height": "7em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#F370211A 5px,#F370211A 6px)"})
-    return dbc.Col(html.Div(child, style={"border": "1px black solid"}), width="auto")
+    return dbc.Col(html.Div(child, style={"border": "1px #fafcff solid"}), width="auto")
 
 
 def get_cal(schedule_df: pd.DataFrame):
