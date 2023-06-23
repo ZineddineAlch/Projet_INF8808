@@ -24,11 +24,12 @@ data[['Completed ADLS', 'Completed visits']
      ] = preprocess.completed_adls_visit(df_timeline).values
 
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
-data_stats = pd.DataFrame({'Stats': ['Value']})
-data_stats['Stats'] = [
-    '<img src="./assets/radar_chart.png">'
-]
+data_stats = pd.DataFrame({'Stats': []})
 
+data_stats['Stats'] = [
+    '<img src="./assets/radar_chart.png" style="width:500px;height:500px;">'
+] * len(data_stats)
+print(data_stats.head())
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
@@ -133,23 +134,25 @@ app.layout = html.Div(
                         children=[
                         dash_table.DataTable(
                             id='table2',
-                            columns=[{'name': 'Stats', 'id': 'Stats'}],
+                            columns=[{'name': 'Stats', 'id': 'Stat'}],
                             data=data_stats.to_dict('records'),
-                            
+                            markdown_options = {'html': True},
                             style_table={'overflowX': 'auto', 'width': '400px'},
                             style_as_list_view=True,
-                        
+                            
                             style_data={'whiteSpace': 'normal',
                                         'height': 'auto','color':'#08193e','fontWeight': 'bold' },
                             style_header={
                                 'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
                                 "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#ffaa05"},
-                            markdown_options={'html': True},
+                            
                             style_cell={
                                 'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px", "padding":"20px"
                             },
+                            
                             style_data_conditional=[
                                 {"if": {"column_id": "Stats"}, "width": "45%"}],
+                            
                         )
                         ]
                         
