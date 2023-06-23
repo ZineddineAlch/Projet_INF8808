@@ -150,8 +150,8 @@ def get_summary(schedule_df: pd.DataFrame):
         id="summary-div",
         children=[
             html.H3("Summary of the last 28 days"),
-            html.P(f"{adls_ratio:.1f}% of ADLS were completed"),
-            html.P(f"{visits_ratio:.1f}% of visits were done"),
+            html.P(f"{adls_ratio:.0f}% of ADLS were completed"),
+            html.P(f"{visits_ratio:.0f}% of visits were done"),
             html.P(f"{pain} reported cases of pain"),
             html.P(f"{fall} reported falls"),
             html.P(f"{hospitalization} hospitalizations"),
