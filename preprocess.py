@@ -155,7 +155,7 @@ def calculate_area(values, thetas):
     return area
 
 def calculate_areas(df): #input timeline_dataset.csv
-    df = = get_global_data(df)
+    df = get_global_data(df)
     thetas = [i * 2 * np.pi / df.shape[1] for i in range(df.shape[1])]
     areas = []
     for index, row in df.iterrows():
