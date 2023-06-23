@@ -22,14 +22,11 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 data = preprocess.id_extract(df_timeline)
 data[['Completed ADLS', 'Completed visits']
      ] = preprocess.completed_adls_visit(df_timeline).values
-
+img='<img src="./assets/radar_chart.png" >'
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
-data_stats = pd.DataFrame({'Stats': []})
 
-data_stats['Stats'] = [
-    '<img src="./assets/radar_chart.png" style="width:500px;height:500px;">'
-] * len(data_stats)
-print(data_stats.head())
+data_stats = pd.DataFrame({'Stats': ['<img src="./assets/radar_chart.png" width="450" height="490">']})
+
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
@@ -132,28 +129,18 @@ app.layout = html.Div(
                         # Table Stats
                         
                         children=[
-                        dash_table.DataTable(
-                            id='table2',
-                            columns=[{'name': 'Stats', 'id': 'Stat'}],
-                            data=data_stats.to_dict('records'),
-                            markdown_options = {'html': True},
-                            style_table={'overflowX': 'auto', 'width': '400px'},
-                            style_as_list_view=True,
-                            
-                            style_data={'whiteSpace': 'normal',
-                                        'height': 'auto','color':'#08193e','fontWeight': 'bold' },
-                            style_header={
-                                'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
-                                "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#ffaa05"},
-                            
-                            style_cell={
-                                'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px", "padding":"20px"
-                            },
-                            
-                            style_data_conditional=[
-                                {"if": {"column_id": "Stats"}, "width": "45%"}],
-                            
-                        )
+                            dash_table.DataTable(
+                                id='table2',
+                                columns=[{'name': 'Stats', 'id': 'Stats', 'presentation': 'markdown'}],
+                                data=data_stats.to_dict('records'),
+                                style_table={'overflowX': 'auto'},
+                                style_as_list_view=True,
+                                style_data={'whiteSpace': 'normal', 'height': 'auto', 'color': '#08193e', 'fontWeight': 'bold'},
+                                style_header={'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', 'padding': '10px', 'font-family': 'Calibre,Poppins,Roboto,sans-serif', 'color': '#ffaa05'},
+                                style_cell={'textAlign': 'center', 'font-family': 'Calibre,Poppins,Roboto,sans-serif', 'fontSize': '18px', 'padding': '0px'},
+                                style_data_conditional=[{"if": {"column_id": "Stats"}, "width": "45%"}],
+                                markdown_options={'html': True},
+                            )
                         ]
                         
                     ),
