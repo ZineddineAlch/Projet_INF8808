@@ -105,14 +105,20 @@ h4{
 
 #summary-div{
     border: 2px solid #8B4513;
+    border-radius: 10px;
     background-color: rgba(139, 69, 19, 0.2);
+    background: repeating-linear-gradient(45deg, rgb(255, 255, 255), rgb(255, 255, 255) 5px, rgba(243, 112, 33, 0.1) 5px, rgba(243, 112, 33, 0.1) 6px);
     padding: 10px;
     margin-top: 24px;
 }
 
 #note-section{
     border: 2px solid #8B4513;
+    border-radius: 10px;
+    text-align: center;
     background-color: rgba(139, 69, 19, 0.2);
+
+    background: repeating-linear-gradient(45deg, rgb(255, 255, 255), rgb(255, 255, 255) 5px, rgba(243, 112, 33, 0.1) 5px, rgba(243, 112, 33, 0.1) 6px);
     padding: 10px;
     margin-top: 20px;
 }
