@@ -24,6 +24,10 @@ data[['Completed ADLS', 'Completed visits']
      ] = preprocess.completed_adls_visit(df_timeline).values
 
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
+data_stats = pd.DataFrame({'Stats': ['Value']})
+data_stats['Stats'] = [
+    '<img src="./assets/radar_chart.png">'
+]
 
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
@@ -72,7 +76,7 @@ app.layout = html.Div(
                             columns=columns_table1,
                             data=data.to_dict('records'),
                             page_size=8,
-                            style_table={'overflowX': 'auto',"border-radius":"10px"},
+                            style_table={'overflowX': 'auto'},
                             style_as_list_view=True,
                         
                             style_data={'whiteSpace': 'normal',
@@ -123,6 +127,34 @@ app.layout = html.Div(
                         ),
                     ]
                 ),
+                html.Div(
+                        # Table Stats
+                        
+                        children=[
+                        dash_table.DataTable(
+                            id='table2',
+                            columns=[{'name': 'Stats', 'id': 'Stats'}],
+                            data=data_stats.to_dict('records'),
+                            
+                            style_table={'overflowX': 'auto', 'width': '400px'},
+                            style_as_list_view=True,
+                        
+                            style_data={'whiteSpace': 'normal',
+                                        'height': 'auto','color':'#08193e','fontWeight': 'bold' },
+                            style_header={
+                                'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
+                                "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#ffaa05"},
+                            markdown_options={'html': True},
+                            style_cell={
+                                'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px", "padding":"20px"
+                            },
+                            style_data_conditional=[
+                                {"if": {"column_id": "Stats"}, "width": "45%"}],
+                        )
+                        ]
+                        
+                    ),
+                
                 # Detailed view container
                 html.Div(
                     id="detailed-view-container",
