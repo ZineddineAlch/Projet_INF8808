@@ -141,7 +141,6 @@ app.layout = html.Div(
                         ]
                         
                     ),
-                
                 # Detailed view container
                 html.Div(
                     id="detailed-view-container",
@@ -156,7 +155,7 @@ app.layout = html.Div(
                                 html.Div(id="summary-container"),
                                 # Notes
                                 html.Div(
-                                    id="note-content",
+                                    id="note-section",
                                     children=[
                                         html.H3("Note Section"),
                                         html.P("Click on a note to display its content")
@@ -176,6 +175,7 @@ selected_patient = None  # Initially, no patient is selected
 @app.callback(
     Output('calendar-container', 'children'),
     Output('summary-container', 'children'),
+    Output('note-section', 'style'),
     [Input('table1', 'active_cell')],
     [State('table1', 'data')],
 )
@@ -190,20 +190,15 @@ def update_calendar(active_cell, table1_data):
         # Check if the selected patient is different from the previously selected one
         if new_selected_patient == None:
             selected_patient = new_selected_patient
-            schedule_data = preprocess.get_schedule_for_patient(
-                df_timeline, selected_patient)
+            schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
-            return cal.get_cal(schedule_data,note_data)
+            return cal.get_cal(schedule_data,note_data), cal.get_summary(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}  # Show the note section with the desired styling
         if selected_patient != new_selected_patient:
             selected_patient = new_selected_patient
-            schedule_data = preprocess.get_schedule_for_patient(
-                df_timeline, selected_patient)
+            schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
-            return cal.get_cal(schedule_data,note_data)
+            return cal.get_cal(schedule_data,note_data), cal.get_summary(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}  # Show the note section with the desired styling
         if selected_patient == new_selected_patient:
-            schedule_data = preprocess.get_schedule_for_patient(
-                df_timeline, selected_patient)
-            note_data = preprocess.get_notes(df_notes, selected_patient)
             return dash.no_update
 
     return None, None, {"display": "none"}  # Hide the note section when no cell is selected
@@ -220,7 +215,7 @@ def update_table1_data(name):
         return data[data["Name"].str.contains(name)].to_dict('records')
     
 @app.callback(
-    Output('note-content', 'children'),
+    Output('note-section', 'children'),
     Input({'type':'button_image', 'index':ALL}, 'n_clicks'),
 )
 def update_content(n_clicks_list):
@@ -239,30 +234,6 @@ def update_content(n_clicks_list):
         
     except TypeError:
         pass
-      
-@app.callback(
-    Output('note-content', 'style'),
-    [Input('table1', 'active_cell')],
-    [State('table1', 'data')]
-    
-)
-def update_note(active_cell, table1_data):
-
-    if active_cell:
-        return {'display': 'block',  # Change 'none' to 'block' to make it visible
-            'background': 'repeating-linear-gradient(45deg, rgba(139, 69, 19, 0.2), rgba(139, 69, 19, 0.2) 5px, rgba(233, 236, 239, 0.2) 5px, rgba(233, 236, 239, 0.2) 10px)',
-            'border': '2px solid #8B4513',
-            'border-radius': '10px',
-            'padding': '10px',
-            'margin-top': '10px'
-            }  # Hide the note section when no cell is selected
-    return {'display': 'none',  # Change 'none' to 'block' to make it visible
-            'background': 'repeating-linear-gradient(45deg, rgba(139, 69, 19, 0.2), rgba(139, 69, 19, 0.2) 5px, rgba(233, 236, 239, 0.2) 5px, rgba(233, 236, 239, 0.2) 10px)',
-            'border': '2px solid #8B4513',
-            'border-radius': '10px',
-            'padding': '10px',
-            'margin-top': '10px'
-            }  # Hide the note section when no cell is selected
 
 
 
