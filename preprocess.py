@@ -143,3 +143,26 @@ def get_schedule_for_patient(df, patient_id):
     schedule["DAY"] = pd.to_datetime(schedule["DAY"])
     schedule = schedule.sort_values("DAY")
     return schedule
+
+def polar_to_cartesian(r, theta):
+    return [r * np.cos(theta), r * np.sin(theta)]
+
+def calculate_area(values, thetas):
+    coordinates = [polar_to_cartesian(r, theta) for r, theta in zip(values, thetas)]
+    coordinates.append(coordinates[0])
+    xs, ys = zip(*coordinates) 
+    area = 0.5 * abs(sum(xs[i-1]*ys[i] - xs[i]*ys[i-1] for i in range(len(xs))))
+    return area
+
+def calculate_areas(df): #input timeline_dataset.csv
+    df = = get_global_data(df)
+    thetas = [i * 2 * np.pi / df.shape[1] for i in range(df.shape[1])]
+    areas = []
+    for index, row in df.iterrows():
+        values = row.values.tolist()
+        area = calculate_area(values, thetas)
+        areas.append([index, area])
+    df_areas = pd.DataFrame(areas, columns=['PATIENT_ID', 'AREA'])
+    df_areas = df_areas.sort_values(by='AREA', ascending=False)
+
+    return df_areas
