@@ -1,5 +1,8 @@
 import plotly.graph_objects as go
 import pandas as pd
+import dash_bootstrap_components as dbc
+from dash import dcc
+from dash import html
 
 # Data for the radar chart
 CATEGORIES = ['FALL_COUNT', 'CANCELLATION_COUNTS', 'HOSPITALIZATION_COUNT', 'HAS_PAIN_MENTION']
@@ -40,6 +43,7 @@ def get_radar_chart(patient_names):
         # Create the figure and add the trace
         fig = go.Figure(data=[trace], layout=layout)
         charts.append([fig, patient_name])
+
     return charts
 
 mycharts = get_radar_chart(["André Fortin", "Céline Dion"])
@@ -50,4 +54,11 @@ def get_chart_from_name(name, charts):
             return chart[0]
 
 chart = get_chart_from_name("André Fortin", mycharts)
-#chart.show()
+
+def get_vis(name):
+    return html.Div(
+        children=[
+            html.H2(name),
+            dcc.Graph(figure=get_chart_from_name(name, mycharts), id="graph")
+        ]
+    )

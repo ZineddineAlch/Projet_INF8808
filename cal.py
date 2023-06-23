@@ -123,7 +123,9 @@ def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
     cal = []
     for i in range(0, len(all_days), 7):
         cal.append(dbc.Row(all_days[i: i+7], className="g-0"))
-    return dbc.Container(week_days + cal,id='calendar')
+
+    children = week_days + cal
+    return html.Div(children=children,id='calendar')
 
 def save_content(index:int,content):
     notes_content.insert(index,content)

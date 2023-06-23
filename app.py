@@ -10,6 +10,7 @@ import preprocess
 import vis
 import template
 import cal
+import vis
 
 app = dash.Dash(name=__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = 'Project | INF8808'
@@ -66,6 +67,7 @@ app.layout = html.Div(
                             ]
                         ),
                         # Table
+                        dbc.Button("Clear selection", id="clear"),
                         dash_table.DataTable(
                             id='table1',
                             columns=columns_table1,
@@ -124,47 +126,39 @@ app.layout = html.Div(
                 ),
                 html.Div(
                         # Table Stats
-                        
+                        id="viz",
                         children=[
-                            dash_table.DataTable(
-                                id='table2',
-                                columns=[{'name': 'Stats', 'id': 'Stats', 'presentation': 'markdown'}],
-                                data=data_stats.to_dict('records'),
-                                style_table={'overflowX': 'auto'},
-                                style_as_list_view=True,
-                                style_data={'whiteSpace': 'normal', 'height': 'auto', 'color': '#08193e', 'fontWeight': 'bold'},
-                                style_header={'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', 'padding': '10px', 'font-family': 'Calibre,Poppins,Roboto,sans-serif', 'color': '#ffaa05'},
-                                style_cell={'textAlign': 'center', 'font-family': 'Calibre,Poppins,Roboto,sans-serif', 'fontSize': '18px', 'padding': '0px'},
-                                style_data_conditional=[{"if": {"column_id": "Stats"}, "width": "45%"}],
-                                markdown_options={'html': True},
-                            )
+                            html.Div(
+                                id="graph-container",
+                                children=[vis.get_vis("André Fortin")]
+                            ),
+                            html.Div(
+                                id="detailed-view-container",
+                                children=[
+                                    # Detailed view
+                                    html.Div(id="calendar-container"),
+                                    # Summary section and notes
+                                    html.Div(
+                                        id="summary-section-and-notes",
+                                        children=[
+                                            # Summary section
+                                            html.Div(id="summary-container"),
+                                            # Notes
+                                            html.Div(
+                                                id="note-section",
+                                                children=[
+                                                    html.H3("Note Section"),
+                                                    html.P("Click on a note to display its content")
+                                                ]
+                                            )
+                                        ]
+                                    )
+                                ]
+                            ),
                         ]
                         
                     ),
                 # Detailed view container
-                html.Div(
-                    id="detailed-view-container",
-                    children=[
-                        # Detailed view
-                        html.Div(id="calendar-container"),
-                        # Summary section and notes
-                        html.Div(
-                            id="summary-section-and-notes",
-                            children=[
-                                # Summary section
-                                html.Div(id="summary-container"),
-                                # Notes
-                                html.Div(
-                                    id="note-section",
-                                    children=[
-                                        html.H3("Note Section"),
-                                        html.P("Click on a note to display its content")
-                                    ]
-                                )
-                            ]
-                        )
-                    ]
-                )
             ]
         )
     ]
@@ -176,32 +170,39 @@ selected_patient = None  # Initially, no patient is selected
     Output('calendar-container', 'children'),
     Output('summary-container', 'children'),
     Output('note-section', 'style'),
+    Output('graph-container', 'style'),
     [Input('table1', 'active_cell')],
     [State('table1', 'data')],
 )
 def update_calendar(active_cell, table1_data):
     global selected_patient
-
     
     if active_cell:
         row = active_cell['row']
         new_selected_patient  = table1_data[row]['First Name'] + \
             " " + table1_data[row]['Last Name']
         # Check if the selected patient is different from the previously selected one
-        if new_selected_patient == None:
-            selected_patient = new_selected_patient
-            schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
-            note_data = preprocess.get_notes(df_notes, selected_patient)
-            return cal.get_cal(schedule_data,note_data), cal.get_summary(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}  # Show the note section with the desired styling
-        if selected_patient != new_selected_patient:
-            selected_patient = new_selected_patient
-            schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
-            note_data = preprocess.get_notes(df_notes, selected_patient)
-            return cal.get_cal(schedule_data,note_data), cal.get_summary(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}  # Show the note section with the desired styling
         if selected_patient == new_selected_patient:
             return dash.no_update
+        else:
+            selected_patient = new_selected_patient
+            schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
+            note_data = preprocess.get_notes(df_notes, selected_patient)
+            return cal.get_cal(schedule_data,note_data), cal.get_summary(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"},  {"display": "none"}  # Show the note section with the desired styling
 
-    return None, None, {"display": "none"}  # Hide the note section when no cell is selected
+    return None, None, {"display": "none"}, {"display": "inline"}  # Hide the note section when no cell is selected
+
+
+@app.callback(
+    Output("table1", "selected_cells"),
+    Output("table1", "active_cell"),
+    Input("clear", "n_clicks"),    
+)
+def clear(n_clicks):
+    global selected_patient
+    selected_patient = None
+    return [], None
+
 
 @app.callback(
     Output(component_id='table1', component_property='data'),
@@ -234,6 +235,3 @@ def update_content(n_clicks_list):
         
     except TypeError:
         pass
-
-
-

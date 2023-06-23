@@ -28,6 +28,12 @@ h4{
     margin-bottom: 20px;
 }
 
+#global-view{
+    width: 35%;
+}
+#calendar-container{
+    width: 100%;
+}
 #search-bar{
     display: flex;
     align-items: center;
@@ -105,10 +111,23 @@ h4{
     margin-top: 95px;
     margin-left: 20px;
     display: flex;
+    flex-direction:row;
+}
+
+#graph-container{
+    width: 100%;
+}
+
+#viz{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
 #summary-section-and-notes{
-    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
 }
 
 #summary-div{
@@ -133,7 +152,7 @@ h4{
 
 @media only screen and (max-width: 2280px) {
     #detailed-view-container {
-      flex-direction: column;
+      flex-direction: row;
     }
     #summary-section-and-notes{
         margin-left: 0px;
