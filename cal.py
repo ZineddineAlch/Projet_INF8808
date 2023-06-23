@@ -70,10 +70,11 @@ def insert_image_note(row,children,note_df):
 
 def get_day(row,note_df):
     children = [
-        html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.7em"})
+        html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.9em","font-weight":"600"})
     ]
     if row["TOTAL_ADLS"] == 0:
-        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "10px", "border": "1px black solid", "line-height": "15px"}))
+        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "9px", "border-top": "0.5px rgba(239,239,240) solid", "line-height": "15px", "text-align": "center"}))
+
     else:
         adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
         children.append(
@@ -83,29 +84,27 @@ def get_day(row,note_df):
                 color="success",
                 striped=True,
                 animated=True,
-                style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px"},
+                style={"height": "15px", "width": "100%", "position": "absolute",
+                       "bottom": "0", "border-radius": "0px","progress-bar-color":"#fff"},
             )
         )
     insert_image(row,children)
     insert_image_note(row,children,note_df)
-    children = html.Div(
-        children=children,
-        style={"width": "7em", "height": "7em", "position": "relative", "cursor": "pointer"},
-    )
-    return dbc.Col(html.Div(children=children, style={"border": "1px black solid"}), width="auto")
-    
+    children = html.Div(children, style={"width": "7em", "height": "7em", "position": "relative"})
+    return dbc.Col(html.Div(children=children, style={"border": "1px rgb(211, 211, 211) solid"}), width="auto")
 
 def get_gray_day():
     child = html.Div(
-        style={"width": "7em", "height": "7em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#e9ecef 5px,#e9ecef 10px)"})
-    return dbc.Col(html.Div(child, style={"border": "1px black solid"}), width="auto")
+        style={"width": "7em", "height": "7em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#F370211A 5px,#F370211A 6px)"})
+    return dbc.Col(html.Div(child, style={"border": "1px #fafcff solid"}), width="auto")
 
 
 def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
     note_df["DAY"] = pd.to_datetime(note_df["DAY"])  # Convert "DAY" column to datetime
     # create week days header row, with each day in a column of width 7em + 2px border
     week_days = [dbc.Row([dbc.Col(html.Div(html.Div(
-        day, style={"width": "calc(7em + 2px)", "text-align": "center", "margin": "auto"})), width="auto") for day in DAYS], className="g-0")]
+        day, style={"width": "calc(7em + 2px)", "text-align": "center", "margin": "auto",
+                    "font-weight": "600"})), width="auto") for day in DAYS], className="g-0")]
 
     all_days = []
     first_day = schedule_df.iloc[0]["DAY"].weekday()
@@ -134,6 +133,26 @@ def retrieve_saved_content_note(index:int):
 def default_content():
     return "Click on note to show content"
                     
-                
-     
-    
+def get_summary(schedule_df: pd.DataFrame):
+    pain = schedule_df['HAS_PAIN_MENTION'].values.sum()
+    hospitalization = schedule_df['HOSPITALIZATION_COUNT'].values.sum()
+    fall = schedule_df['FALL_COUNT'].values.sum()
+    completed_visits = schedule_df['VISIT_COUNTS'].values.sum()
+    cancelled_visits = schedule_df['CANCELLATION_COUNTS'].values.sum()
+    visits_ratio = completed_visits / (completed_visits + cancelled_visits) * 100
+
+    completed_adls = schedule_df['TOTAL_COMPLETED_ADLS'].values.sum()
+    total_adls = schedule_df['TOTAL_ADLS'].values.sum()
+
+    adls_ratio = completed_adls/total_adls * 100
+
+    return html.Div(
+        id="summary-div",
+        children=[
+            html.H3("Summary of the last 28 days"),
+            html.P(f"{adls_ratio:.1f}% of ADLS were completed"),
+            html.P(f"{visits_ratio:.1f}% of visits were done"),
+            html.P(f"{pain} reported cases of pain"),
+            html.P(f"{fall} reported falls"),
+            html.P(f"{hospitalization} hospitalizations"),
+        ])

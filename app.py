@@ -22,11 +22,10 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 data = preprocess.id_extract(df_timeline)
 data[['Completed ADLS', 'Completed visits']
      ] = preprocess.completed_adls_visit(df_timeline).values
-data['Stats'] = [
-    '<img src="./assets/radar_chart.png" style="width:50px;height:50px;">'
-] * len(data)
-
+img='<img src="./assets/radar_chart.png" >'
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
+
+data_stats = pd.DataFrame({'Stats': ['<img src="./assets/radar_chart.png" width="450" height="490">']})
 
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
@@ -34,150 +33,149 @@ global_data = preprocess.get_global_data(df_timeline)
 
 
 # ------------- Layout -------------#
-note_ids = []
-
 app.layout = html.Div(
+    id="main-div",
     children=[
         # Logo AlayaCare
-        html.H1(className="text-center", style={"margin": "0px"}, children=[
-            html.Img(src="./assets/image_alaya.png",
-                     style={"width": "300px", "height": "auto", "margin-top": "20px", "margin-bottom": "20px"})
-        ]),
-        # Search bar
-        html.H4("Summary of the past 28 days", style={"margin-bottom": "20px"}),
-        html.Div(
-            [
-                # search bar input
-                html.Div(
-                    [
-                        dcc.Input(
-                            id='name-input',
-                            type='text',
-                            placeholder='Search for a patient...',
-                            value="",
-                            debounce=True,
-                            style={
-                                'width': '100%',
-                                'padding': '10px',
-                                'border': '1px solid #ccc',
-                                'borderRadius': '5px',
-                                'fontFamily': 'Arial',
-                                'fontSize': '14px',
-                            }
-                        ),
-                    ], style={"flex": "1", "margin-right": "5px"}
-                ),
-                # search bar button
-                html.Div(
-                    [
-                        dbc.Button("Search", color="primary",
-                                   className="me-1", style={"margin": "0px", "height": "100%"})
-                    ],
-                    style={"height": "100%"}
-                ),
-                html.Div(id="output-div"),
-            ],
-            style={"width": "50%", "display": "flex",
-                   "align-items": "center", "margin-bottom": "10px"}
+        html.Img(
+            id="alayacare-logo",
+            src="./assets/image_alaya.png"
         ),
-        # Table 1
+        # Content container div
         html.Div(
-            [
-                dbc.Row(
-                    [
-                        dbc.Col(
+            id="container-div",
+            children=[
+                # Global view
+                html.Div(
+                    id="global-view",
+                    children=[
+                        # header
+                        html.H4("Summary of the past 28 days"),
+                        # Search bar
+                        html.Div(
+                            id="search-bar",
+                            children=[
+                                dcc.Input(
+                                    id='name-input',
+                                    type='text',
+                                    placeholder='Search for a patient...',
+                                    value="",
+                                    debounce=True
+                                    ),
+                                dbc.Button("Search")
+                            ]
+                        ),
+                        # Table
+                        dash_table.DataTable(
+                            id='table1',
+                            columns=columns_table1,
+                            data=data.to_dict('records'),
+                            page_size=8,
+                            style_table={'overflowX': 'auto'},
+                            style_as_list_view=True,
+                        
+                            style_data={'whiteSpace': 'normal',
+                                        'height': 'auto','color':'#08193e','fontWeight': 'bold' },
+                            style_header={
+                                'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
+                                "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#ffaa05"},
+                            markdown_options={'html': True},
+                            style_cell={
+                                'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px", "padding":"20px"
+                            },
+                            style_data_conditional=[
+                                {"if": {"column_id": "Stats"}, "width": "45%"}],
+                        ),
+                        # Footer
+                        html.Div(
+                            id="footer-section",
+                            children = [
+                                html.Div(
+                                    id="left-footer-section",
+                                    children=[
+                                    html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "36px"}),
+                                    html.Span("layaCare", style={"color": "#113cca", "font-weight": "bold", "font-size": "36px"}),
+                                    html.Br(),
+                                    html.H4("In the past 28 days"),
+                                ]),
+                                html.Div(
+                                    id="right-footer-section",
+                                    children=[
+                                    html.Div(children=[
+                                        html.P("9"),
+                                        html.P("Patients"),
+                                    ]),
+                                    html.Div(children=[
+                                        html.P("8"),
+                                        html.P("Falls"),
+                                    ]),
+                                    html.Div(children=[
+                                        html.P("6"),
+                                        html.P("Hospitalizations"),
+                                    ]),
+                                    html.Div(children=[
+                                        html.P("13"),
+                                        html.P("Cancelations"),
+                                    ]),
+                                ])
+                            ]
+                        ),
+                    ]
+                ),
+                html.Div(
+                        # Table Stats
+                        
+                        children=[
                             dash_table.DataTable(
-                                id='table1',
-                                columns=columns_table1,
-                                data=data.to_dict('records'),
-                                page_size=8,
+                                id='table2',
+                                columns=[{'name': 'Stats', 'id': 'Stats', 'presentation': 'markdown'}],
+                                data=data_stats.to_dict('records'),
                                 style_table={'overflowX': 'auto'},
                                 style_as_list_view=True,
-                                style_data={'whiteSpace': 'normal',
-                                            'height': 'auto', },
-                                style_header={
-                                    'backgroundColor': '#ffaa05', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '15px', "color": "white"},
+                                style_data={'whiteSpace': 'normal', 'height': 'auto', 'color': '#08193e', 'fontWeight': 'bold'},
+                                style_header={'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', 'padding': '10px', 'font-family': 'Calibre,Poppins,Roboto,sans-serif', 'color': '#ffaa05'},
+                                style_cell={'textAlign': 'center', 'font-family': 'Calibre,Poppins,Roboto,sans-serif', 'fontSize': '18px', 'padding': '0px'},
+                                style_data_conditional=[{"if": {"column_id": "Stats"}, "width": "45%"}],
                                 markdown_options={'html': True},
-                                style_cell={
-                                    'textAlign': 'center',
-                                },
-                                style_data_conditional=[
-                                    {"if": {"column_id": "Stats"}, "background-image": "var(--image-url)", "width": "200px"}],
-                            ),
-                            width=6,
-                        ),
-                        dbc.Col(
-                            [
-                                dbc.Row(
-                                [
-                                    dbc.Col(
-                                        html.Div(
-                                            id="calendar-container",
-                                            style={"width": "100%", "float": "left", "padding-right": "10px"}
-                                        ),
-                                        width=11,
-                                    ),
-                                    dbc.Col(
-                                        html.Div(
-                                           [
-                                                html.Div(
-                                                    id="note-content",
-                                                    className="note-content",  
-                                                ),
-                                            ]),
-                                        width=3,
-                                    ),
-                                ],
-                                justify="between",
-                                style={"display": "flex", "flex-wrap": "nowrap"}
-                                ),
-                            ],
-                            width=6,
-                        ),
-                    ],
-                    className="mb-3",
-                ),
-            ],
-        ),
-        #Summary section
-        html.Div(
-            style={"border": "1px solid #ffaa05", "border-radius": "10px", "width": "50%", "padding": "20px", "display": "flex", "align-items": "center"},
-            children = [
-                html.Div(children=[
-                    html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "36px"}),
-                    html.Span("layaCare", style={"color": "#113cca", "font-weight": "bold", "font-size": "36px"}),
-                    html.Br(),
-                    html.H4("In the past 28 days"),
-                ],
-                style={"margin-right": "50px"}),
-                html.Div(children=[
-                    html.Div(children=[
-                        html.P("6", style={"font-weight": "bold"}),
-                        html.P("Patients", style={"font-weight": "bold"}),
-                    ]),
-                    html.Div(children=[
-                        html.P("6", style={"font-weight": "bold"}),
-                        html.P("Falls", style={"font-weight": "bold"}),
-                    ]),
-                    html.Div(children=[
-                        html.P("6", style={"font-weight": "bold"}),
-                        html.P("Hospitalizations", style={"font-weight": "bold"}),
-                    ]),
-                    html.Div(children=[
-                        html.P("6", style={"font-weight": "bold"}),
-                        html.P("Cancelations", style={"font-weight": "bold"}),
-                    ]),
-                ],style={"display": "flex", "align-items": "center", "justify-content": "center", "justify-items": "space-beetween"})
+                            )
+                        ]
+                        
+                    ),
+                
+                # Detailed view container
+                html.Div(
+                    id="detailed-view-container",
+                    children=[
+                        # Detailed view
+                        html.Div(id="calendar-container"),
+                        # Summary section and notes
+                        html.Div(
+                            id="summary-section-and-notes",
+                            children=[
+                                # Summary section
+                                html.Div(id="summary-container"),
+                                # Notes
+                                html.Div(
+                                    id="note-content",
+                                    children=[
+                                        html.H3("Note Section"),
+                                        html.P("Click on a note to display its content")
+                                    ]
+                                )
+                            ]
+                        )
+                    ]
+                )
             ]
-        ),
-    ], style={"padding": "20px"}
+        )
+    ]
 )
-
 
 # ------------------------ Callback -----------------------#
 selected_patient = None  # Initially, no patient is selected
 @app.callback(
     Output('calendar-container', 'children'),
+    Output('summary-container', 'children'),
     [Input('table1', 'active_cell')],
     [State('table1', 'data')],
 )
@@ -208,8 +206,7 @@ def update_calendar(active_cell, table1_data):
             note_data = preprocess.get_notes(df_notes, selected_patient)
             return dash.no_update
 
-    return None  # Hide the note section when no cell is selected
-
+    return None, None, {"display": "none"}  # Hide the note section when no cell is selected
 
 @app.callback(
     Output(component_id='table1', component_property='data'),
