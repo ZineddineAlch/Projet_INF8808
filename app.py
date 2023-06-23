@@ -1,7 +1,7 @@
 import dash
 from dash import html
-from dash import dcc
-from dash.dependencies import Input, Output, State
+from dash import dcc,ctx
+from dash.dependencies import Input, Output, State ,ALL
 import pandas as pd
 from dash import dash_table
 import dash_bootstrap_components as dbc
@@ -32,11 +32,9 @@ columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
 
-schedule_data = preprocess.get_schedule_for_patient(
-    df_timeline, "Félix Leclerc")
-
 
 # ------------- Layout -------------#
+note_ids = []
 
 app.layout = html.Div(
     children=[
@@ -121,13 +119,12 @@ app.layout = html.Div(
                                     ),
                                     dbc.Col(
                                         html.Div(
-                                            id="note-section",
-                                            children=[
-                                                html.H3("Note Section"),
-                                                html.P("Click on a note to display its content")
-                                            ],
-                                            style={"border": "2px solid #8B4513", "background-color": "rgba(139, 69, 19, 0.2)", "padding": "10px", "margin-top": "20px"}
-                                        ),
+                                           [
+                                                html.Div(
+                                                    id="note-content",
+                                                    className="note-content",  
+                                                ),
+                                            ]),
                                         width=3,
                                     ),
                                 ],
@@ -173,28 +170,45 @@ app.layout = html.Div(
                 ],style={"display": "flex", "align-items": "center", "justify-content": "center", "justify-items": "space-beetween"})
             ]
         ),
-    ], style={"padding": "20px"})
+    ], style={"padding": "20px"}
+)
 
 
 # ------------------------ Callback -----------------------#
-
+selected_patient = None  # Initially, no patient is selected
 @app.callback(
     Output('calendar-container', 'children'),
-    Output('note-section', 'style'),
     [Input('table1', 'active_cell')],
-    [State('table1', 'data')]
+    [State('table1', 'data')],
 )
 def update_calendar(active_cell, table1_data):
+    global selected_patient
+
+    
     if active_cell:
         row = active_cell['row']
-        selected_patient = table1_data[row]['First Name'] + \
+        new_selected_patient  = table1_data[row]['First Name'] + \
             " " + table1_data[row]['Last Name']
-        schedule_data = preprocess.get_schedule_for_patient(
-            df_timeline, selected_patient)
-        return cal.get_cal(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}  # Show the note section with the desired styling
+        # Check if the selected patient is different from the previously selected one
+        if new_selected_patient == None:
+            selected_patient = new_selected_patient
+            schedule_data = preprocess.get_schedule_for_patient(
+                df_timeline, selected_patient)
+            note_data = preprocess.get_notes(df_notes, selected_patient)
+            return cal.get_cal(schedule_data,note_data)
+        if selected_patient != new_selected_patient:
+            selected_patient = new_selected_patient
+            schedule_data = preprocess.get_schedule_for_patient(
+                df_timeline, selected_patient)
+            note_data = preprocess.get_notes(df_notes, selected_patient)
+            return cal.get_cal(schedule_data,note_data)
+        if selected_patient == new_selected_patient:
+            schedule_data = preprocess.get_schedule_for_patient(
+                df_timeline, selected_patient)
+            note_data = preprocess.get_notes(df_notes, selected_patient)
+            return dash.no_update
 
-    return None, {"display": "none"}  # Hide the note section when no cell is selected
-
+    return None  # Hide the note section when no cell is selected
 
 
 @app.callback(
@@ -207,3 +221,51 @@ def update_table1_data(name):
         return data.to_dict('records')
     else:
         return data[data["Name"].str.contains(name)].to_dict('records')
+    
+@app.callback(
+    Output('note-content', 'children'),
+    Input({'type':'button_image', 'index':ALL}, 'n_clicks'),
+)
+def update_content(n_clicks_list):
+    global first_time_clicked_note
+    try:
+        if ctx.triggered_id is not None:
+            first_time_clicked_note = False
+            for n_click in n_clicks_list:
+                if n_click is not None:
+                   first_time_clicked_note = True
+            if first_time_clicked_note:
+                index = int(ctx.triggered_id["index"])
+                return cal.retrieve_saved_content_note(index)
+            if not first_time_clicked_note:
+                return cal.default_content()
+        
+    except TypeError:
+        pass
+      
+@app.callback(
+    Output('note-content', 'style'),
+    [Input('table1', 'active_cell')],
+    [State('table1', 'data')]
+    
+)
+def update_note(active_cell, table1_data):
+
+    if active_cell:
+        return {'display': 'block',  # Change 'none' to 'block' to make it visible
+            'background': 'repeating-linear-gradient(45deg, rgba(139, 69, 19, 0.2), rgba(139, 69, 19, 0.2) 5px, rgba(233, 236, 239, 0.2) 5px, rgba(233, 236, 239, 0.2) 10px)',
+            'border': '2px solid #8B4513',
+            'border-radius': '10px',
+            'padding': '10px',
+            'margin-top': '10px'
+            }  # Hide the note section when no cell is selected
+    return {'display': 'none',  # Change 'none' to 'block' to make it visible
+            'background': 'repeating-linear-gradient(45deg, rgba(139, 69, 19, 0.2), rgba(139, 69, 19, 0.2) 5px, rgba(233, 236, 239, 0.2) 5px, rgba(233, 236, 239, 0.2) 10px)',
+            'border': '2px solid #8B4513',
+            'border-radius': '10px',
+            'padding': '10px',
+            'margin-top': '10px'
+            }  # Hide the note section when no cell is selected
+
+
+
