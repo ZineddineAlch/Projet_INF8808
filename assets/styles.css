@@ -49,7 +49,6 @@ h4{
 }
 
 #table1{
-    width: 1000px;
     margin-bottom: 50px;
 }
 
@@ -90,7 +89,7 @@ h4{
 }
 
 #detailed-view-container{
-    margin-top: 25px;
+    margin-top: 95px;
     margin-left: 20px;
     display: flex;
 }

@@ -22,9 +22,6 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 data = preprocess.id_extract(df_timeline)
 data[['Completed ADLS', 'Completed visits']
      ] = preprocess.completed_adls_visit(df_timeline).values
-data['Stats'] = [
-    '<img src="./assets/radar_chart.png" style="width:50px;height:50px;">'
-] * len(data)
 
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
 
@@ -85,7 +82,7 @@ app.layout = html.Div(
                                 "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#ffaa05"},
                             markdown_options={'html': True},
                             style_cell={
-                                'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px"
+                                'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px", "padding":"20px"
                             },
                             style_data_conditional=[
                                 {"if": {"column_id": "Stats"}, "width": "45%"}],
