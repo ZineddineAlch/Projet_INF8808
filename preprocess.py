@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import re
 
 SCHEDULE_COLS = ["DAY", "VISIT_COUNTS", "TOTAL_COMPLETED_ADLS","TOTAL_ADLS","ADL_COMPLETION_PERCENTAGE","CANCELLATION_COUNTS","CANCELLATION_REASON_AND_COUNTS","HAS_PAIN_MENTION","PAIN_DETAILS","FALL_COUNT","FALL_DETAILS","HOSPITALIZATION_COUNT","HOSPITALIZATION_DETAILS"]
@@ -149,20 +150,35 @@ def polar_to_cartesian(r, theta):
 
 def calculate_area(values, thetas):
     coordinates = [polar_to_cartesian(r, theta) for r, theta in zip(values, thetas)]
-    coordinates.append(coordinates[0])
-    xs, ys = zip(*coordinates) 
+    coordinates.append(coordinates[0]) 
+    
+    xs, ys = zip(*coordinates)  
+    
     area = 0.5 * abs(sum(xs[i-1]*ys[i] - xs[i]*ys[i-1] for i in range(len(xs))))
     return area
 
-def calculate_areas(df): #input timeline_dataset.csv
-    df = = get_global_data(df)
-    thetas = [i * 2 * np.pi / df.shape[1] for i in range(df.shape[1])]
+def calculate_areas_for_radar_charts(df): #input timeline_dataset.csv
+
+
+    aggregated = df.groupby('PATIENT_ID').agg({
+        'FALL_COUNT': 'sum',
+        'CANCELLATION_COUNTS': 'sum',
+        'HOSPITALIZATION_COUNT': 'sum',
+        'HAS_PAIN_MENTION': 'sum'
+    })
+    aggregated = aggregated / aggregated.max()
+
+
+    thetas = [i * 2 * np.pi / aggregated.shape[1] for i in range(aggregated.shape[1])]
+
     areas = []
-    for index, row in df.iterrows():
+    for index, row in aggregated.iterrows():
         values = row.values.tolist()
         area = calculate_area(values, thetas)
         areas.append([index, area])
+
+
     df_areas = pd.DataFrame(areas, columns=['PATIENT_ID', 'AREA'])
     df_areas = df_areas.sort_values(by='AREA', ascending=False)
 
-    return df_areas
+    return df_areas #columns PATIENT_ID AREA sorted by descending order
