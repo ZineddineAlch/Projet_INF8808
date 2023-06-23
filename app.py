@@ -125,40 +125,38 @@ app.layout = html.Div(
                     ]
                 ),
                 html.Div(
-                        # Table Stats
-                        id="viz",
-                        children=[
-                            html.Div(
-                                id="graph-container",
-                                children=[vis.get_vis("André Fortin")]
-                            ),
-                            html.Div(
-                                id="detailed-view-container",
-                                children=[
-                                    # Detailed view
-                                    html.Div(id="calendar-container"),
-                                    # Summary section and notes
-                                    html.Div(
-                                        id="summary-section-and-notes",
-                                        children=[
-                                            # Summary section
-                                            html.Div(id="summary-container"),
-                                            # Notes
-                                            html.Div(
-                                                id="note-section",
-                                                children=[
-                                                    html.H3("Note Section"),
-                                                    html.P("Click on a note to display its content")
-                                                ]
-                                            )
-                                        ]
-                                    )
-                                ]
-                            ),
-                        ]
-                        
-                    ),
-                # Detailed view container
+                    # Table Stats
+                    id="viz",
+                    children=[
+                        html.Div(
+                            id="graph-container",
+                            children=[vis.get_vis("André Fortin")]
+                        ),
+                        html.Div(
+                            id="detailed-view-container",
+                            children=[
+                                # Detailed view
+                                html.Div(id="calendar-container"),
+                                # Summary section and notes
+                                html.Div(
+                                    id="summary-section-and-notes",
+                                    children=[
+                                        # Summary section
+                                        html.Div(id="summary-container"),
+                                        # Notes
+                                        html.Div(
+                                            id="note-section",
+                                            children=[
+                                                html.H3("Notes"),
+                                                html.Div(id="note-content")
+                                            ]
+                                        )
+                                    ]
+                                )
+                            ]
+                        ),
+                    ]
+                ),
             ]
         )
     ]
@@ -188,7 +186,9 @@ def update_calendar(active_cell, table1_data):
             selected_patient = new_selected_patient
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
-            return cal.get_cal(schedule_data,note_data), cal.get_summary(schedule_data), {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"},  {"display": "none"}  # Show the note section with the desired styling
+            note_style = {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}
+            global_graph_style = {"display": "none"}
+            return cal.get_cal(schedule_data,note_data), cal.get_summary(schedule_data), note_style, global_graph_style   # Show the note section with the desired styling
 
     return None, None, {"display": "none"}, {"display": "inline"}  # Hide the note section when no cell is selected
 
@@ -214,13 +214,13 @@ def update_table1_data(name):
         return data.to_dict('records')
     else:
         return data[data["Name"].str.contains(name)].to_dict('records')
-    
+
 @app.callback(
     Output('note-section', 'children'),
     Input({'type':'button_image', 'index':ALL}, 'n_clicks'),
 )
 def update_content(n_clicks_list):
-    global first_time_clicked_note
+    global last_cliked_note
     try:
         if ctx.triggered_id is not None:
             first_time_clicked_note = False
@@ -228,8 +228,8 @@ def update_content(n_clicks_list):
                 if n_click is not None:
                    first_time_clicked_note = True
             if first_time_clicked_note:
-                index = int(ctx.triggered_id["index"])
-                return cal.retrieve_saved_content_note(index)
+                index = int(ctx.triggered_id["index"])                
+                return html.Div(children=cal.retrieve_saved_content_note(index))
             if not first_time_clicked_note:
                 return cal.default_content()
         

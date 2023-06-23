@@ -3,7 +3,7 @@ from dash import html
 import pandas as pd
 from dash.dcc import Loading
 import app
-notes_content = []
+notes_content = [None]*35
 DAYS = ["Monday", "Tuesday", "Wednesday",
         "Thursday", "Friday", "Saturday", "Sunday"]
 
@@ -56,19 +56,26 @@ def insert_image(row,children):
         images.append(image)
     return children.append(html.Div(images, style={"display": "flex"}))
 
-def insert_image_note(row,children,note_df):
+def insert_image_note(row, children, note_df):
     # Placeholder for image/icon based on different types of data
     images = []
     # Check if there are notes for the current day
     note_date = row["DAY"].strftime("%Y-%m-%d")
-    notes_for_day = note_df.loc[note_df["DAY"].dt.strftime("%Y-%m-%d") == note_date, "NOTE"].values
+    notes_for_day = note_df.loc[note_df["DAY"].dt.strftime("%Y-%m-%d") == note_date, ["NOTE_TYPE", "NOTE"]].values.tolist()
     if len(notes_for_day) > 0:
+        notes = {"Progress Notes": [], "Overview Notes": []}
+
+        for note_type, note in notes_for_day:
+            notes[note_type].append(note)
+
         bookmark_image = get_image_note("assets/note.png")
         images.append(bookmark_image)
-        save_content(get_image_note.counter%35, notes_for_day)
+
+        save_content((get_image_note.counter-1)%35, (note_date, notes))
+
     return children.append(html.Div(images, style={"display": "flex"}))
 
-def get_day(row,note_df):
+def get_day(row, note_df):
     children = [
         html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.9em","font-weight":"600"})
     ]
@@ -99,8 +106,7 @@ def get_gray_day():
     return dbc.Col(html.Div(child, style={"border": "1px #fafcff solid"}), width="auto")
 
 
-def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
-    note_df["DAY"] = pd.to_datetime(note_df["DAY"])  # Convert "DAY" column to datetime
+def get_cal(schedule_df: pd.DataFrame, note_df: pd.DataFrame):
     # create week days header row, with each day in a column of width 7em + 2px border
     week_days = [dbc.Row([dbc.Col(html.Div(html.Div(
         day, style={"width": "calc(7em + 2px)", "text-align": "center", "margin": "auto",
@@ -127,13 +133,25 @@ def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
     children = week_days + cal
     return html.Div(children=children,id='calendar')
 
-def save_content(index:int,content):
-    notes_content.insert(index,content)
-    
+def save_content(index:int, content):
+    notes_content[index] = content
+
 def retrieve_saved_content_note(index:int):
-    return notes_content[index-1]
+    global notes_content
+    date, notes = notes_content[index-1]
+    children = [html.H3(f"Notes for {date}")]
+     
+    for note_type, notes_ in notes.items():
+        if len(notes_) > 0:
+            sub_children = [html.H4(note_type)]
+            for n in notes_:
+                sub_children.append(html.P(n))
+            children.append(html.Div(sub_children))
+    
+    return children
+
 def default_content():
-    return "Click on note to show content"
+    return [html.H3(f"Notes"), html.Div("Click on note to show content")]
                     
 def get_summary(schedule_df: pd.DataFrame):
     pain = schedule_df['HAS_PAIN_MENTION'].values.sum()

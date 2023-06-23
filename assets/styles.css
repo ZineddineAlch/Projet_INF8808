@@ -56,6 +56,7 @@ h4{
 
 #table1{
     margin-bottom: 50px;
+    width: 100%;
 }
 
 #table2{
@@ -91,20 +92,21 @@ h4{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: row;
 }
 
 #right-footer-section div{
-    width: 140px;
+    width: 100%;
     text-align: center;
 }
 #right-footer-section div p:first-child{
     font-weight: bold;
-    font-size: 32px;
+    font-size: 28px;
     color: #113cca;
 }
 #right-footer-section div p:last-child{
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 #detailed-view-container{
@@ -142,10 +144,10 @@ h4{
 #note-section{
     border: 2px solid #8B4513;
     border-radius: 10px;
-    text-align: center;
+    text-align: left;
     background-color: rgba(139, 69, 19, 0.2);
 
-    background: repeating-linear-gradient(45deg, rgb(255, 255, 255), rgb(255, 255, 255) 5px, rgba(243, 112, 33, 0.1) 5px, rgba(243, 112, 33, 0.1) 6px);
+    background: repeating-linear-gradient(45deg, rgb(255, 255, 255), rgb(255, 255, 255) 3px, rgba(243, 112, 33, 0.1) 3px, rgba(243, 112, 33, 0.1) 3px);
     padding: 10px;
     margin-top: 20px;
 }

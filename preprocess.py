@@ -89,7 +89,9 @@ def get_notes(notes, PATIENT_ID):
 
     filtered_df = notes[notes['PATIENT_ID'] == PATIENT_ID]
     filtered_df = filtered_df.drop(columns='PATIENT_ID')
-    
+
+    filtered_df["DAY"] = pd.to_datetime(filtered_df["DAY"])  # Convert "DAY" column to datetime
+
     return filtered_df  # columns DAY NOTE_TYPE NOTE
 
 def get_note_counts(notes, PATIENT_ID):
