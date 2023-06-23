@@ -79,10 +79,10 @@ app.layout = html.Div(
                             style_as_list_view=True,
                         
                             style_data={'whiteSpace': 'normal',
-                                        'height': 'auto','color':'#08193e','fontWeight': 'bold',"background":"#F370211A" },
+                                        'height': 'auto','color':'#08193e','fontWeight': 'bold' },
                             style_header={
-                                'backgroundColor': '#f58220', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
-                                "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#08193e"},
+                                'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
+                                "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#ffaa05"},
                             markdown_options={'html': True},
                             style_cell={
                                 'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px"
