@@ -26,12 +26,12 @@ def get_image_note(note_path):
     note_id = f"image_{get_image_note.counter}"
     note = html.Img(
         src=note_path, 
-        style={"width": "35px"}, 
+        style={"width": "50px"}, 
         id=note_id,
     )
     button = html.Button(
         children=note,  # Place the image inside the button
-        style={"background": "none", "border": "none", "padding": "0"},
+        style={"background": "none", "border": "none", "padding": "0", "position": "absolute", "right": "-10px", "top": "0px"},
         id={'type':'button_image', 'index':f"{get_image_note.counter%35}"},  # Set the button's ID
     )
     return button
@@ -68,7 +68,7 @@ def insert_image_note(row, children, note_df):
         for note_type, note in notes_for_day:
             notes[note_type].append(note)
 
-        bookmark_image = get_image_note("assets/note.png")
+        bookmark_image = get_image_note("assets/note1.png")
         images.append(bookmark_image)
 
         save_content((get_image_note.counter-1)%35, (note_date, notes))
