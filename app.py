@@ -184,29 +184,22 @@ def update_calendar(active_cell, table1_data):
     
     global selected_patient
 
-    
     if active_cell:
         row = active_cell['row']
         new_selected_patient  = table1_data[row]['First Name'] + \
             " " + table1_data[row]['Last Name']
         print('new patient : ', new_selected_patient)
-            
+
         # Check if the selected patient is different from the previously selected one
-        if new_selected_patient != None:
-            selected_patient = new_selected_patient
-            schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
-            note_data = preprocess.get_notes(df_notes, selected_patient)
-            radar_chart = vis.get_chart_from_name(selected_patient, mycharts)
-            print('active patient : ', selected_patient)
-            return cal.get_cal(schedule_data,note_data), {"display": "block", "border": "2px solid #ffaa05"}, radar_chart  # Show the note section with the desired styling
-        if selected_patient != new_selected_patient:
-            selected_patient = new_selected_patient
-            schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
-            note_data = preprocess.get_notes(df_notes, selected_patient)
-            radar_chart = vis.get_chart_from_name(selected_patient, mycharts)
-            return cal.get_cal(schedule_data,note_data), {"display": "block", "border": "2px solid #ffaa05"}, radar_chart  # Show the note section with the desired styling
         if selected_patient == new_selected_patient:
             return dash.no_update
+        else:
+            selected_patient = new_selected_patient
+            schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
+            note_data = preprocess.get_notes(df_notes, selected_patient)
+            radar_chart = vis.get_chart_from_name(selected_patient, mycharts)
+
+            return cal.get_cal(schedule_data,note_data), {"display": "block", "border": "2px solid #ffaa05"}, radar_chart  # Show the note section with the desired styling
 
     return None, {"display": "none"}, None  # Hide the note section when no cell is selected
 

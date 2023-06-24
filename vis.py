@@ -1,7 +1,7 @@
 import plotly.graph_objects as go
 import pandas as pd
 import preprocess
-import dash_core_components as dcc
+from dash import dcc
 
 # Read the dataset
 df_timeline = pd.read_csv('./assets/data/timeline_dataset.csv')
