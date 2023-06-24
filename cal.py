@@ -56,8 +56,15 @@ def insert_image(row,children):
     if row["CANCELLATION_COUNTS"] > 0:
         image = get_image("assets/cancelled.png", f"Cancellations: {row['CANCELLATION_COUNTS']}")
         images.append(image)
-    return children.append(html.Div(images, style={"display": "flex"}))
+    # Divide the images into two rows
+    first_row = images[:2]
+    second_row = images[2:]
 
+    # Create divs for each row
+    first_row_div = html.Div(first_row, style={"display": "flex", "justify-content": "space-around","margin-top": "13%"})
+    second_row_div = html.Div(second_row, style={"display": "flex", "justify-content": "space-around"})
+    
+    return children.append(html.Div([first_row_div, second_row_div], style={"display": "flex", "flex-direction": "column"}))
 def insert_image_note(row,children,note_df):
     # Placeholder for image/icon based on different types of data
     images = []
