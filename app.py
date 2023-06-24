@@ -10,7 +10,6 @@ import preprocess
 import vis
 import template
 import cal
-import vis
 
 app = dash.Dash(name=__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = 'Project | INF8808'
@@ -26,7 +25,9 @@ data[['Completed ADLS', 'Completed visits']
 img='<img src="./assets/radar_chart.png" >'
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
 
-data_stats = pd.DataFrame({'Stats': ['<img src="./assets/radar_chart.png" width="450" height="490">']})
+data_stats = pd.DataFrame({'Stats': ['<img src="./assets/radar_chart.png" width="450" height="490">']}) * 0
+
+mycharts = vis.get_radar_chart(data["Name"])
 
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
@@ -42,96 +43,71 @@ app.layout = html.Div(
             id="alayacare-logo",
             src="./assets/image_alaya.png"
         ),
-        # Content container div
         html.Div(
-            id="container-div",
+            id="parent-div",
             children=[
-                # Global view
+                # Content container div
                 html.Div(
-                    id="global-view",
+                    id="container-div",
                     children=[
-                        # header
-                        html.H4("Summary of the past 28 days"),
-                        # Search bar
+                        # Global view
                         html.Div(
-                            id="search-bar",
+                            id="global-view",
                             children=[
-                                dcc.Input(
-                                    id='name-input',
-                                    type='text',
-                                    placeholder='Search for a patient...',
-                                    value="",
-                                    debounce=True
-                                    ),
-                                dbc.Button("Search")
+                                # header
+                                html.H4("Summary of the past 28 days"),
+                                # Search bar
+                                html.Div(
+                                    id="search-bar",
+                                    children=[
+                                        dcc.Input(
+                                            id='name-input',
+                                            type='text',
+                                            placeholder='Search for a patient...',
+                                            value="",
+                                            debounce=True
+                                            ),
+                                        dbc.Button("Search")
+                                    ]
+                                ),
+                                # Table
+                                dash_table.DataTable(
+                                    id='table1',
+                                    columns=columns_table1,
+                                    data=data.to_dict('records'),
+                                    page_size=8,
+                                    style_table={'overflowX': 'auto'},
+                                    style_as_list_view=True,
+                                
+                                    style_data={'whiteSpace': 'normal',
+                                                'height': 'auto','color':'#08193e','fontWeight': 'bold' },
+                                    style_header={
+                                        'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
+                                        "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#ffaa05"},
+                                    markdown_options={'html': True},
+                                    style_cell={
+                                        'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px", "padding":"20px"
+                                    },
+                                    style_data_conditional=[
+                                        {
+                                            'if': {'state': 'active'},
+                                            'backgroundColor': 'rgba(243,112,33,.1)',  # Change the background color of the selected cell
+                                            'color': 'rgb(8, 25, 62)',  # Change the text color of the selected cell
+                                            'border': '2px solid rgb(211, 211, 211)'
+                                            
+                                        }
+                                    ],
+                                )
                             ]
                         ),
-                        # Table
-                        dbc.Button("Clear selection", id="clear"),
-                        dash_table.DataTable(
-                            id='table1',
-                            columns=columns_table1,
-                            data=data.to_dict('records'),
-                            page_size=8,
-                            style_table={'overflowX': 'auto'},
-                            style_as_list_view=True,
-                        
-                            style_data={'whiteSpace': 'normal',
-                                        'height': 'auto','color':'#08193e','fontWeight': 'bold' },
-                            style_header={
-                                'backgroundColor': '#fafcff', 'fontWeight': 'bold', 'textAlign': 'center', "padding": '10px',
-                                "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#ffaa05"},
-                            markdown_options={'html': True},
-                            style_cell={
-                                'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px", "padding":"20px"
-                            },
-                            style_data_conditional=[
-                                {"if": {"column_id": "Stats"}, "width": "45%"}],
-                        ),
-                        # Footer
                         html.Div(
-                            id="footer-section",
-                            children = [
-                                html.Div(
-                                    id="left-footer-section",
-                                    children=[
-                                    html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "36px"}),
-                                    html.Span("layaCare", style={"color": "#113cca", "font-weight": "bold", "font-size": "36px"}),
-                                    html.Br(),
-                                    html.H4("In the past 28 days"),
-                                ]),
-                                html.Div(
-                                    id="right-footer-section",
-                                    children=[
-                                    html.Div(children=[
-                                        html.P("9"),
-                                        html.P("Patients"),
-                                    ]),
-                                    html.Div(children=[
-                                        html.P("8"),
-                                        html.P("Falls"),
-                                    ]),
-                                    html.Div(children=[
-                                        html.P("6"),
-                                        html.P("Hospitalizations"),
-                                    ]),
-                                    html.Div(children=[
-                                        html.P("13"),
-                                        html.P("Cancelations"),
-                                    ]),
-                                ])
-                            ]
+                                # Table Stats
+                                id="table-stats",style={'textAlign': 'center', 'display': 'flex',
+                                                        'align-items': 'center'},
+                                
+                                
                         ),
-                    ]
-                ),
-                html.Div(
-                    # Table Stats
-                    id="viz",
-                    children=[
-                        html.Div(
-                            id="graph-container",
-                            children=[vis.get_vis("André Fortin")]
-                        ),
+                        # Detailed view container
                         html.Div(
                             id="detailed-view-container",
                             children=[
@@ -141,24 +117,56 @@ app.layout = html.Div(
                                 html.Div(
                                     id="summary-section-and-notes",
                                     children=[
-                                        # Summary section
-                                        html.Div(id="summary-container"),
                                         # Notes
                                         html.Div(
                                             id="note-section",
                                             children=[
-                                                html.H3("Notes"),
-                                                html.Div(id="note-content")
+                                                html.H3("Note Section"),
+                                                html.P("Click on a note to display its content")
                                             ]
                                         )
                                     ]
                                 )
                             ]
-                        ),
+                        )
                     ]
                 ),
-            ]
-        )
+                # Footer
+                html.Div(
+                    id="footer-section",
+                    children = [
+                        html.Div(
+                            id="left-footer-section",
+                            children=[
+                            html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "36px"}),
+                            html.Span("layaCare", style={"color": "#113cca", "font-weight": "bold", "font-size": "36px"}),
+                            html.Br(),
+                            html.H4("In the past 28 days"),
+                        ]),
+                        html.Div(
+                            id="right-footer-section",
+                            children=[
+                            html.Div(children=[
+                                html.P("9"),
+                                html.P("Patients"),
+                            ]),
+                            html.Div(children=[
+                                html.P("8"),
+                                html.P("Falls"),
+                            ]),
+                            html.Div(children=[
+                                html.P("6"),
+                                html.P("Hospitalizations"),
+                            ]),
+                            html.Div(children=[
+                                html.P("13"),
+                                html.P("Cancelations"),
+                            ]),
+                        ])
+                    ]
+                )
+            ],
+        ),
     ]
 )
 
@@ -166,43 +174,41 @@ app.layout = html.Div(
 selected_patient = None  # Initially, no patient is selected
 @app.callback(
     Output('calendar-container', 'children'),
-    Output('summary-container', 'children'),
     Output('note-section', 'style'),
-    Output('graph-container', 'style'),
+    Output('table-stats', 'children'),
     [Input('table1', 'active_cell')],
     [State('table1', 'data')],
 )
 def update_calendar(active_cell, table1_data):
+    print('active cell : ', active_cell)
+    
     global selected_patient
+
     
     if active_cell:
         row = active_cell['row']
         new_selected_patient  = table1_data[row]['First Name'] + \
             " " + table1_data[row]['Last Name']
+        print('new patient : ', new_selected_patient)
+            
         # Check if the selected patient is different from the previously selected one
-        if selected_patient == new_selected_patient:
-            return dash.no_update
-        else:
+        if new_selected_patient != None:
             selected_patient = new_selected_patient
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
-            note_style = {"display": "block", "border": "2px solid brown", "background-color": "rgba(165, 42, 42, 0.2)"}
-            global_graph_style = {"display": "none"}
-            return cal.get_cal(schedule_data,note_data), cal.get_summary(schedule_data), note_style, global_graph_style   # Show the note section with the desired styling
+            radar_chart = vis.get_chart_from_name(selected_patient, mycharts)
+            print('active patient : ', selected_patient)
+            return cal.get_cal(schedule_data,note_data), {"display": "block", "border": "2px solid #ffaa05"}, radar_chart  # Show the note section with the desired styling
+        if selected_patient != new_selected_patient:
+            selected_patient = new_selected_patient
+            schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
+            note_data = preprocess.get_notes(df_notes, selected_patient)
+            radar_chart = vis.get_chart_from_name(selected_patient, mycharts)
+            return cal.get_cal(schedule_data,note_data), {"display": "block", "border": "2px solid #ffaa05"}, radar_chart  # Show the note section with the desired styling
+        if selected_patient == new_selected_patient:
+            return dash.no_update
 
-    return None, None, {"display": "none"}, {"display": "inline"}  # Hide the note section when no cell is selected
-
-
-@app.callback(
-    Output("table1", "selected_cells"),
-    Output("table1", "active_cell"),
-    Input("clear", "n_clicks"),    
-)
-def clear(n_clicks):
-    global selected_patient
-    selected_patient = None
-    return [], None
-
+    return None, {"display": "none"}, None  # Hide the note section when no cell is selected
 
 @app.callback(
     Output(component_id='table1', component_property='data'),
@@ -214,13 +220,13 @@ def update_table1_data(name):
         return data.to_dict('records')
     else:
         return data[data["Name"].str.contains(name)].to_dict('records')
-
+    
 @app.callback(
     Output('note-section', 'children'),
     Input({'type':'button_image', 'index':ALL}, 'n_clicks'),
 )
 def update_content(n_clicks_list):
-    global last_cliked_note
+    global first_time_clicked_note
     try:
         if ctx.triggered_id is not None:
             first_time_clicked_note = False
@@ -228,10 +234,13 @@ def update_content(n_clicks_list):
                 if n_click is not None:
                    first_time_clicked_note = True
             if first_time_clicked_note:
-                index = int(ctx.triggered_id["index"])                
-                return html.Div(children=cal.retrieve_saved_content_note(index))
+                index = int(ctx.triggered_id["index"])
+                return cal.retrieve_saved_content_note(index)
             if not first_time_clicked_note:
                 return cal.default_content()
         
     except TypeError:
         pass
+
+
+

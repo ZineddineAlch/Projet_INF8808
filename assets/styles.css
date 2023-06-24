@@ -19,21 +19,19 @@
     padding: 20px;
 }
 
+#global-view{
+    width: 30%;
+}
+
 #container-div{
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 h4{
     margin-bottom: 20px;
 }
 
-#global-view{
-    width: 35%;
-}
-#calendar-container{
-    width: 100%;
-}
 #search-bar{
     display: flex;
     align-items: center;
@@ -56,14 +54,17 @@ h4{
 
 #table1{
     margin-bottom: 50px;
-    width: 100%;
 }
 
-#table2{
-    margin-left: 20px; 
-    margin-right: 20px; 
-    margin-top: 117px; 
-    height : 400px;  
+#table-stats{
+    margin-left: 10px; 
+    margin-right: 10px; 
+    margin-top: 117px;
+    margin-bottom: 124px;
+    border: 1px solid rgb(211 211 211);
+    justify-content: center;
+    display: flex;
+    
 }
 
 
@@ -76,11 +77,12 @@ h4{
 #footer-section{
     border: 2px solid #ffaa05;
     border-radius: 20px;
-    width: 100%;
     padding: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin: 50px auto;
+    width: 40%;
 }
 
 #left-footer-section{
@@ -92,44 +94,26 @@ h4{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-direction: row;
 }
 
 #right-footer-section div{
-    width: 100%;
+    width: 140px;
     text-align: center;
 }
 #right-footer-section div p:first-child{
     font-weight: bold;
-    font-size: 28px;
+    font-size: 32px;
     color: #113cca;
 }
 #right-footer-section div p:last-child{
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 #detailed-view-container{
     margin-top: 95px;
     margin-left: 20px;
-    display: flex;
-    flex-direction:row;
-}
 
-#graph-container{
-    width: 100%;
-}
-
-#viz{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-}
-
-#summary-section-and-notes{
-    display: flex;
-    flex-direction: column;
-    width: 40%;
 }
 
 #summary-div{
@@ -142,19 +126,20 @@ h4{
 }
 
 #note-section{
-    border: 2px solid #8B4513;
+    border: 2px solid #c3916e;
     border-radius: 10px;
-    text-align: left;
-    background-color: rgba(139, 69, 19, 0.2);
-
-    background: repeating-linear-gradient(45deg, rgb(255, 255, 255), rgb(255, 255, 255) 3px, rgba(243, 112, 33, 0.1) 3px, rgba(243, 112, 33, 0.1) 3px);
+    text-align: center;
+    
+    background: repeating-linear-gradient(45deg, rgb(255, 255, 255), rgb(255, 255, 255) 5px, rgba(219, 172, 143, 0.1) 5px, rgba(243, 112, 33, 0.1) 6px);
+    
     padding: 10px;
     margin-top: 20px;
+    width: 910px;
 }
 
 @media only screen and (max-width: 2280px) {
     #detailed-view-container {
-      flex-direction: row;
+      flex-direction: column;
     }
     #summary-section-and-notes{
         margin-left: 0px;
