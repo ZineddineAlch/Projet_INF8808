@@ -191,9 +191,9 @@ def update_calendar(active_cell, table1_data):
         print('new patient : ', new_selected_patient)
 
         # Check if the selected patient is different from the previously selected one
-        if selected_patient == new_selected_patient:
-            return dash.no_update
-        else:
+        '''if selected_patient == new_selected_patient:
+            return dash.no_update'''
+        if new_selected_patient != None:
             selected_patient = new_selected_patient
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
