@@ -141,3 +141,21 @@ def get_schedule_for_patient(df, patient_id):
     schedule["DAY"] = pd.to_datetime(schedule["DAY"])
     schedule = schedule.sort_values("DAY")
     return schedule
+
+def calculate_summary(df):
+
+    required_columns = ['PATIENT_ID', 'FALL_COUNT', 'HOSPITALIZATION_COUNT','CANCELLATION_COUNTS']
+    for col in required_columns:
+        assert col in df.columns, f"Le DataFrame doit contenir une colonne '{col}'."
+
+    unique_patients = df['PATIENT_ID'].nunique()
+    total_falls = df['FALL_COUNT'].sum()
+    total_hospitalizations = df['HOSPITALIZATION_COUNT'].sum()
+    total_cancelation = df['CANCELLATION_COUNTS'].sum()
+
+    return {
+        'Patients': unique_patients,
+        'Falls': total_falls,
+        'Hospitalizations': total_hospitalizations,
+        'Cancelations' : total_cancelation
+    }
