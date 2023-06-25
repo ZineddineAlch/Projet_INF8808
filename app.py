@@ -32,7 +32,7 @@ mycharts = vis.get_radar_chart(data["Name"])
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
-
+summary = preprocess.calculate_summary(df_timeline)
 
 # ------------- Layout -------------#
 app.layout = html.Div(
@@ -147,19 +147,19 @@ app.layout = html.Div(
                             id="right-footer-section",
                             children=[
                             html.Div(children=[
-                                html.P("9"),
+                                html.P(summary['Patients']),
                                 html.P("Patients"),
                             ]),
                             html.Div(children=[
-                                html.P("8"),
+                                html.P(summary['Falls']),
                                 html.P("Falls"),
                             ]),
                             html.Div(children=[
-                                html.P("6"),
+                                html.P(summary['Hospitalizations']),
                                 html.P("Hospitalizations"),
                             ]),
                             html.Div(children=[
-                                html.P("13"),
+                                html.P(summary['Cancelations'])),
                                 html.P("Cancelations"),
                             ]),
                         ])
