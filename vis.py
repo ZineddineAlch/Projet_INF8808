@@ -3,6 +3,7 @@ import pandas as pd
 import preprocess
 from dash import dcc
 import numpy as np
+from preprocess import get_global_data
 
 # Read the dataset
 df_timeline = pd.read_csv('./assets/data/timeline_dataset.csv')
