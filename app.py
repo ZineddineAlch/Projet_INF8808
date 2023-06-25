@@ -212,7 +212,8 @@ def update_table1_data(name):
     if name == "":
         return data.to_dict('records')
     else:
-        return data[data["Name"].str.contains(name)].to_dict('records')
+        return data[data["Name"].str.lower().str.contains(name.lower())].to_dict('records')
+    
     
 @app.callback(
     Output('note-section', 'children'),
