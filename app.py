@@ -159,7 +159,7 @@ app.layout = html.Div(
                                 html.P("Hospitalizations"),
                             ]),
                             html.Div(children=[
-                                html.P(summary['Cancelations'])),
+                                html.P(summary['Cancelations']),
                                 html.P("Cancelations"),
                             ]),
                         ])
