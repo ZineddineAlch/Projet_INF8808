@@ -209,10 +209,16 @@ def update_calendar(active_cell, table1_data):
 )
 def update_table1_data(name):
     # Perform search logic here and return the filtered data for Table 1
+    dic = dict()
+    for i in vis.all_patients_area:
+        dic.update({i.index[0] :i[0]})
+    dic = sorted(dic.items(), key=lambda x:x[1], reverse=True)
+    data_aux = pd.DataFrame(columns=['Name', 'patient_radar_area'], data=dic)
+    data_aux = pd.merge(data_aux, data, on='Name')
     if name == "":
-        return data.to_dict('records')
+        return data_aux.to_dict('records')
     else:
-        return data[data["Name"].str.lower().str.contains(name.lower())].to_dict('records')
+        return data_aux[data_aux["Name"].str.lower().str.contains(name.lower())].to_dict('records')
     
     
 @app.callback(

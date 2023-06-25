@@ -1,5 +1,7 @@
 import plotly.graph_objects as go
 import pandas as pd
+import numpy as np
+import shapely
 import preprocess
 from dash import dcc
 
@@ -22,7 +24,8 @@ def get_radar_chart(patient_names):
     })
 
     charts = []
-
+    global all_patients_area
+    all_patients_area = []
     for patient_name in patient_names:
 
         values = aggregated.loc[patient_name]
@@ -52,6 +55,27 @@ def get_radar_chart(patient_names):
         # Create the figure and add the trace
         fig = go.Figure(data=[trace], layout=layout)
         charts.append([fig, patient_name])
+        # get data back out of figure
+        df = pd.concat([
+            pd.DataFrame({"r": t.r, "theta": t.theta, "trace": np.full(len(t.r), t.name)})
+            for t in fig.data
+            ]
+                       )
+        # convert theta to be in radians
+        df["theta_n"] = pd.factorize(df["theta"])[0]
+        df["theta_radian"] = (df["theta_n"] / (df["theta_n"].max() + 1)) * 2 * np.pi
+        # work out x,y co-ordinates
+        df["x"] = np.cos(df["theta_radian"]) * df["r"]
+        df["y"] = np.sin(df["theta_radian"]) * df["r"]
+        # generate a polygon from co-ordinates using shapely
+        # get the area of the polygon
+        df_a = df.groupby("trace").apply(
+            lambda d: shapely.geometry.MultiPoint(list(zip(d["x"], d["y"]))).convex_hull.area)
+        # let's use the areas in the name of the traces
+        fig.for_each_trace(lambda t: t.update(name=f"{t.name} {df_a.loc[t.name]:.1f}"))
+        #print(type(df_a))
+        all_patients_area.append(df_a)
+    #print(all_patients_area)
     return charts
 
 mycharts = get_radar_chart(data["Name"])
