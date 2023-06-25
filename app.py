@@ -32,7 +32,7 @@ mycharts = vis.get_radar_chart(data["Name"])
 columns_table1 = preprocess.table1_header()
 columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
-
+summary = preprocess.calculate_summary(df_timeline)
 
 # ------------- Layout -------------#
 app.layout = html.Div(
@@ -147,19 +147,19 @@ app.layout = html.Div(
                             id="right-footer-section",
                             children=[
                             html.Div(children=[
-                                html.P("9"),
+                                html.P(summary['Patients']),
                                 html.P("Patients"),
                             ]),
                             html.Div(children=[
-                                html.P("8"),
+                                html.P(summary['Falls']),
                                 html.P("Falls"),
                             ]),
                             html.Div(children=[
-                                html.P("6"),
+                                html.P(summary['Hospitalizations']),
                                 html.P("Hospitalizations"),
                             ]),
                             html.Div(children=[
-                                html.P("13"),
+                                html.P(summary['Cancelations']),
                                 html.P("Cancelations"),
                             ]),
                         ])
@@ -191,9 +191,9 @@ def update_calendar(active_cell, table1_data):
         print('new patient : ', new_selected_patient)
 
         # Check if the selected patient is different from the previously selected one
-        if selected_patient == new_selected_patient:
-            return dash.no_update
-        else:
+        '''if selected_patient == new_selected_patient:
+            return dash.no_update'''
+        if new_selected_patient != None:
             selected_patient = new_selected_patient
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)

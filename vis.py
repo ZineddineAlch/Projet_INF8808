@@ -4,6 +4,8 @@ import numpy as np
 import shapely
 import preprocess
 from dash import dcc
+import numpy as np
+from preprocess import get_global_data
 
 # Read the dataset
 df_timeline = pd.read_csv('./assets/data/timeline_dataset.csv')
@@ -84,3 +86,39 @@ def get_chart_from_name(name, charts):
     for chart in charts:
         if chart[1] == name:
             return dcc.Graph(figure=chart[0])
+
+def fall_pain_hosplot(df):
+  
+    df = get_global_data(df)
+    df = df[['FALL_COUNT', 'HAS_PAIN_MENTION', 'HOSPITALIZATION_COUNT']]
+    df['color'] = ['rgb{}'.format((np.random.randint(0,255), np.random.randint(0,255), np.random.randint(0,255))) for _ in range(df.shape[0])]
+    fig = go.Figure()
+
+    
+    for i in range(df.shape[0]):
+        fig.add_trace(go.Scatter(
+            x=df.columns[:-1], 
+            y=df.iloc[i][:-1], 
+            mode='lines',
+            line=dict(color=df.iloc[i]['color']), 
+            name=df.index[i]  
+        ))
+
+    return fig
+
+def visites_bar_chart(df):
+    df = get_global_data(df)
+    assert 'VISIT_COUNTS' in df.columns, "Le DataFrame doit contenir une colonne 'VISIT_COUNTS'."
+    assert 'CANCELLATION_COUNTS' in df.columns, "Le DataFrame doit contenir une colonne 'CANCELLATION_COUNTS'."
+
+    x_values = df.index
+
+    fig = go.Figure(data=[
+        go.Bar(name='VISIT_COUNTS', x=x_values, y=df['VISIT_COUNTS'], marker_color='green'),
+        go.Bar(name='CANCELLATION_COUNTS', x=x_values, y=df['CANCELLATION_COUNTS'], marker_color='red')
+    ])
+
+
+    fig.update_layout(barmode='group')
+
+    return fig
