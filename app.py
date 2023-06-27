@@ -120,6 +120,61 @@ app.layout = html.Div(
                                     id="table-stats",style={'display': 'flex', "flex-direction": "column", 'text-align': 'center', "height": "fit-content"},
                                 ),
                                 html.Div(
+                                    id="legend",
+                                    children=[
+                                        html.H3("Legend"),
+                                        html.Div(
+                                            style={
+
+                                                "gap": "20px",
+                                            },
+                                            children=[
+                                                html.Div(
+                                                    style={"display": "flex", "flex-direction": "row", "align-items": "center","justify-content":"space-between"},
+                                                    children=[
+                                                        html.Div(
+                                                            children=[
+                                                                html.Img(src="assets/pain.png", style={"max-width": "30%"}),
+                                                                html.P("Pain"),
+                                                            ],
+                                                        ),
+                                                        html.Div(
+                                                            children=[
+                                                                html.Img(src="assets/fall.png", style={"max-width": "30%"}),
+                                                                html.P("Fall"),
+                                                            ],
+                                                        ),
+                                                        html.Div(
+                                                            children=[
+                                                                html.Img(src="assets/note.jpeg", style={"max-width": "30%"}),
+                                                                html.P("Note"),
+                                                            ],
+                                                        ),
+                                                    ]
+                                                ),
+                                                html.Div(
+                                                    style={"display": "flex", "flex-direction": "row", "align-items": "center"},
+                                                    children=[
+                                                        html.Div(
+                                                            children=[
+                                                                html.Img(src="assets/cancelled.png", style={"max-width": "30%"}),
+                                                                html.P("Cancellation"),
+                                                            ],
+                                                        ),
+                                                        html.Div(
+                                                            children=[
+                                                                html.Img(src="assets/hospital.png", style={"max-width": "30%"}),
+                                                                html.P("Hospitalization"),
+                                                            ],
+                                                        ),
+                                                    ]
+                    
+                                                ),
+                                            ],
+                                        ),
+                                    ],
+                                ),
+                                html.Div(
                                     id="note-section",
                                     style={"text-align": "center"},
                                     children=[
