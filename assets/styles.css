@@ -134,7 +134,7 @@ h4{
     border: 2px solid rgb(255, 170, 5);
     border-radius: 10px;
     text-align: left;
-    
+    margin-left: 10px;
     background: repeating-linear-gradient(45deg, rgb(255, 255, 255), rgb(255, 255, 255) 5px, rgba(219, 172, 143, 0.1) 5px, rgba(243, 112, 33, 0.1) 6px);
     
     padding: 10px;
