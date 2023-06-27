@@ -89,14 +89,15 @@ def get_day(row,note_df):
         html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.9em","font-weight":"600"})
     ]
     if row["TOTAL_ADLS"] == 0:
-        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "15px", "width": "100%","color":"rgb(255, 170, 5)", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "9px", "border-top": "0.5px rgba(239,239,240) solid", "line-height": "15px", "text-align": "center","font-weight": "bold"}))
+        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "11%", "width": "100%","color":"rgb(17, 60, 202)", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "65%","text-align": "center","font-weight": "bold"}))
 
     else:
         adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
         children.append(
             dbc.Progress(
                 value=adl_completion,
-                color="rgb(85, 150, 255)",
+                color="rgb(255, 170, 5)",
+                
                 striped=True,
                 animated=True,
                 style={"height": "15px", "width": "100%", "position": "absolute",
@@ -107,8 +108,9 @@ def get_day(row,note_df):
             html.Div(
                 f"ADLS: {adl_completion}%",
                 style={
-                    "height": "15%", "width": "100%", "position": "absolute",
-                    "bottom": "0", "border-radius": "0px","color":"#000000"
+                    "height": "13%", "width": "100%", "position": "absolute",
+                    "bottom": "0", "border-radius": "0px","color":"rgb(17, 60, 202)","font-weight": "bold",
+                    "text-align": "center","font-weight": "bold","font-size": "85%"
                 },
             ),
         )
