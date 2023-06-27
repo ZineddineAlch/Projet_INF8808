@@ -121,14 +121,14 @@ app.layout = html.Div(
                                 ),
                                 html.Div(
                                     id="note-section",
+                                    style={"text-align": "center"},
                                     children=[
                                         html.H3("Note Section"),
                                         html.P("Click on a note to display its content")
                                     ]
                                 )
                             ]
-                        )
-
+                        ),
                     ]
                 ),
                 # Footer
