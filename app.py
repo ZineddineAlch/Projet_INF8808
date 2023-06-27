@@ -112,6 +112,7 @@ app.layout = html.Div(
                             ]
                         ),
                         html.Div(
+                            id="stats-notes",
                             style={"display": "flex", "flex-direction": "column"},
                             children=[
                                 html.Div(
@@ -173,7 +174,7 @@ app.layout = html.Div(
 selected_patient = None  # Initially, no patient is selected
 @app.callback(
     Output('calendar-container', 'children'),
-    Output('note-section', 'style'),
+    Output('stats-notes', 'style'),
     Output('table-stats', 'children'),
     [Input('table1', 'active_cell')],
     [State('table1', 'data')],
@@ -198,7 +199,7 @@ def update_calendar(active_cell, table1_data):
             note_data = preprocess.get_notes(df_notes, selected_patient)
             stats_children = [html.H3("Last 28 days (normalized)", style={'color': 'rgb(255, 170, 5)'}), vis.get_chart_from_name(selected_patient, mycharts)]
             cal_children = [html.H1(selected_patient, style={'color': 'rgb(255, 170, 5)', 'text-align': 'center'}), cal.get_cal(schedule_data,note_data)]
-            return cal_children, {"display": "block"}, stats_children  # Show the note section with the desired styling
+            return cal_children, {"display": "flex", "flex-direction": "column"}, stats_children  # Show the note section with the desired styling
 
     return None, {"display": "none"}, None  # Hide the note section when no cell is selected
 
