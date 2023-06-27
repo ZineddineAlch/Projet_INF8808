@@ -12,7 +12,7 @@ df_timeline = pd.read_csv('./assets/data/timeline_dataset.csv')
 data = preprocess.id_extract(df_timeline)
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
 # Data for the radar chart
-CATEGORIES = ['FALL_COUNT', 'CANCELLATION_COUNTS', 'HOSPITALIZATION_COUNT', 'HAS_PAIN_MENTION']
+CATEGORIES = ['CANCELLATION_COUNTS', 'FALL_COUNT', 'HOSPITALIZATION_COUNT', 'HAS_PAIN_MENTION']
 
 def get_radar_chart(patient_names):
 
@@ -22,19 +22,29 @@ def get_radar_chart(patient_names):
         'CANCELLATION_COUNTS': 'sum',
         'HOSPITALIZATION_COUNT': 'sum',
         'HAS_PAIN_MENTION': 'sum'
-
     })
+
+    max_fall, min_fall = aggregated["FALL_COUNT"].values.max(), aggregated["FALL_COUNT"].values.min()
+    max_cancel, min_cancel = aggregated["CANCELLATION_COUNTS"].values.max(), aggregated["CANCELLATION_COUNTS"].values.min()
+    max_hosp, min_hosp = aggregated["HOSPITALIZATION_COUNT"].values.max(), aggregated["HOSPITALIZATION_COUNT"].values.min()
+    max_pain, min_pain = aggregated["HAS_PAIN_MENTION"].values.max(), aggregated["HAS_PAIN_MENTION"].values.min()
+
+    aggregated_norm = aggregated.copy(deep=True)
+    aggregated_norm['FALL_COUNT'] = (aggregated_norm['FALL_COUNT'] - min_fall) / (max_fall - min_fall)
+    aggregated_norm['CANCELLATION_COUNTS'] = (aggregated_norm['CANCELLATION_COUNTS'] - min_cancel) / (max_cancel - min_cancel)
+    aggregated_norm['HOSPITALIZATION_COUNT'] = (aggregated_norm['HOSPITALIZATION_COUNT'] - min_hosp) / (max_hosp - min_hosp)
+    aggregated_norm['HAS_PAIN_MENTION'] = (aggregated_norm['HAS_PAIN_MENTION'] - min_pain) / (max_pain - min_pain)
 
     charts = []
     global all_patients_area
     all_patients_area = []
     for patient_name in patient_names:
 
-        values = aggregated.loc[patient_name]
-        values.values
+        values = aggregated_norm.loc[patient_name].values
+
         # Create a trace for the radar chart
         trace = go.Scatterpolar(
-            r=values.values,
+            r=values,
             theta=CATEGORIES,
             fill='toself',
             name=patient_name,
@@ -44,15 +54,20 @@ def get_radar_chart(patient_names):
         # Create the layout for the chart
         layout = go.Layout(
             polar=dict(
-                radialaxis=dict(visible=True),
-                angularaxis=dict(direction='counterclockwise', rotation=45) 
+                radialaxis=dict(visible=True, showticklabels=False),
+                angularaxis=dict(direction='counterclockwise',
+                                 rotation=90,
+                                 dtick=45,
+                                 tickmode="array",
+                                 showticklabels=True,
+                                 tickvals=CATEGORIES,
+                                 ticktext=["Cancellations", "Falls", "Hospitalizations", "Pain"],) 
             ),
-            
+
             showlegend=False,
             height=350,  # Set the height of the chart (in pixels)
-            width=550,  # Set the width of the chart (in pixels)
+            width=400,  # Set the width of the chart (in pixels)
             margin=dict(l=50, r=50, t=50, b=50)  # Set the margins around the chart
-
         )
         # Create the figure and add the trace
         fig = go.Figure(data=[trace], layout=layout)
