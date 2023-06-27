@@ -1,6 +1,6 @@
 import pandas as pd
 import re
-
+from fractions import Fraction
 SCHEDULE_COLS = ["DAY", "VISIT_COUNTS", "TOTAL_COMPLETED_ADLS","TOTAL_ADLS","ADL_COMPLETION_PERCENTAGE","CANCELLATION_COUNTS","CANCELLATION_REASON_AND_COUNTS","HAS_PAIN_MENTION","PAIN_DETAILS","FALL_COUNT","FALL_DETAILS","HOSPITALIZATION_COUNT","HOSPITALIZATION_DETAILS"]
 
 def table1_header():
@@ -52,18 +52,19 @@ def completed_adls_visit(df):
     })
     
     # Calculate the ratio
-    grouped_df1['Ratio'] = grouped_df1['TOTAL_COMPLETED_ADLS'] / grouped_df1['TOTAL_ADLS']
-    
+    #grouped_df1['Ratio'] = grouped_df1['TOTAL_COMPLETED_ADLS'] / grouped_df1['TOTAL_ADLS']
+    grouped_df1['Ratio'] = grouped_df1.apply(lambda row: str(Fraction(row['TOTAL_COMPLETED_ADLS'], row['TOTAL_ADLS'])), axis=1)
     grouped_df2 = df.groupby('PATIENT_ID', sort=False).agg({
         'VISIT_COUNTS': 'sum',
         'CANCELLATION_COUNTS': 'sum'
     })
     
     # Calculate the ratio
-    grouped_df2['Ratio1'] = grouped_df2['VISIT_COUNTS'] / (grouped_df2['VISIT_COUNTS']+grouped_df2['CANCELLATION_COUNTS'])
+    #grouped_df2['Ratio1'] = grouped_df2['VISIT_COUNTS'] / (grouped_df2['VISIT_COUNTS']+grouped_df2['CANCELLATION_COUNTS'])
+    grouped_df2['Ratio1'] = grouped_df2.apply(lambda row: str(Fraction(row['VISIT_COUNTS'], (row['CANCELLATION_COUNTS']+row['VISIT_COUNTS']))), axis=1)
     
-    empty_df['Completed ADLS'] = grouped_df1['Ratio'].round(2)*100
-    empty_df['Completed visits'] = grouped_df2['Ratio1'].round(2)*100
+    empty_df['Completed ADLS'] = grouped_df1['Ratio']
+    empty_df['Completed visits'] = grouped_df2['Ratio1']
     
     return empty_df
 

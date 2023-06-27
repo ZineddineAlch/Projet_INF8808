@@ -11,6 +11,7 @@ import vis
 import template
 import cal
 
+
 app = dash.Dash(name=__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = 'Project | INF8808'
 
@@ -78,7 +79,9 @@ app.layout = html.Div(
                                     page_size=8,
                                     style_table={'overflowX': 'auto'},
                                     style_as_list_view=True,
-                                
+                                    sort_action='native',
+                                    sort_mode='single',
+                                    column_selectable = 'multi',
                                     style_data={'whiteSpace': 'normal',
                                                 'height': 'auto','color':'#08193e','fontWeight': 'bold' },
                                     style_header={
