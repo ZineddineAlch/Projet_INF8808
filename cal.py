@@ -65,6 +65,7 @@ def insert_image(row,children):
     second_row_div = html.Div(second_row, style={"display": "flex", "justify-content": "space-around"})
     
     return children.append(html.Div([first_row_div, second_row_div], style={"display": "flex", "flex-direction": "column"}))
+
 def insert_image_note(row,children,note_df):
     # Placeholder for image/icon based on different types of data
     images = []
@@ -106,11 +107,11 @@ def get_day(row,note_df):
         )
         children.append(
             html.Div(
-                f"ADLS: {adl_completion}%",
+                f"ADLS: {row['TOTAL_COMPLETED_ADLS']}/{row['TOTAL_ADLS']}",
                 style={
-                    "height": "13%", "width": "100%", "position": "absolute",
-                    "bottom": "0", "border-radius": "0px","color":"rgb(17, 60, 202)","font-weight": "bold",
-                    "text-align": "center","font-weight": "bold","font-size": "85%"
+                    "height": "11%", "width": "100%", "position": "absolute",
+                    "bottom": "1px", "border-radius": "0px","color":"rgb(17, 60, 202)",
+                    "text-align": "center","font-weight": "bold","font-size": "75%", "font-variant-numeric": "lining-nums"
                 },
             ),
         )
