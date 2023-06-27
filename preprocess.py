@@ -7,8 +7,8 @@ def table1_header():
     
     columns=[
         {"name": "Name", "id": "Name"},
-        {"name": "Completed ADLS (%)", "id": "Completed ADLS"},
-        {"name": "Completed visits (%)", "id": "Completed visits"}
+        {"name": "ADLS Completion", "id": "Completed ADLS"},
+        {"name": "Visits Done", "id": "Completed visits"}
     ]
     
     

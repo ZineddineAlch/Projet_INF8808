@@ -8,7 +8,7 @@ notes_content = [None]*35
 
 DAYS = ["Monday", "Tuesday", "Wednesday",
         "Thursday", "Friday", "Saturday", "Sunday"]
-
+sz = 7.5
 
 def get_image(image_path, tooltip_text):
     get_image.counter = getattr(get_image, 'counter', 0) + 1
@@ -117,12 +117,12 @@ def get_day(row,note_df):
         )
     insert_image(row,children)
     insert_image_note(row,children,note_df)
-    children = html.Div(children, style={"width": "8em", "height": "8em", "position": "relative"})
+    children = html.Div(children, style={"width": f"{sz}em", "height": f"{sz}em", "position": "relative"})
     return dbc.Col(html.Div(children=children, style={"border": "1px rgb(211, 211, 211) solid"}), width="auto")
 
 def get_gray_day():
     child = html.Div(
-        style={"width": "8em", "height": "8em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#F370211A 5px,#F370211A 6px)"})
+        style={"width": f"{sz}em", "height": f"{sz}em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#F370211A 5px,#F370211A 6px)"})
     return dbc.Col(html.Div(child, style={"border": "1px #fafcff solid"}), width="auto")
 
 
@@ -130,7 +130,7 @@ def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
     note_df["DAY"] = pd.to_datetime(note_df["DAY"])  # Convert "DAY" column to datetime
     # create week days header row, with each day in a column of width 8em + 2px border
     week_days = [dbc.Row([dbc.Col(html.Div(html.Div(
-        day, style={"width": "calc(8em + 2px)", "text-align": "center", "margin": "auto",
+        day, style={"width": f"calc({sz}em + 2px)", "text-align": "center", "margin": "auto",
                     "font-weight": "600"})), width="auto") for day in DAYS], className="g-0")]
 
     all_days = []

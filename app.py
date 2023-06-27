@@ -42,7 +42,7 @@ app.layout = html.Div(
         # Logo AlayaCare
         html.Img(
             id="alayacare-logo",
-            src="./assets/image_alaya.png"
+            src="./assets/image_alaya.png",
         ),
         html.Div(
             id="parent-div",
@@ -89,7 +89,7 @@ app.layout = html.Div(
                                         "font-family": "Calibre,Poppins,Roboto,sans-serif",'color':"#ffaa05"},
                                     markdown_options={'html': True},
                                     style_cell={
-                                        'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "18px", "padding":"20px"
+                                        'textAlign': 'center','font-family': 'Calibre,Poppins,Roboto,sans-serif',"font-size": "16px", "padding":"15px"
                                     },
                                     style_data_conditional=[
                                         {
@@ -99,6 +99,12 @@ app.layout = html.Div(
                                             'border': '2px solid rgb(211, 211, 211)'
                                             
                                         }
+                                    ],
+                                    style_cell_conditional=[
+                                        {'if': {'column_id': 'Name'},
+                                        'width': '50%'},
+                                        {'if': {'column_id': 'Completed visits'},
+                                        'width': '25%'},
                                     ],
                                 )
                             ]
@@ -130,7 +136,7 @@ app.layout = html.Div(
                                                         ),
                                                         html.Div(
                                                             children=[
-                                                                html.Img(src="assets/fall.png", style={"max-width": "20%"}),
+                                                                html.Img(src="assets/fall1.png", style={"max-width": "20%"}),
                                                                 html.P("Fall"),
                                                             ],
                                                         ),
