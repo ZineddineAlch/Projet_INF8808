@@ -102,7 +102,7 @@ app.layout = html.Div(
                                     ],
                                     style_cell_conditional=[
                                         {'if': {'column_id': 'Name'},
-                                        'width': '50%'},
+                                        'width': '300px'},
                                         {'if': {'column_id': 'Completed visits'},
                                         'width': '25%'},
                                     ],
@@ -254,7 +254,7 @@ def update_calendar(active_cell, table1_data):
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
             stats_children = [html.H3("Last 28 days (normalized)", style={'color': 'rgb(255, 170, 5)','text-align':'center'}), vis.get_chart_from_name(selected_patient, mycharts)]
-            cal_children = [html.H1(selected_patient, style={'color': '#113cca','font-size':'24px', 'text-align': 'left','fontWeight': 'bold'}), cal.get_cal(schedule_data,note_data)]
+            cal_children = [html.H3(selected_patient, style={'color': '#113cca', 'text-align': 'left','fontWeight': 'bold'}), cal.get_cal(schedule_data,note_data)]
             return cal_children, {"display": "flex", "flex-direction": "column"}, stats_children  # Show the note section with the desired styling
 
     return None, {"display": "none"}, None  # Hide the note section when no cell is selected
