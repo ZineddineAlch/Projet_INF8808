@@ -60,13 +60,11 @@ h4{
     margin-left: 10px; 
     margin-right: 10px; 
     margin-top: 117px;
-    margin-bottom: 124px;
     border: 1px solid rgb(211 211 211);
     justify-content: center;
     display: flex;
     
 }
-
 
 .previous-next-container{
     display: flex;
@@ -111,7 +109,7 @@ h4{
 }
 
 #detailed-view-container{
-    margin-top: 95px;
+    margin-top: 40px;
     margin-left: 20px;
 
 }
@@ -125,16 +123,25 @@ h4{
     margin-top: 24px;
 }
 
-#note-section{
-    border: 2px solid #c3916e;
+#table-stats{
+    border: 2px solid rgb(255, 170, 5);
     border-radius: 10px;
-    text-align: center;
+    text-align: left;
+    padding: 10px;
+}
+
+#note-section{
+    border: 2px solid rgb(255, 170, 5);
+    border-radius: 10px;
+    text-align: left;
     
     background: repeating-linear-gradient(45deg, rgb(255, 255, 255), rgb(255, 255, 255) 5px, rgba(219, 172, 143, 0.1) 5px, rgba(243, 112, 33, 0.1) 6px);
     
     padding: 10px;
     margin-top: 20px;
-    width: 910px;
+    display: block;
+    width: min-content;
+    min-width: 100%;
 }
 
 @media only screen and (max-width: 2280px) {

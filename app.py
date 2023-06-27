@@ -103,35 +103,31 @@ app.layout = html.Div(
                                 )
                             ]
                         ),
-                        html.Div(
-                                # Table Stats
-                                id="table-stats",style={'textAlign': 'center', 'display': 'flex',
-                                                        'align-items': 'center'},
-                                
-                                
-                        ),
                         # Detailed view container
                         html.Div(
                             id="detailed-view-container",
                             children=[
                                 # Detailed view
                                 html.Div(id="calendar-container"),
-                                # Summary section and notes
+                            ]
+                        ),
+                        html.Div(
+                            style={"display": "flex", "flex-direction": "column"},
+                            children=[
                                 html.Div(
-                                    id="summary-section-and-notes",
+                                    # Table Stats
+                                    id="table-stats",style={'display': 'flex', "flex-direction": "column", 'text-align': 'center', "height": "fit-content"},
+                                ),
+                                html.Div(
+                                    id="note-section",
                                     children=[
-                                        # Notes
-                                        html.Div(
-                                            id="note-section",
-                                            children=[
-                                                html.H3("Note Section"),
-                                                html.P("Click on a note to display its content")
-                                            ]
-                                        )
+                                        html.H3("Note Section"),
+                                        html.P("Click on a note to display its content")
                                     ]
                                 )
                             ]
                         )
+
                     ]
                 ),
                 # Footer
@@ -200,9 +196,9 @@ def update_calendar(active_cell, table1_data):
             selected_patient = new_selected_patient
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
-            radar_chart = vis.get_chart_from_name(selected_patient, mycharts)
-
-            return cal.get_cal(schedule_data,note_data), {"display": "block", "border": "2px solid #ffaa05"}, radar_chart  # Show the note section with the desired styling
+            stats_children = [html.H3("Last 28 days (normalized)", style={'color': 'rgb(255, 170, 5)'}), vis.get_chart_from_name(selected_patient, mycharts)]
+            cal_children = [html.H1(selected_patient, style={'color': 'rgb(255, 170, 5)', 'text-align': 'center'}), cal.get_cal(schedule_data,note_data)]
+            return cal_children, {"display": "block"}, stats_children  # Show the note section with the desired styling
 
     return None, {"display": "none"}, None  # Hide the note section when no cell is selected
 

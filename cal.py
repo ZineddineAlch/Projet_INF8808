@@ -142,11 +142,7 @@ def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
     return dbc.Container(week_days + cal,id='calendar')
 
 def save_content(index:int, content):
-    notes_content[index] = content
-
-def retrieve_saved_content_note(index:int):
-    global notes_content
-    date, notes = notes_content[index-1]
+    date, notes = content
     ret = [html.H3(f"Notes for {date}")]
     children = []
     for note_type, notes_ in notes.items():
@@ -154,10 +150,14 @@ def retrieve_saved_content_note(index:int):
             sub_children = [html.H5(note_type)]
             for n in notes_:
                 sub_children.append(html.Li(n))
-            children.append(html.Ul(sub_children, style={"width": "50%"}))
-    notes_div = html.Div(children, style={"display":"flex", "flex-direction": "row", "text-align": "left"})
+            children.append(html.Ul(sub_children))
+    notes_div = html.Div(children, style={"display":"flex", "flex-direction": "column", "text-align": "left"})
     ret.append(notes_div)
-    return ret
+
+    notes_content[index] = ret
+
+def retrieve_saved_content_note(index:int):
+    return notes_content[index-1]
 
 def default_content():
     return "Click on note to show content"
