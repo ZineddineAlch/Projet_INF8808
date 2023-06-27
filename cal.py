@@ -95,14 +95,22 @@ def get_day(row,note_df):
         adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
         children.append(
             dbc.Progress(
-                label=f"ADLS: {adl_completion}%",
                 value=adl_completion,
-                color="rgb(17, 60, 202)",
+                color="rgb(85, 150, 255)",
                 striped=True,
                 animated=True,
                 style={"height": "15px", "width": "100%", "position": "absolute",
-                       "bottom": "0", "border-radius": "0px","progress-bar-color":"#fff"},
+                       "bottom": "0", "border-radius": "0px","progress-bar-color":"#fff", "overflow": "hidden"},
             )
+        )
+        children.append(
+            html.Div(
+                f"ADLS: {adl_completion}%",
+                style={
+                    "height": "15%", "width": "100%", "position": "absolute",
+                    "bottom": "0", "border-radius": "0px","color":"#000000"
+                },
+            ),
         )
     insert_image(row,children)
     insert_image_note(row,children,note_df)
