@@ -154,7 +154,7 @@ h4{
     width: min-content;
     min-width: 100%;
     text-align: center;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
 }

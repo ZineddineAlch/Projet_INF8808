@@ -109,16 +109,6 @@ app.layout = html.Div(
                             children=[
                                 # Detailed view
                                 html.Div(id="calendar-container"),
-                            ]
-                        ),
-                        html.Div(
-                            id="stats-notes",
-                            style={"display": "flex", "flex-direction": "column"},
-                            children=[
-                                html.Div(
-                                    # Table Stats
-                                    id="table-stats",style={'display': 'flex', "flex-direction": "column", 'text-align': 'center', "height": "fit-content"},
-                                ),
                                 html.Div(
                                     id="legend",
                                     children=[
@@ -134,45 +124,50 @@ app.layout = html.Div(
                                                     children=[
                                                         html.Div(
                                                             children=[
-                                                                html.Img(src="assets/pain.png", style={"max-width": "30%"}),
+                                                                html.Img(src="assets/pain.png", style={"max-width": "20%"}),
                                                                 html.P("Pain"),
                                                             ],
                                                         ),
                                                         html.Div(
                                                             children=[
-                                                                html.Img(src="assets/fall.png", style={"max-width": "30%"}),
+                                                                html.Img(src="assets/fall.png", style={"max-width": "20%"}),
                                                                 html.P("Fall"),
                                                             ],
                                                         ),
                                                         html.Div(
                                                             children=[
-                                                                html.Img(src="assets/note.jpeg", style={"max-width": "30%"}),
+                                                                html.Img(src="assets/note.jpeg", style={"max-width": "20%"}),
                                                                 html.P("Note"),
                                                             ],
                                                         ),
-                                                    ]
-                                                ),
-                                                html.Div(
-                                                    style={"display": "flex", "flex-direction": "row", "align-items": "center"},
-                                                    children=[
                                                         html.Div(
                                                             children=[
-                                                                html.Img(src="assets/cancelled.png", style={"max-width": "30%"}),
-                                                                html.P("Cancellation"),
-                                                            ],
-                                                        ),
-                                                        html.Div(
-                                                            children=[
-                                                                html.Img(src="assets/hospital.png", style={"max-width": "30%"}),
+                                                                html.Img(src="assets/hospital.png", style={"max-width": "20%"}),
                                                                 html.P("Hospitalization"),
                                                             ],
                                                         ),
+                                                        html.Div(
+                                                            children=[
+                                                                html.Img(src="assets/cancelled.png", style={"max-width": "20%"}),
+                                                                html.P("Cancellation"),
+                                                            ],
+                                                        ),
+                                                        
                                                     ]
-                    
                                                 ),
                                             ],
                                         ),
                                     ],
+                                ),
+                            ]
+                        ),
+                        html.Div(
+                            id="stats-notes",
+                            style={"display": "flex", "flex-direction": "column"},
+                            children=[
+                                html.Div(
+                                    # Table Stats
+                                    id="table-stats",style={'display': 'flex', "flex-direction": "column", 'text-align': 'center', "height": "fit-content"},
                                 ),
                                 html.Div(
                                     id="note-section",
@@ -257,6 +252,27 @@ def update_calendar(active_cell, table1_data):
             return cal_children, {"display": "flex", "flex-direction": "column"}, stats_children  # Show the note section with the desired styling
 
     return None, {"display": "none"}, None  # Hide the note section when no cell is selected
+
+
+
+@app.callback(
+    Output('legend', 'style'),
+    [Input('table1', 'active_cell')],
+    [State('table1', 'data')],
+)
+def update_calendar(active_cell, table1_data):
+    print('active cell : ', active_cell)
+    
+    global selected_patient
+
+    if active_cell:
+        row = active_cell['row']
+        new_selected_patient  = table1_data[row]['First Name'] + \
+            " " + table1_data[row]['Last Name']
+        if new_selected_patient != None:
+            return {"display":"flex"}
+
+    return None  # Hide the note section when no cell is selected
 
 @app.callback(
     Output(component_id='table1', component_property='data'),
