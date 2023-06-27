@@ -39,10 +39,24 @@ def get_radar_chart(patient_names):
             fill='toself',
             name=patient_name,
             line=dict(color='#113cca'),  # Change the line color to red
-            line_shape='spline'
+            line_shape='spline',
+            
+            
         )
         # Create the layout for the chart
         layout = go.Layout(
+            title={
+            'text': "<b>Last 28 days</b>",
+            'y':1,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+            'font': {'color': 'rgb(255, 170, 5)'} 
+            },
+            font=dict(
+                family="Calibre, Poppins, Roboto, sans-serif",
+                size=14,
+                color="#113cca"),
             polar=dict(
                 radialaxis=dict(visible=True),
                 angularaxis=dict(direction='counterclockwise', rotation=45) 
