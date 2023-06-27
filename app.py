@@ -106,9 +106,45 @@ app.layout = html.Div(
                                         {'if': {'column_id': 'Completed visits'},
                                         'width': '25%'},
                                     ],
-                                )
-                            ]
+                                ),
+                                             # Footer
+                html.Div(
+                    id="footer-section",
+                    children = [
+                        html.Div(
+                            id="left-footer-section",
+                            children=[
+                            html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "24px"}),
+                            html.Span("layaCare", style={"color": "#113cca", "font-weight": "bold", "font-size": "24px"}),
+                            html.Br(),
+                            html.H4("In the past 28 days",style={"font-size": "24px"}),
+                        ]),
+                        html.Div(
+                            id="right-footer-section",
+                            children=[
+                            html.Div(children=[
+                                html.P(summary['Patients'],style={"font-size": "19px"}),
+                                html.P("Patients",style={"font-size": "19px"}),
+                            ]),
+                            html.Div(children=[
+                                html.P(summary['Falls'],style={"font-size": "19px"}),
+                                html.P("Falls",style={"font-size": "19px"}),
+                            ]),
+                            html.Div(children=[
+                                html.P(summary['Hospitalizations'],style={"font-size": "19px"}),
+                                html.P("Hospitalizations",style={"font-size": "19px"}),
+                            ]),
+                            html.Div(children=[
+                                html.P(summary['Cancelations'],style={"font-size": "19px"}),
+                                html.P("Cancelations",style={"font-size": "19px"}),
+                            ]),
+                        ])
+                    ]
+                ),
+                            ],
+                            
                         ),
+                        
                         # Detailed view container
                         html.Div(
                             id="detailed-view-container",
@@ -187,40 +223,6 @@ app.layout = html.Div(
                         ),
                     ]
                 ),
-                # Footer
-                html.Div(
-                    id="footer-section",
-                    children = [
-                        html.Div(
-                            id="left-footer-section",
-                            children=[
-                            html.Span("A", style={"color": "#ffaa05", "font-weight": "bold", "font-size": "36px"}),
-                            html.Span("layaCare", style={"color": "#113cca", "font-weight": "bold", "font-size": "36px"}),
-                            html.Br(),
-                            html.H4("In the past 28 days"),
-                        ]),
-                        html.Div(
-                            id="right-footer-section",
-                            children=[
-                            html.Div(children=[
-                                html.P(summary['Patients']),
-                                html.P("Patients"),
-                            ]),
-                            html.Div(children=[
-                                html.P(summary['Falls']),
-                                html.P("Falls"),
-                            ]),
-                            html.Div(children=[
-                                html.P(summary['Hospitalizations']),
-                                html.P("Hospitalizations"),
-                            ]),
-                            html.Div(children=[
-                                html.P(summary['Cancelations']),
-                                html.P("Cancelations"),
-                            ]),
-                        ])
-                    ]
-                )
             ],
         ),
     ]

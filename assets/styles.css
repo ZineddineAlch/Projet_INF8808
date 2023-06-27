@@ -76,26 +76,24 @@ h4{
     border: 2px solid #ffaa05;
     border-radius: 20px;
     padding: 20px;
-    display: flex;
-    align-items: center;
+    display: flex; 
     justify-content: space-between;
-    margin: 50px auto;
-    width: 40%;
+    width: 100%;
 }
 
 #left-footer-section{
-    margin-right: 50px;
+    margin-right: 0px;
 }
 
 #right-footer-section{
-    width: 100%;
+    width: 80%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 #right-footer-section div{
-    width: 140px;
+    width: 160px;
     text-align: center;
 }
 #right-footer-section div p:first-child{
