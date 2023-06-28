@@ -234,16 +234,18 @@ selected_patient = None  # Initially, no patient is selected
     Output('calendar-container', 'children'),
     Output('stats-notes', 'style'),
     Output('table-stats', 'children'),
+    Output('legend', 'style'),
     [Input('table1', 'active_cell')],
+    [Input('table1', 'page_current')],
     [State('table1', 'data')],
 )
-def update_calendar(active_cell, table1_data):
+def update_calendar(active_cell, page_current, table1_data):
     print('active cell : ', active_cell)
     
     global selected_patient
 
     if active_cell:
-        row = active_cell['row']
+        row = active_cell['row'] + page_current*8 if page_current else active_cell['row']
         new_selected_patient  = table1_data[row]['First Name'] + \
             " " + table1_data[row]['Last Name']
         print('new patient : ', new_selected_patient)
@@ -256,31 +258,16 @@ def update_calendar(active_cell, table1_data):
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
             stats_children = [html.H3("Last 28 days (normalized)", style={'color': 'rgb(255, 170, 5)','text-align':'center'}), vis.get_chart_from_name(selected_patient, mycharts)]
+            stats_style = {"display": "flex", "flex-direction": "column"}
             cal_children = [html.H3(selected_patient, style={'color': '#113cca', 'text-align': 'left','fontWeight': 'bold'}), cal.get_cal(schedule_data,note_data)]
-            return cal_children, {"display": "flex", "flex-direction": "column"}, stats_children  # Show the note section with the desired styling
+            legend_style = {"display":"flex"}
+            return cal_children, stats_style, stats_children, legend_style  # Show the note section with the desired styling
 
-    return None, {"display": "none"}, None  # Hide the note section when no cell is selected
+    elif selected_patient is not None:
+        return dash.no_update
 
+    return None, {"display": "none"}, None, None  # Hide the note section when no cell is selected
 
-
-@app.callback(
-    Output('legend', 'style'),
-    [Input('table1', 'active_cell')],
-    [State('table1', 'data')],
-)
-def update_calendar(active_cell, table1_data):
-    print('active cell : ', active_cell)
-    
-    global selected_patient
-
-    if active_cell:
-        row = active_cell['row']
-        new_selected_patient  = table1_data[row]['First Name'] + \
-            " " + table1_data[row]['Last Name']
-        if new_selected_patient != None:
-            return {"display":"flex"}
-
-    return None  # Hide the note section when no cell is selected
 
 @app.callback(
     Output(component_id='table1', component_property='data'),
