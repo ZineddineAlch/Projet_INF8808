@@ -49,7 +49,7 @@ def get_radar_chart(patient_names):
             r=norm_values,
             theta=CATEGORIES,
             fill='toself',
-            name=patient_name,#f"<b>{patient_name}</b><br><ul><li>Cancellations: {values[0]}</li> <li>Falls: {values[1]}</li> <li>Hospitalizations: {values[2]}</li> <li>Pain mentions: {values[3]}</li></ul>",
+            name=patient_name,
             line=dict(color='#113cca'),  # Change the line color to red
             line_shape='spline',
             customdata=values,

@@ -69,13 +69,13 @@ h4{
 .previous-next-container{
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 #footer-section{
     border: 2px solid #ffaa05;
     border-radius: 20px;
-    padding: 20px;
+    padding: 15px;
     display: flex; 
     justify-content: space-between;
     width: 100%;
@@ -83,27 +83,35 @@ h4{
 
 #left-footer-section{
     margin-right: 0px;
+    width: 40%;
 }
 
 #right-footer-section{
-    width: 80%;
+    width: 60%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
 }
 
 #right-footer-section div{
+    display: flex;
+    flex-direction: row;
     width: 160px;
-    text-align: center;
 }
+
 #right-footer-section div p:first-child{
     font-weight: bold;
     font-size: 32px;
     color: #113cca;
+    text-align: right;
+    width: 20%;
+    font-variant-numeric: lining-nums;
 }
 #right-footer-section div p:last-child{
     font-weight: bold;
     font-size: 20px;
+    margin-left: 10px;
+    text-align: left;
+    width:5%;
 }
 
 #detailed-view-container{
