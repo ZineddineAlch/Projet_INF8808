@@ -8,6 +8,7 @@ import dash_bootstrap_components as dbc
 import preprocess
 import vis
 import cal
+import note
 
 
 app = dash.Dash(name=__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -268,10 +269,6 @@ def update_calendar(active_cell, page_current, table1_data):
             stats_style = {"display": "flex", "flex-direction": "column"}
             cal_children = [html.H3(selected_patient, style={'color': '#113cca', 'text-align': 'left','fontWeight': 'bold'}), cal.get_cal(schedule_data,note_data)]
             legend_style = {"display":"flex"}
-            # Update the columns of table1 based on the selected patient
-        # if selected_patient != None:
-        #     # Drop the 'ADLS' column
-        #     columns_table1_updated = 
 
         return cal_children, stats_style, stats_children, legend_style, columns_table1_updated, global_view_style
 
@@ -316,9 +313,9 @@ def update_content(n_clicks_list):
                    first_time_clicked_note = True
             if first_time_clicked_note:
                 index = int(ctx.triggered_id["index"])
-                return cal.retrieve_saved_content_note(index)
+                return note.retrieve_saved_content_note(index)
             if not first_time_clicked_note:
-                return cal.default_content()
+                return note.default_content()
         
     except TypeError:
         pass
