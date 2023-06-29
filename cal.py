@@ -89,7 +89,6 @@ def get_gray_day():
         style={"width": f"{sz}em", "height": f"{sz}em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#F370211A 5px,#F370211A 6px)"})
     return dbc.Col(html.Div(child, style={"border": "1px #fafcff solid"}), width="auto")
 
-
 def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
     note_df["DAY"] = pd.to_datetime(note_df["DAY"])  # Convert "DAY" column to datetime
     # create week days header row, with each day in a column of width 8em + 2px border
@@ -115,8 +114,6 @@ def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
     for i in range(0, len(all_days), 7):
         cal.append(dbc.Row(all_days[i: i+7], className="g-0"))
     return dbc.Container(week_days + cal,id='calendar')
-
-
 
 def get_summary(schedule_df: pd.DataFrame):
     pain = schedule_df['HAS_PAIN_MENTION'].sum()
