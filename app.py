@@ -25,7 +25,7 @@ data[['ADLS', 'Visits', 'Pain', 'Fall']
      ] = preprocess.completed_adls_visit(df_timeline).values
 img='<img src="./assets/radar_chart.png" >'
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
-
+data["id"] = data["Name"]
 data_stats = pd.DataFrame({'Stats': ['<img src="./assets/radar_chart.png" width="450" height="490">']}) * 0
 
 mycharts = vis.get_radar_chart(data["Name"])
@@ -240,15 +240,13 @@ active_page = None
 def update_calendar(active_cell, page_current, table1_data):
     if page_current is None and active_cell is not None:
         page_current = 0
-
     global selected_patient
     global active_page
 
     if active_cell:
         active_page = page_current
-        row = active_cell['row'] + page_current*8 
-        new_selected_patient  = table1_data[row]['First Name'] + \
-            " " + table1_data[row]['Last Name']
+
+        new_selected_patient = active_cell['row_id']
         print('new patient : ', new_selected_patient)
 
         # Check if the selected patient is different from the previously selected one
