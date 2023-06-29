@@ -5,10 +5,8 @@ from dash.dependencies import Input, Output, State ,ALL
 import pandas as pd
 from dash import dash_table
 import dash_bootstrap_components as dbc
-import dash_ag_grid as dag
 import preprocess
 import vis
-import template
 import cal
 
 
@@ -40,9 +38,14 @@ app.layout = html.Div(
     id="main-div",
     children=[
         # Logo AlayaCare
-        html.Img(
-            id="alayacare-logo",
-            src="./assets/image_alaya.png",
+        html.A(
+            href="/",
+            children=[
+                html.Img(
+                    id="alayacare-logo",
+                    src="./assets/image_alaya.png",
+                ),
+            ]
         ),
         html.Div(
             id="parent-div",
@@ -234,6 +237,7 @@ active_page = None
     Output('table-stats', 'children'),
     Output('legend', 'style'),
     Output('table1', 'columns'),  # Add this output to update the columns of table1
+    Output('global-view', 'style'),
     [Input('table1', 'active_cell')],
     [Input('table1', 'page_current')],
     [State('table1', 'data')],
@@ -250,6 +254,9 @@ def update_calendar(active_cell, page_current, table1_data):
         new_selected_patient = active_cell['row_id']
         print('new patient : ', new_selected_patient)
 
+        columns_table1_updated = [col for col in preprocess.table1_header() if col['id'] not in ['Pain', 'Fall','Hospitalization']] 
+        global_view_style = {"width": "27%"}
+
         # Check if the selected patient is different from the previously selected one
         if new_selected_patient != None:
             selected_patient = new_selected_patient
@@ -262,18 +269,19 @@ def update_calendar(active_cell, page_current, table1_data):
             cal_children = [html.H3(selected_patient, style={'color': '#113cca', 'text-align': 'left','fontWeight': 'bold'}), cal.get_cal(schedule_data,note_data)]
             legend_style = {"display":"flex"}
             # Update the columns of table1 based on the selected patient
-            columns_table1_updated = preprocess.table1_header()
-        if selected_patient != None:
-            # Drop the 'ADLS' column
-            columns_table1_updated = [col for col in columns_table1_updated if col['id'] not in ['Pain', 'Fall','Hospitalization']]
-        return cal_children, stats_style, stats_children, legend_style, columns_table1_updated
+        # if selected_patient != None:
+        #     # Drop the 'ADLS' column
+        #     columns_table1_updated = 
 
-            
+        return cal_children, stats_style, stats_children, legend_style, columns_table1_updated, global_view_style
+
     elif page_current is not None:
         active_page = page_current
         return dash.no_update
 
-    return None, {"display": "none"}, None, None  # Hide the note section when no cell is selected
+    global_view_style = {"width": "50%"}
+
+    return None, {"display": "none"}, None, None, preprocess.table1_header(), global_view_style  # Hide the note section when no cell is selected
 
 
 @app.callback(
