@@ -251,35 +251,37 @@ def update_calendar(active_cell, page_current, table1_data):
 
     if active_cell:
         active_page = page_current
-
         new_selected_patient = active_cell['row_id']
-        print('new patient : ', new_selected_patient)
-
         columns_table1_updated = [col for col in preprocess.table1_header() if col['id'] not in ['Pain', 'Fall','Hospitalization']] 
         global_view_style = {"width": "27%"}
-
         # Check if the selected patient is different from the previously selected one
         if new_selected_patient != None:
             selected_patient = new_selected_patient
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
-            stats_children = [html.H3("Last 28 days (normalized)",style={'color': 'rgb(255, 170, 5)','text-align':'center'}),
-                              html.P("Hover on a point to see the total number for a metric.", style={"width": "min-content", "min-width": "100%", "font-size": "15px"}),
-                              vis.get_chart_from_name(selected_patient, mycharts)]
+            stats_children = create_stats_children(selected_patient)
             stats_style = {"display": "flex", "flex-direction": "column"}
-            cal_children = [html.H3(selected_patient, style={'color': '#113cca', 'text-align': 'left','fontWeight': 'bold'}), cal.get_cal(schedule_data,note_data)]
+            cal_children = create_cal_children(selected_patient, schedule_data, note_data)
             legend_style = {"display":"flex"}
-
         return cal_children, stats_style, stats_children, legend_style, columns_table1_updated, global_view_style
-
     elif page_current is not None:
         active_page = page_current
         return dash.no_update
-
     global_view_style = {"width": "50%"}
-
     return None, {"display": "none"}, None, None, preprocess.table1_header(), global_view_style  # Hide the note section when no cell is selected
 
+def create_stats_children(selected_patient):
+    return [
+        html.H3("Last 28 days (normalized)", style={'color': 'rgb(255, 170, 5)', 'text-align': 'center'}),
+        html.P("Hover on a point to see the total number for a metric.", style={"width": "min-content", "min-width": "100%", "font-size": "15px"}),
+        vis.get_chart_from_name(selected_patient, mycharts)
+    ]
+
+def create_cal_children(selected_patient, schedule_data, note_data):
+    return [
+        html.H3(selected_patient, style={'color': '#113cca', 'text-align': 'left', 'fontWeight': 'bold'}),
+        cal.get_cal(schedule_data, note_data)
+    ]
 
 @app.callback(
     Output(component_id='table1', component_property='data'),
