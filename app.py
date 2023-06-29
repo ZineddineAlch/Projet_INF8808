@@ -257,7 +257,9 @@ def update_calendar(active_cell, page_current, table1_data):
             selected_patient = new_selected_patient
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
             note_data = preprocess.get_notes(df_notes, selected_patient)
-            stats_children = [html.H3("Last 28 days (normalized)", style={'color': 'rgb(255, 170, 5)','text-align':'center'}), vis.get_chart_from_name(selected_patient, mycharts)]
+            stats_children = [html.H3("Last 28 days (normalized)",style={'color': 'rgb(255, 170, 5)','text-align':'center'}),
+                              html.P("Hover on a point to see the total number for a metric.", style={"width": "min-content", "min-width": "100%", "font-size": "15px"}),
+                              vis.get_chart_from_name(selected_patient, mycharts)]
             stats_style = {"display": "flex", "flex-direction": "column"}
             cal_children = [html.H3(selected_patient, style={'color': '#113cca', 'text-align': 'left','fontWeight': 'bold'}), cal.get_cal(schedule_data,note_data)]
             legend_style = {"display":"flex"}

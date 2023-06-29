@@ -84,8 +84,8 @@ def get_radar_chart(patient_names):
         df = pd.concat([
             pd.DataFrame({"r": t.r, "theta": t.theta, "trace": np.full(len(t.r), t.name)})
             for t in fig.data
-            ]
-                       )
+            ])
+
         # convert theta to be in radians
         df["theta_n"] = pd.factorize(df["theta"])[0]
         df["theta_radian"] = (df["theta_n"] / (df["theta_n"].max() + 1)) * 2 * np.pi
