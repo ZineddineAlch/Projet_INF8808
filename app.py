@@ -22,7 +22,7 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 data = preprocess.id_extract(df_timeline)
 data[['ADLS', 'Visits', 'Pain', 'Fall','Hospitalization']
      ] = preprocess.completed_adls_visit(df_timeline).values
-img='<img src="./assets/radar_chart.png" >'
+
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
 data["id"] = data["Name"]
 data_stats = pd.DataFrame({'Stats': ['<img src="./assets/radar_chart.png" width="450" height="490">']}) * 0
