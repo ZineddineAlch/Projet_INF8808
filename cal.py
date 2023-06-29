@@ -174,15 +174,15 @@ def default_content():
     return "Click on note to show content"
 
 def get_summary(schedule_df: pd.DataFrame):
-    pain = schedule_df['HAS_PAIN_MENTION'].values.sum()
-    hospitalization = schedule_df['HOSPITALIZATION_COUNT'].values.sum()
-    fall = schedule_df['FALL_COUNT'].values.sum()
-    completed_visits = schedule_df['VISIT_COUNTS'].values.sum()
-    cancelled_visits = schedule_df['CANCELLATION_COUNTS'].values.sum()
+    pain = schedule_df['HAS_PAIN_MENTION'].sum()
+    hospitalization = schedule_df['HOSPITALIZATION_COUNT'].sum()
+    fall = schedule_df['FALL_COUNT'].sum()
+    completed_visits = schedule_df['VISIT_COUNTS'].sum()
+    cancelled_visits = schedule_df['CANCELLATION_COUNTS'].sum()
     visits_ratio = completed_visits / (completed_visits + cancelled_visits) * 100
 
-    completed_adls = schedule_df['TOTAL_COMPLETED_ADLS'].values.sum()
-    total_adls = schedule_df['TOTAL_ADLS'].values.sum()
+    completed_adls = schedule_df['TOTAL_COMPLETED_ADLS'].sum()
+    total_adls = schedule_df['TOTAL_ADLS'].sum()
 
     adls_ratio = completed_adls/total_adls * 100
 
