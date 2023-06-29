@@ -35,7 +35,7 @@ def insert_image_note(row,children,note_df):
         images.append(bookmark_image)
         save_content((get_image_note.counter-1)%35, (note_date, notes))
 
-    return children.append(html.Div(images, style={"display": "flex"}))
+    return children.append(html.Div(images))
 
 def get_formatted_date(day):
     return day.strftime("%Y-%m-%d")
