@@ -7,10 +7,11 @@ def table1_header():
     
     columns=[
         {"name": "Name", "id": "Name"},
-        {"name": "ADLS Done", "id": "Completed ADLS"},
-        {"name": "Visits Done", "id": "Completed visits"}
+        {"name": "ADLS", "id": "ADLS"},
+        {"name": "Visits", "id": "Visits"},
+        {"name": "Pain", "id": "Pain"},
+        {"name": "Fall", "id": "Fall"}
     ]
-    
     
     return columns
 
@@ -44,11 +45,13 @@ def id_extract(df):
 
 def completed_adls_visit(df):
     # Create an empty DataFrame with the desired columns
-    empty_df = pd.DataFrame(columns=['Completed ADLS', 'Completed visits'])
+    empty_df = pd.DataFrame()
 
     grouped_df1 = df.groupby('PATIENT_ID', sort=False).agg({
         'TOTAL_COMPLETED_ADLS': 'sum',
-        'TOTAL_ADLS': 'sum'
+        'TOTAL_ADLS': 'sum',
+        'HAS_PAIN_MENTION': 'sum',
+        'FALL_COUNT': 'sum',
     })
     
     # Calculate the ratio
@@ -56,16 +59,18 @@ def completed_adls_visit(df):
     grouped_df1['Ratio'] = grouped_df1.apply(lambda row: str(Fraction(row['TOTAL_COMPLETED_ADLS'], row['TOTAL_ADLS'])), axis=1)
     grouped_df2 = df.groupby('PATIENT_ID', sort=False).agg({
         'VISIT_COUNTS': 'sum',
-        'CANCELLATION_COUNTS': 'sum'
+        'CANCELLATION_COUNTS': 'sum',
     })
     
     # Calculate the ratio
     #grouped_df2['Ratio1'] = grouped_df2['VISIT_COUNTS'] / (grouped_df2['VISIT_COUNTS']+grouped_df2['CANCELLATION_COUNTS'])
     grouped_df2['Ratio1'] = grouped_df2.apply(lambda row: str(Fraction(row['VISIT_COUNTS'], (row['CANCELLATION_COUNTS']+row['VISIT_COUNTS']))), axis=1)
     
-    empty_df['Completed ADLS'] = grouped_df1['Ratio']
-    empty_df['Completed visits'] = grouped_df2['Ratio1']
-    
+    empty_df['ADLS'] = grouped_df1['Ratio']
+    empty_df['Visits'] = grouped_df2['Ratio1']
+    empty_df['Pain'] = grouped_df1['HAS_PAIN_MENTION']
+    empty_df['Fall'] = grouped_df1['FALL_COUNT']
+
     return empty_df
 
 def get_global_data(df):
