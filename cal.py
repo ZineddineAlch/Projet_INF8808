@@ -69,35 +69,39 @@ def get_day(row,note_df):
         html.Div(row["DAY"].strftime("%d/%m"), style={"font-size": "0.9em","font-weight":"600"})
     ]
     if row["TOTAL_ADLS"] == 0:
-        children.append(html.Div("NO SCHEDULED ADLS", style={"height": "11%", "width": "100%","color":"rgb(17, 60, 202)", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "65%","text-align": "center","font-weight": "bold"}))
+        children.append(create_no_scheduled_adls_div())
 
     else:
         adl_completion = round(float(row["ADL_COMPLETION_PERCENTAGE"]))
-        children.append(
-            dbc.Progress(
-                value=adl_completion,
-                color="rgb(255, 170, 5)",
-                
-                striped=True,
-                animated=True,
-                style={"height": "15px", "width": "100%", "position": "absolute",
-                       "bottom": "0", "border-radius": "0px","progress-bar-color":"#fff", "overflow": "hidden"},
-            )
-        )
-        children.append(
-            html.Div(
-                f"ADLS: {row['TOTAL_COMPLETED_ADLS']}/{row['TOTAL_ADLS']}",
-                style={
-                    "height": "11%", "width": "100%", "position": "absolute",
-                    "bottom": "1px", "border-radius": "0px","color":"rgb(17, 60, 202)",
-                    "text-align": "center","font-weight": "bold","font-size": "75%", "font-variant-numeric": "lining-nums"
-                },
-            ),
-        )
+        children.append(create_progress_bar(adl_completion))
+        children.append(create_adls_div(row['TOTAL_COMPLETED_ADLS'], row['TOTAL_ADLS']))
+
     insert_image(row,children)
     note.insert_image_note(row,children,note_df)
     children = html.Div(children, style={"width": f"{sz}em", "height": f"{sz}em", "position": "relative"})
     return dbc.Col(html.Div(children=children, style={"border": "1px rgb(211, 211, 211) solid"}), width="auto")
+
+def create_no_scheduled_adls_div():
+    return html.Div("NO SCHEDULED ADLS", style={"height": "11%", "width": "100%", "color": "rgb(17, 60, 202)", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "65%", "text-align": "center", "font-weight": "bold"})
+
+def create_progress_bar(adl_completion):
+    return dbc.Progress(
+        value=adl_completion,
+        color="rgb(255, 170, 5)",
+        striped=True,
+        animated=True,
+        style={"height": "15px", "width": "100%", "position": "absolute", "bottom": "0", "border-radius": "0px", "progress-bar-color": "#fff", "overflow": "hidden"},
+    )
+
+def create_adls_div(completed_adls, total_adls):
+    return html.Div(
+        f"ADLS: {completed_adls}/{total_adls}",
+        style={
+            "height": "11%", "width": "100%", "position": "absolute",
+            "bottom": "1px", "border-radius": "0px", "color": "rgb(17, 60, 202)",
+            "text-align": "center", "font-weight": "bold", "font-size": "75%", "font-variant-numeric": "lining-nums"
+        },
+    )
 
 def get_gray_day():
     child = html.Div(
