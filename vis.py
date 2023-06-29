@@ -62,7 +62,7 @@ def get_radar_chart(patient_names):
                 size=14,
                 color="#113cca"),
             polar=dict(
-                radialaxis=dict(visible=True, showticklabels=False, range=[0,1]),
+                radialaxis=dict(visible=True, showticklabels=False, range=[-0.1,1]),
                 angularaxis=dict(direction='counterclockwise',
                                  rotation=90,
                                  dtick=45,
@@ -98,9 +98,9 @@ def get_radar_chart(patient_names):
             lambda d: shapely.geometry.MultiPoint(list(zip(d["x"], d["y"]))).convex_hull.area)
         # let's use the areas in the name of the traces
         fig.for_each_trace(lambda t: t.update(name=f"{t.name} {df_a.loc[t.name]:.1f}"))
-        #print(type(df_a))
+
         all_patients_area.append(df_a)
-    #print(all_patients_area)
+
     return charts
 
 mycharts = get_radar_chart(data["Name"])
