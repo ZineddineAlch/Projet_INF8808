@@ -21,7 +21,7 @@ df_notes = pd.read_csv('./assets/data/notes.csv')
 # -------------   Preprocess results ------------------#
 
 data = preprocess.id_extract(df_timeline)
-data[['ADLS', 'Visits', 'Pain', 'Fall']
+data[['ADLS', 'Visits', 'Pain', 'Fall','Hospitalization']
      ] = preprocess.completed_adls_visit(df_timeline).values
 img='<img src="./assets/radar_chart.png" >'
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
@@ -233,6 +233,7 @@ active_page = None
     Output('stats-notes', 'style'),
     Output('table-stats', 'children'),
     Output('legend', 'style'),
+    Output('table1', 'columns'),  # Add this output to update the columns of table1
     [Input('table1', 'active_cell')],
     [Input('table1', 'page_current')],
     [State('table1', 'data')],
@@ -260,8 +261,14 @@ def update_calendar(active_cell, page_current, table1_data):
             stats_style = {"display": "flex", "flex-direction": "column"}
             cal_children = [html.H3(selected_patient, style={'color': '#113cca', 'text-align': 'left','fontWeight': 'bold'}), cal.get_cal(schedule_data,note_data)]
             legend_style = {"display":"flex"}
-            return cal_children, stats_style, stats_children, legend_style  # Show the note section with the desired styling
+            # Update the columns of table1 based on the selected patient
+            columns_table1_updated = preprocess.table1_header()
+        if selected_patient != None:
+            # Drop the 'ADLS' column
+            columns_table1_updated = [col for col in columns_table1_updated if col['id'] not in ['Pain', 'Fall','Hospitalization']]
+        return cal_children, stats_style, stats_children, legend_style, columns_table1_updated
 
+            
     elif page_current is not None:
         active_page = page_current
         return dash.no_update

@@ -10,7 +10,8 @@ def table1_header():
         {"name": "ADLS", "id": "ADLS"},
         {"name": "Visits", "id": "Visits"},
         {"name": "Pain", "id": "Pain"},
-        {"name": "Fall", "id": "Fall"}
+        {"name": "Fall", "id": "Fall"},
+        {"name": "Hospitalization", "id": "Hospitalization"}
     ]
     
     return columns
@@ -52,6 +53,7 @@ def completed_adls_visit(df):
         'TOTAL_ADLS': 'sum',
         'HAS_PAIN_MENTION': 'sum',
         'FALL_COUNT': 'sum',
+        'HOSPITALIZATION_COUNT':'sum'
     })
     
     # Calculate the ratio
@@ -70,6 +72,8 @@ def completed_adls_visit(df):
     empty_df['Visits'] = grouped_df2['Ratio1']
     empty_df['Pain'] = grouped_df1['HAS_PAIN_MENTION']
     empty_df['Fall'] = grouped_df1['FALL_COUNT']
+    empty_df['Hospitalization'] = grouped_df1['HOSPITALIZATION_COUNT']
+    
 
     return empty_df
 
