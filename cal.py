@@ -9,17 +9,22 @@ DAYS = ["Monday", "Tuesday", "Wednesday",
 sz = 7.5
 
 def get_image(image_path, tooltip_text):
-    get_image.counter = getattr(get_image, 'counter', 0) + 1
+    update_image_counter()
     tooltip_id = f"tooltip_{get_image.counter}"
     image_id = f"image_{get_image.counter}"
-    image = html.Img(
+    image = create_image(image_path, image_id)
+    tooltip = dbc.Tooltip(tooltip_text, target=image_id, id=tooltip_id, placement="top")
+    return html.Div([image, tooltip], style={"position": "relative"})
+
+def create_image(image_path, image_id):
+    return html.Img(
         src=image_path, 
         style={"width": "35px"}, 
         id=image_id
     )
     
-    tooltip = dbc.Tooltip(tooltip_text, target=image_id, id=tooltip_id, placement="top")
-    return html.Div([image, tooltip], style={"position": "relative"})
+def update_image_counter():
+    get_image.counter = getattr(get_image, 'counter', 0) + 1
 
 
 def insert_image(row,children):
@@ -48,6 +53,16 @@ def insert_image(row,children):
     second_row_div = html.Div(second_row, style={"display": "flex", "justify-content": "space-around"})
     
     return children.append(html.Div([first_row_div, second_row_div], style={"display": "flex", "flex-direction": "column"}))
+
+#returns the filled calendar
+def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
+    note_df["DAY"] = pd.to_datetime(note_df["DAY"])  # Convert "DAY" column to datetime
+
+    week_days = create_week_days_header()
+    all_days = generate_all_days(schedule_df, note_df)
+    cal = create_calendar_rows(all_days)
+
+    return dbc.Container(week_days + cal, id='calendar')
 
 def get_day(row,note_df):
     children = [
@@ -89,31 +104,38 @@ def get_gray_day():
         style={"width": f"{sz}em", "height": f"{sz}em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#F370211A 5px,#F370211A 6px)"})
     return dbc.Col(html.Div(child, style={"border": "1px #fafcff solid"}), width="auto")
 
-def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
-    note_df["DAY"] = pd.to_datetime(note_df["DAY"])  # Convert "DAY" column to datetime
-    # create week days header row, with each day in a column of width 8em + 2px border
-    week_days = [dbc.Row([dbc.Col(html.Div(html.Div(
-        day, style={"width": f"calc({sz}em + 2px)", "text-align": "center", "margin": "auto",
-                    "font-weight": "600"})), width="auto") for day in DAYS], className="g-0")]
+def create_week_days_header():
+    return [dbc.Row([
+        dbc.Col(
+            html.Div(
+                html.Div(day, style={"width": f"calc({sz}em + 2px)", "text-align": "center", "margin": "auto",
+                                     "font-weight": "600"})
+            ),
+            width="auto"
+        ) for day in DAYS], className="g-0")
+    ]
 
+def generate_all_days(schedule_df, note_df):
     all_days = []
     first_day = schedule_df.iloc[0]["DAY"].weekday()
+
     for _ in range(0, first_day):
         all_days.append(get_gray_day())
 
     for idx, row in schedule_df.iterrows():
-        # Generate days
-        all_days.append(get_day(row,note_df))
+        all_days.append(get_day(row, note_df))
 
     if first_day != 0:
         for _ in range(first_day, 7):
             all_days.append(get_gray_day())
 
-    # Create rows
-    cal = []
+    return all_days
+
+def create_calendar_rows(all_days):
+    cal_rows = []
     for i in range(0, len(all_days), 7):
-        cal.append(dbc.Row(all_days[i: i+7], className="g-0"))
-    return dbc.Container(week_days + cal,id='calendar')
+        cal_rows.append(dbc.Row(all_days[i: i + 7], className="g-0"))
+    return cal_rows
 
 def get_summary(schedule_df: pd.DataFrame):
     pain = schedule_df['HAS_PAIN_MENTION'].sum()
@@ -121,13 +143,15 @@ def get_summary(schedule_df: pd.DataFrame):
     fall = schedule_df['FALL_COUNT'].sum()
     completed_visits = schedule_df['VISIT_COUNTS'].sum()
     cancelled_visits = schedule_df['CANCELLATION_COUNTS'].sum()
-    visits_ratio = completed_visits / (completed_visits + cancelled_visits) * 100
-
     completed_adls = schedule_df['TOTAL_COMPLETED_ADLS'].sum()
     total_adls = schedule_df['TOTAL_ADLS'].sum()
-
+    
+    visits_ratio = completed_visits / (completed_visits + cancelled_visits) * 100
     adls_ratio = completed_adls/total_adls * 100
-
+    
+    return create_summary_div(adls_ratio, visits_ratio, pain, fall, hospitalization)
+    
+def create_summary_div(adls_ratio, visits_ratio, pain, fall, hospitalization):
     return html.Div(
         id="summary-div",
         children=[
@@ -137,4 +161,5 @@ def get_summary(schedule_df: pd.DataFrame):
             html.P(f"{pain} reported cases of pain"),
             html.P(f"{fall} reported falls"),
             html.P(f"{hospitalization} hospitalizations"),
-        ])
+        ]
+    )
