@@ -307,18 +307,24 @@ def update_content(n_clicks_list):
     global first_time_clicked_note
     try:
         if ctx.triggered_id is not None:
-            first_time_clicked_note = False
-            for n_click in n_clicks_list:
-                if n_click is not None:
-                   first_time_clicked_note = True
+            first_time_clicked_note = check_first_time_clicked(n_clicks_list)
             if first_time_clicked_note:
-                index = int(ctx.triggered_id["index"])
+                index = get_triggered_index()
                 return note.retrieve_saved_content_note(index)
             if not first_time_clicked_note:
                 return note.default_content()
         
     except TypeError:
         pass
+def check_first_time_clicked(n_clicks_list):
+    first_time_clicked_note = False
+    for n_click in n_clicks_list:
+        if n_click is not None:
+            first_time_clicked_note = True
+    return first_time_clicked_note
+
+def get_triggered_index():
+    return int(ctx.triggered_id["index"])
 
 
 
