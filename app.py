@@ -97,7 +97,6 @@ app.layout = html.Div(
                                             'backgroundColor': 'rgba(243,112,33,.1)',  # Change the background color of the selected cell
                                             'color': 'rgb(8, 25, 62)',  # Change the text color of the selected cell
                                             'border': '2px solid rgb(211, 211, 211)'
-                                            
                                         }
                                     ],
                                     style_cell_conditional=[
@@ -204,7 +203,6 @@ app.layout = html.Div(
                         ),
                         html.Div(
                             id="stats-notes",
-                            style={"display": "flex", "flex-direction": "column"},
                             children=[
                                 html.Div(
                                     # Table Stats
@@ -229,6 +227,7 @@ app.layout = html.Div(
 
 # ------------------------ Callback -----------------------#
 selected_patient = None  # Initially, no patient is selected
+active_page = None
 @app.callback(
     Output('calendar-container', 'children'),
     Output('stats-notes', 'style'),
@@ -239,19 +238,20 @@ selected_patient = None  # Initially, no patient is selected
     [State('table1', 'data')],
 )
 def update_calendar(active_cell, page_current, table1_data):
-    print('active cell : ', active_cell)
-    
+    if page_current is None and active_cell is not None:
+        page_current = 0
+
     global selected_patient
+    global active_page
 
     if active_cell:
-        row = active_cell['row'] + page_current*8 if page_current else active_cell['row']
+        active_page = page_current
+        row = active_cell['row'] + page_current*8 
         new_selected_patient  = table1_data[row]['First Name'] + \
             " " + table1_data[row]['Last Name']
         print('new patient : ', new_selected_patient)
 
         # Check if the selected patient is different from the previously selected one
-        '''if selected_patient == new_selected_patient:
-            return dash.no_update'''
         if new_selected_patient != None:
             selected_patient = new_selected_patient
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
@@ -264,7 +264,8 @@ def update_calendar(active_cell, page_current, table1_data):
             legend_style = {"display":"flex"}
             return cal_children, stats_style, stats_children, legend_style  # Show the note section with the desired styling
 
-    elif selected_patient is not None:
+    elif page_current is not None:
+        active_page = page_current
         return dash.no_update
 
     return None, {"display": "none"}, None, None  # Hide the note section when no cell is selected
