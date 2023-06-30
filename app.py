@@ -34,11 +34,10 @@ columns_table2 = preprocess.table2_header()
 global_data = preprocess.get_global_data(df_timeline)
 summary = preprocess.calculate_summary(df_timeline)
 
-# ------------- Layout -------------#
+
 app.layout = html.Div(
     id="main-div",
     children=[
-        # Logo AlayaCare
         html.A(
             href="/",
             children=[
@@ -51,17 +50,13 @@ app.layout = html.Div(
         html.Div(
             id="parent-div",
             children=[
-                # Content container div
                 html.Div(
                     id="container-div",
                     children=[
-                        # Global view
                         html.Div(
                             id="global-view",
                             children=[
-                                # header
                                 html.H4("Summary of the past 28 days"),
-                                # Search bar
                                 html.Div(
                                     id="search-bar",
                                     children=[
@@ -75,7 +70,6 @@ app.layout = html.Div(
                                         dbc.Button("Search")
                                     ]
                                 ),
-                                # Table
                                 dash_table.DataTable(
                                     id='table1',
                                     columns=columns_table1,
@@ -98,8 +92,8 @@ app.layout = html.Div(
                                     style_data_conditional=[
                                         {
                                             'if': {'state': 'active'},
-                                            'backgroundColor': 'rgba(243,112,33,.1)',  # Change the background color of the selected cell
-                                            'color': 'rgb(8, 25, 62)',  # Change the text color of the selected cell
+                                            'backgroundColor': 'rgba(243,112,33,.1)',  
+                                            'color': 'rgb(8, 25, 62)',  
                                             'border': '2px solid rgb(211, 211, 211)'
                                         }
                                     ],
@@ -110,7 +104,6 @@ app.layout = html.Div(
                                         'width': '25%'},
                                     ],
                                 ),
-                                # Footer
                                 html.Div(
                                     id="footer-section",
                                     children = [
@@ -147,11 +140,9 @@ app.layout = html.Div(
                             ],
                         ),
                         
-                        # Detailed view container
                         html.Div(
                             id="detailed-view-container",
                             children=[
-                                # Detailed view
                                 html.Div(id="calendar-container"),
                                 html.Div(
                                     id="legend",
@@ -209,7 +200,6 @@ app.layout = html.Div(
                             id="stats-notes",
                             children=[
                                 html.Div(
-                                    # Table Stats
                                     id="table-stats",style={'display': 'flex', "flex-direction": "column", 'text-align': 'center', "height": "fit-content"},
                                 ),
                                 html.Div(
@@ -230,14 +220,14 @@ app.layout = html.Div(
 )
 
 # ------------------------ Callback -----------------------#
-selected_patient = None  # Initially, no patient is selected
+selected_patient = None 
 active_page = None
 @app.callback(
     Output('calendar-container', 'children'),
     Output('stats-notes', 'style'),
     Output('table-stats', 'children'),
     Output('legend', 'style'),
-    Output('table1', 'columns'),  # Add this output to update the columns of table1
+    Output('table1', 'columns'), 
     Output('global-view', 'style'),
     [Input('table1', 'active_cell')],
     [Input('table1', 'page_current')],
@@ -254,7 +244,6 @@ def update_calendar(active_cell, page_current, table1_data):
         new_selected_patient = active_cell['row_id']
         columns_table1_updated = [col for col in preprocess.table1_header() if col['id'] not in ['Pain', 'Fall','Hospitalization']] 
         global_view_style = {"width": "27%"}
-        # Check if the selected patient is different from the previously selected one
         if new_selected_patient != None:
             selected_patient = new_selected_patient
             schedule_data = preprocess.get_schedule_for_patient(df_timeline, selected_patient)
@@ -268,7 +257,7 @@ def update_calendar(active_cell, page_current, table1_data):
         active_page = page_current
         return dash.no_update
     global_view_style = {"width": "50%"}
-    return None, {"display": "none"}, None, None, preprocess.table1_header(), global_view_style  # Hide the note section when no cell is selected
+    return None, {"display": "none"}, None, None, preprocess.table1_header(), global_view_style
 
 def create_stats_children(selected_patient):
     return [
@@ -288,7 +277,6 @@ def create_cal_children(selected_patient, schedule_data, note_data):
     Input(component_id='name-input', component_property='value')
 )
 def update_table1_data(name):
-    # Perform search logic here and return the filtered data for Table 1
     dic = dict()
     for i in vis.all_patients_area:
         dic.update({i.index[0] :i[0]})

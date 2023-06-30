@@ -2,14 +2,17 @@ import dash_bootstrap_components as dbc
 from dash import html
 
 def get_image(image_path, tooltip_text):
+    
     update_image_counter()
     tooltip_id = f"tooltip_{get_image.counter}"
     image_id = f"image_{get_image.counter}"
     image = create_image(image_path, image_id)
     tooltip = dbc.Tooltip(tooltip_text, target=image_id, id=tooltip_id, placement="top")
+    
     return html.Div([image, tooltip], style={"position": "relative"})
 
 def create_image(image_path, image_id):
+    
     return html.Img(
         src=image_path, 
         style={"width": "35px"}, 
@@ -37,11 +40,9 @@ def insert_image(row,children):
     if row["CANCELLATION_COUNTS"] > 0:
         image = get_image("assets/cancelled.png", f"Cancellations: {row['CANCELLATION_COUNTS']}")
         images.append(image)
-    # Divide the images into two rows
     first_row = images[:2]
     second_row = images[2:]
 
-    # Create divs for each row
     first_row_div = html.Div(first_row, style={"display": "flex", "justify-content": "space-around","margin-top": "13%"})
     second_row_div = html.Div(second_row, style={"display": "flex", "justify-content": "space-around"})
     

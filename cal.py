@@ -8,9 +8,9 @@ DAYS = ["Monday", "Tuesday", "Wednesday",
         "Thursday", "Friday", "Saturday", "Sunday"]
 sz = 7.5
 
-#returns the filled calendar
+
 def get_cal(schedule_df: pd.DataFrame,note_df: pd.DataFrame):
-    note_df["DAY"] = pd.to_datetime(note_df["DAY"])  # Convert "DAY" column to datetime
+    note_df["DAY"] = pd.to_datetime(note_df["DAY"])  
 
     week_days = create_week_days_header()
     all_days = generate_all_days(schedule_df, note_df)
@@ -39,6 +39,7 @@ def create_no_scheduled_adls_div():
     return html.Div("NO SCHEDULED ADLS", style={"height": "11%", "width": "100%", "color": "rgb(17, 60, 202)", "position": "absolute", "bottom": "0", "border-radius": "0px", "font-size": "65%", "text-align": "center", "font-weight": "bold"})
 
 def create_progress_bar(adl_completion):
+    
     return dbc.Progress(
         value=adl_completion,
         color="rgb(255, 170, 5)",
@@ -58,11 +59,14 @@ def create_adls_div(completed_adls, total_adls):
     )
 
 def get_gray_day():
+    
     child = html.Div(
         style={"width": f"{sz}em", "height": f"{sz}em", "background": "repeating-linear-gradient(45deg,#FFF,#FFF 5px,#F370211A 5px,#F370211A 6px)"})
+    
     return dbc.Col(html.Div(child, style={"border": "1px #fafcff solid"}), width="auto")
 
 def create_week_days_header():
+    
     return [dbc.Row([
         dbc.Col(
             html.Div(
@@ -74,6 +78,7 @@ def create_week_days_header():
     ]
 
 def generate_all_days(schedule_df, note_df):
+    
     all_days = []
     first_day = schedule_df.iloc[0]["DAY"].weekday()
 
@@ -90,7 +95,9 @@ def generate_all_days(schedule_df, note_df):
     return all_days
 
 def create_calendar_rows(all_days):
+    
     cal_rows = []
     for i in range(0, len(all_days), 7):
         cal_rows.append(dbc.Row(all_days[i: i + 7], className="g-0"))
+        
     return cal_rows

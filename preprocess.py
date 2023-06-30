@@ -31,21 +31,18 @@ def table2_header():
     return columns
     
 def id_extract(df):
-
-    # Extract unique values from the column
+    
     unique_values = df['PATIENT_ID'].unique()
 
-    # Create a new dataframe with unique values and split them into first name and last name
     df_unique = pd.DataFrame(unique_values, columns=['PATIENT_ID'])
     df_unique[['First Name', 'Last Name']] = df_unique['PATIENT_ID'].str.split(' ', expand=True)
 
-    # Select only the 'First Name' and 'Last Name' columns
     df_names = df_unique[['First Name', 'Last Name']]
     
     return df_names
 
 def completed_adls_visit(df):
-    # Create an empty DataFrame with the desired columns
+    
     empty_df = pd.DataFrame()
 
     grouped_df1 = df.groupby('PATIENT_ID', sort=False).agg({
@@ -56,16 +53,12 @@ def completed_adls_visit(df):
         'HOSPITALIZATION_COUNT':'sum'
     })
     
-    # Calculate the ratio
-    #grouped_df1['Ratio'] = grouped_df1['TOTAL_COMPLETED_ADLS'] / grouped_df1['TOTAL_ADLS']
     grouped_df1['Ratio'] = grouped_df1.apply(lambda row: str(Fraction(row['TOTAL_COMPLETED_ADLS'], row['TOTAL_ADLS'])), axis=1)
     grouped_df2 = df.groupby('PATIENT_ID', sort=False).agg({
         'VISIT_COUNTS': 'sum',
         'CANCELLATION_COUNTS': 'sum',
     })
     
-    # Calculate the ratio
-    #grouped_df2['Ratio1'] = grouped_df2['VISIT_COUNTS'] / (grouped_df2['VISIT_COUNTS']+grouped_df2['CANCELLATION_COUNTS'])
     grouped_df2['Ratio1'] = grouped_df2.apply(lambda row: str(Fraction(row['VISIT_COUNTS'], (row['CANCELLATION_COUNTS']+row['VISIT_COUNTS']))), axis=1)
     
     empty_df['ADLS'] = grouped_df1['Ratio']
@@ -74,11 +67,10 @@ def completed_adls_visit(df):
     empty_df['Fall'] = grouped_df1['FALL_COUNT']
     empty_df['Hospitalization'] = grouped_df1['HOSPITALIZATION_COUNT']
     
-
     return empty_df
 
 def get_global_data(df):
-    # Group by 'PATIENT_ID' and sum the numeric columns
+    
     aggregated = df.groupby('PATIENT_ID').agg({
         'VISIT_COUNTS': 'sum',
         'TOTAL_COMPLETED_ADLS': 'sum',
@@ -89,9 +81,9 @@ def get_global_data(df):
         'HAS_PAIN_MENTION': 'sum'
     })
 
-    # Adding 'ADL_COMPLETION_PERCENTAGE' column
     aggregated['ADL_COMPLETION_PERCENTAGE'] = (aggregated['TOTAL_COMPLETED_ADLS'] / aggregated['TOTAL_ADLS']) * 100
     aggregated['UNCOMPLETED_ADLS_PERCENTAGE'] = 100 - aggregated['ADL_COMPLETION_PERCENTAGE']
+    
     return aggregated
 
 
@@ -100,7 +92,7 @@ def get_notes(notes, PATIENT_ID):
     filtered_df = notes[notes['PATIENT_ID'] == PATIENT_ID]
     filtered_df = filtered_df.drop(columns='PATIENT_ID')
     
-    return filtered_df  # columns DAY NOTE_TYPE NOTE
+    return filtered_df 
 
 def get_note_counts(notes, PATIENT_ID):
 
@@ -113,7 +105,7 @@ def get_note_counts(notes, PATIENT_ID):
     
     note_counts.columns = ['NOTES_COUNT', 'PROGRESS_NOTES_COUNT', 'OVERVIEW_NOTES_COUNT']
     
-    return note_counts.reset_index() # columns 	NOTES_COUNT PROGRESS_NOTES_COUNT OVERVIEW_NOTES_COUNT
+    return note_counts.reset_index() 
 
 
 def get_hospitalization_details(df, PATIENT_ID):
@@ -122,7 +114,7 @@ def get_hospitalization_details(df, PATIENT_ID):
     patient_data['HOSPITALIZATION_SOURCE'] = patient_data['HOSPITALIZATION_DETAILS'].apply(lambda x: re.search(r"'source': '([^']*)'", x).group(1) if re.search(r"'source': '([^']*)'", x) else None)
     patient_data = patient_data[['DAY', 'HOSPITALIZATION_SOURCE']]
 
-    return patient_data #'DAY' and 'HOSPITALIZATION_SOURCE' columns
+    return patient_data 
 
 def get_pain_details(df, PATIENT_ID):
 
@@ -130,7 +122,7 @@ def get_pain_details(df, PATIENT_ID):
     patient_data['PAIN_SOURCE'] = patient_data['PAIN_DETAILS'].apply(lambda x: x.split("'source': '")[1].split("'")[0] if x else None)
     patient_data = patient_data[['DAY', 'PAIN_SOURCE']]
 
-    return patient_data #'DAY' and 'PAIN_SOURCE' columns
+    return patient_data 
 
 def get_fall_details(df, PATIENT_ID):
   
@@ -138,9 +130,10 @@ def get_fall_details(df, PATIENT_ID):
     patient_data['FALL_SOURCE'] = patient_data['FALL_DETAILS'].apply(lambda x: re.search(r"'source': '([^']*)'", x).group(1) if re.search(r"'source': '([^']*)'", x) else None)
     patient_data = patient_data[['DAY', 'FALL_SOURCE']]
 
-    return patient_data #'DAY' and 'FALL_SOURCE' columns
+    return patient_data 
 
 def get_schedule_for_patient(df, patient_id):
+    
     schedule = pd.DataFrame()
     schedule[SCHEDULE_COLS] = df[df["PATIENT_ID"] == patient_id][SCHEDULE_COLS]
 
@@ -150,6 +143,7 @@ def get_schedule_for_patient(df, patient_id):
 
     schedule["DAY"] = pd.to_datetime(schedule["DAY"])
     schedule = schedule.sort_values("DAY")
+    
     return schedule
 
 def calculate_summary(df):

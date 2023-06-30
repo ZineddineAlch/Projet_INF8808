@@ -7,17 +7,14 @@ from dash import dcc
 import numpy as np
 from preprocess import get_global_data
 
-# Read the dataset
 df_timeline = pd.read_csv('./assets/data/timeline_dataset.csv')
 data = preprocess.id_extract(df_timeline)
 data["Name"] = data[["First Name", 'Last Name']].apply(" ".join, axis=1)
-# Data for the radar chart
 CATEGORIES = ['CANCELLATION_COUNTS', 'FALL_COUNT', 'HOSPITALIZATION_COUNT', 'HAS_PAIN_MENTION']
 
 
 
 def get_radar_chart(patient_names):
-    # Get the aggregated values for the radar chart
     aggregated = df_timeline.groupby('PATIENT_ID').agg({
         'CANCELLATION_COUNTS': 'sum',
         'FALL_COUNT': 'sum',
@@ -44,18 +41,16 @@ def get_radar_chart(patient_names):
         norm_values = aggregated_norm.loc[patient_name].values
         values = aggregated.loc[patient_name].values
 
-        # Create a trace for the radar chart
         trace = go.Scatterpolar(
             r=norm_values,
             theta=CATEGORIES,
             fill='toself',
             name=patient_name,
-            line=dict(color='#113cca'),  # Change the line color to red
+            line=dict(color='#113cca'),
             line_shape='spline',
             customdata=values,
             hovertemplate='<b>%{theta}:</b> %{customdata}' + '<extra></extra>',
         )
-        # Create the layout for the chart
         layout = go.Layout(
             font=dict(
                 family="Calibre, Poppins, Roboto, sans-serif",
@@ -73,32 +68,24 @@ def get_radar_chart(patient_names):
             ),
 
             showlegend=False,
-            height=350,  # Set the height of the chart (in pixels)
-            width=350,  # Set the width of the chart (in pixels)
-            margin=dict(l=50, r=50, t=50, b=50)  # Set the margins around the chart
+            height=350, 
+            width=350, 
+            margin=dict(l=50, r=50, t=50, b=50) 
         )
-        # Create the figure and add the trace
         fig = go.Figure(data=[trace], layout=layout)
         charts.append([fig, patient_name])
-        # get data back out of figure
         df = pd.concat([
             pd.DataFrame({"r": t.r, "theta": t.theta, "trace": np.full(len(t.r), t.name)})
             for t in fig.data
             ])
 
-        # convert theta to be in radians
         df["theta_n"] = pd.factorize(df["theta"])[0]
         df["theta_radian"] = (df["theta_n"] / (df["theta_n"].max() + 1)) * 2 * np.pi
-        # work out x,y co-ordinates
         df["x"] = np.cos(df["theta_radian"]) * df["r"]
         df["y"] = np.sin(df["theta_radian"]) * df["r"]
-        # generate a polygon from co-ordinates using shapely
-        # get the area of the polygon
         df_a = df.groupby("trace").apply(
             lambda d: shapely.geometry.MultiPoint(list(zip(d["x"], d["y"]))).convex_hull.area)
-        # let's use the areas in the name of the traces
         fig.for_each_trace(lambda t: t.update(name=f"{t.name} {df_a.loc[t.name]:.1f}"))
-
         all_patients_area.append(df_a)
 
     return charts
@@ -106,6 +93,7 @@ def get_radar_chart(patient_names):
 mycharts = get_radar_chart(data["Name"])
 
 def get_chart_from_name(name, charts):
+    
     for chart in charts:
         if chart[1] == name:
             return dcc.Graph(figure=chart[0])
